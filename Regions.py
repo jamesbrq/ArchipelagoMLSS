@@ -66,6 +66,9 @@ def create_regions(world: MultiWorld, player: int):
 
     jokes_main_region = create_region(world, player, "JokesMain", jokes_main)
     world.regions.append(jokes_main_region)
+    
+    postJokes_region = Region("PostJokes", player, world)
+    world.regions.append(postJokes_region)
 
     theater_region = create_region(world, player, "Theater", theater)
     world.regions.append(theater_region)
@@ -78,20 +81,26 @@ def connect_regions(world, player):
     
     connect(world, player, names, "Menu", "Main Area")
     connect(world, player, names, "Main Area", "Chucklehuck Woods", lambda state: StateLogic.brooch(state, player))
+    connect(world, player, names, "Main Area", "Hooniversity", lambda state: StateLogic.canDig(state, player) and StateLogic.canMini(state, player))
+    connect(world, player, names, "Main Area", "TeeheeValley", lambda state: StateLogic.super(state, player) or StateLogic.canDash(state, player))
+    connect(world, player, names, "TeeheeValley", "Gwarhar", lambda state: StateLogic.membership(state, player))
+    connect(world, player, names, "TeeheeValley", "Fungitown", lambda state: state.can_reach("Airport", "Region", player) and state.can_reach("Beanbean Castle Town", "Region", player))
     connect(world, player, names, "Main Area", "Shop Starting Flag", lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
     connect(world, player, names, "Shop Starting Flag", "Shop Chuckolator Flag", lambda state: (StateLogic.brooch(state, player) and StateLogic.fruits(state, player)) or state.can_reach("Shop Piranha Flag", "Region", player))
     connect(world, player, names, "Shop Starting Flag", "Shop Piranha Flag", lambda state: StateLogic.thunder(state, player) or state.can_reach("Shop Peach Kidnapped Flag", "Region", player))
     connect(world, player, names, "Shop Starting Flag", "Shop Peach Kidnapped Flag", lambda state: (StateLogic.thunder(state, player) and state.can_reach("Fungitown", "Region", player)) or state.can_reach("Shop Beanstar Complete Flag", "Region", player))
     connect(world, player, names, "Shop Starting Flag", "Shop Beanstar Complete Flag", lambda state: (state.can_reach("Beanbean Castle Town", "Region", player) and StateLogic.pieces(state, player)) or state.can_reach("Shop Birdo Flag", "Region", player))
-    connect(world, player, names, "Shop Starting Flag", "Shop Birdo Flag", lambda state: state.can_reach("Post Jokes End", "Region", player))
+    connect(world, player, names, "Shop Starting Flag", "Shop Birdo Flag", lambda state: state.can_reach("PostJokes", "Region", player))
     connect(world, player, names, "Main Area", "Sewers", lambda state: StateLogic.rose(state, player))
+    connect(world, player, names, "Main Area", "Airport", lambda state: StateLogic.thunder(state, player))
     connect(world, player, names, "Main Area", "Theater", lambda state: StateLogic.canDash(state, player))
     connect(world, player, names, "Main Area", "Surfable", lambda state: StateLogic.ultra(state, player) and ((StateLogic.canMini(state, player) and StateLogic.canDig(state, player)) or StateLogic.membership(state, player)))
+    connect(world, player, names, "Surfable", "Gwarhar")
     connect(world, player, names, "Surfable", "JokesEntrance", lambda state: StateLogic.fire(state, player))
     connect(world, player, names, "JokesEntrance", "JokesMain", lambda state: StateLogic.canCrash(state, player) and StateLogic.canDig(state, player))
+    connect(world, player, names, "JokesMain", "PostJokes", lambda state: StateLogic.canDash(state, player) and StateLogic.pieces(state, player) and state.can_reach("Beanbean Castle Town", "Region", player) and StateLogic.rose(state, player))
     connect(world, player, names, "Chucklehuck Woods", "Winkle", lambda state: StateLogic.canDash(state, player))
     connect(world, player, names, "Chucklehuck Woods", "Beanbean Castle Town", lambda state: StateLogic.fruits(state, player))
-    connect
     
 def create_region(world, player, name, locations):
     ret = Region(name, player, world)
