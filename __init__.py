@@ -36,9 +36,6 @@ class MLSSWorld(World):
         create_regions(self.multiworld, self.player)
         connect_regions(self.multiworld, self.player)
         
-    def set_rules(self) -> None:
-        set_rules(self.multiworld, self.player)
-        
     def create_items(self) -> None:
         # First add in all progression and useful items
         required_items = []
@@ -63,6 +60,9 @@ class MLSSWorld(World):
             item = self.create_item(filler_item_name)
             self.multiworld.itempool.append(item)
             filler_items.remove(filler_item_name)
+    
+    def set_rules(self) -> None:
+        set_rules(self.multiworld, self.player)
             
     def create_item(self, name: str) -> MLSSItem:
         item = item_table[name]
