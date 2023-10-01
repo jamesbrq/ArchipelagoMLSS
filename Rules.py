@@ -3,10 +3,7 @@ from BaseClasses import MultiWorld
 from .Names import LocationName
 from Locations import all_locations
 
-def set_rules(world: MultiWorld, player: int):
-    player = world.player
-    world = world.multiworld
-    
+def set_rules(world: MultiWorld, player: int):    
     for location in all_locations:
         if "Digspot" in location.name:
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
@@ -86,3 +83,8 @@ def set_rules(world: MultiWorld, player: int):
     add_rule(world.get_location(LocationName.JokesEndJojoraRoomDigspot, player), lambda state: StateLogic.canDash(state, player))
     add_rule(world.get_location(LocationName.OhoOasisFirebrand, player), lambda state: StateLogic.canMini(state, player))
     add_rule(world.get_location(LocationName.OhoOasisThunderhand, player), lambda state: StateLogic.canDig(state, player))
+    add_rule(world.get_location(LocationName.BeanstarPieceYoshiTheater, player), lambda state: StateLogic.neon(state, player))
+    add_rule(world.get_location(LocationName.BeanstarPieceYoshiTheater, player), lambda state: StateLogic.neon(state, player))
+    add_rule(world.get_location(LocationName.WinkleAreaBeanstarRoomBlock, player), lambda state: StateLogic.winkle(state, player))
+    add_rule(world.get_location(LocationName.BeanstarPieceWinkleArea, player), lambda state: StateLogic.winkle(state, player))
+    add_rule(world.get_location(LocationName.GwarharLagoonSpangleReward, player), lambda state: StateLogic.spangle(state, player))

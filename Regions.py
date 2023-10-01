@@ -100,7 +100,7 @@ def create_regions(world: MultiWorld, player: int):
     baseUltraRocks_region = create_region(world, player, "BaseUltraRocks", baseUltraRocks)
     world.regions.append(baseUltraRocks_region)
     
-def connect_regions(world, player):
+def connect_regions(world: MultiWorld, player: int):
     names: typing.Dict[str, int] = {}
     
     connect(world, player, names, "Menu", "Main Area")
