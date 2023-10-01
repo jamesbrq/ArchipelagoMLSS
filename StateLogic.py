@@ -1,13 +1,13 @@
-def can_dig(state, player):
+def canDig(state, player):
     return (state.has("Green Goblet", player) and state.has("Hammers", player))
     
-def can_mini(state, player):
+def canMini(state, player):
     return (state.has("Red Goblet", player) and state.has("Hammers", player))
     
-def can_dash(state, player):
+def canDash(state, player):
     return (state.has("Red Pearl Bean", player) and state.has("Firebrand", player))
     
-def can_crash(state, player):
+def canCrash(state, player):
     return (state.has("Green Pearl Bean", player) and state.has("Thunder hand", player))
     
 def hammers(state, player)
@@ -42,3 +42,15 @@ def thunder(state, player):
     
 def fire(state, player):
     return state.has("Firebrand", player)
+    
+def dressBeanstar(state, player):
+    return (state.has("Peach's Extra Dress", player) and state.has("Fake Beanstar", player))
+    
+def membership(state, player):
+    return state.has("Membership Card", player)
+    
+def winkle(state, player):
+    return state.has("Winkle Card", player)
+    
+def beanFruit(state, player):
+    return state.has("Beanfruit 1", player) or state.has("Beanfruit 2", player) or state.has("Beanfruit 3", player) or state.has("Beanfruit 4", player) or state.has("Beanfruit 5", player) or state.has("Beanfruit 6", player) or state.has("Beanfruit 7", player)

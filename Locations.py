@@ -55,6 +55,9 @@ mainArea: typing.List[LocationData] = [
     LocationData("Hoohoo Mountain Base Bridge Room Block 4", 0x39d9b4, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Base Bridge Room Digspot", 0x39d9bc, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Base Boostatue Room Block 1", 0x39d9c9, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Boostatue Room Block 2", 0x39d9d1, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Boostatue Room Digspot 1", 0x39d9d9, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Boostatue Room Digspot 2", 0x39d9e1, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Base Grassy Area Block 1", 0x39d9fe, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Base Grassy Area Block 2", 0x39d9f6, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Base After Minecart Minigame Block 1", 0x39da35, 0x02000000, 0x00),
@@ -89,16 +92,6 @@ mainArea: typing.List[LocationData] = [
     LocationData("Hoohoo Mountain Room 2 Digspot 2", 0x39d90f, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Base Room 1 Digspot", 0x39d941, 0x02000000, 0x00),
     LocationData("Hoohoo Village Right Side Digspot", 0x39d95f, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Boostatue Room Block 2", 0x39d9d1, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Boostatue Room Digspot 1", 0x39d9e1, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Boostatue Room Digspot 2", 0x39d9d9, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Boostatue Room Digspot 3", 0x39d9e9, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Guffawha Ruins Entrance Digspot", 0x39da0b, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Teehee Valley Entrance Digspot", 0x39da20, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Teehee Valley Entrance Block", 0x39da18, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Past Ultra Hammer Rocks Block 1", 0x39da42, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Past Ultra Hammer Rocks Block 2", 0x39da4a, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Past Ultra Hammer Rocks Block 3", 0x39da52, 0x02000000, 0x00),
     LocationData("Hoohoo Village Super Hammer Cave Digspot", 0x39db02, 0x02000000, 0x00),
     LocationData("Hoohoo Village Super Hammer Cave Block", 0x39daea, 0x02000000, 0x00),
     LocationData("Hoohoo Village North Cave Room 2 Digspot", 0x39daad, 0x02000000, 0x00),
@@ -120,10 +113,6 @@ mainArea: typing.List[LocationData] = [
     LocationData("Beanbean Outskirts S Room 1 Block", 0x39dc20, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts S Room 1 Digspot 2", 0x39dc28, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts S Room 2 Block 1", 0x39dc4d, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts S Room 2 Digspot 1", 0x39dc65, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts S Room 2 Digspot 2", 0x39dc5d, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts S Room 2 Block 2", 0x39dc45, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts S Room 2 Digspot 3", 0x39dc35, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts NE Digspot 1", 0x39dc7a, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts NE Digspot 2", 0x39dc82, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts E Digspot 1", 0x39dc8f, 0x02000000, 0x00),
@@ -136,9 +125,6 @@ mainArea: typing.List[LocationData] = [
     LocationData("Beanbean Outskirts North Beach Digspot 2", 0x39dce1, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts North Beach Digspot 3", 0x39dcd9, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts South Beach Digspot", 0x39dcee, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Surf Beach Digspot 1", 0x39dcfb, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Surf Beach Digspot 2", 0x39dd0b, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Surf Beach Digspot 3", 0x39dd13, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity West of Star Room Digspot 1", 0x39e17f, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity West of Star Room Digspot 2", 0x39e187, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity West of Star Room 2 Digspot", 0x39e1d6, 0x02000000, 0x00),
@@ -169,20 +155,53 @@ mainArea: typing.List[LocationData] = [
     LocationData("Beanbean Outskirts Bean Fruit 7", 0x1e9431, 0x02000000, 0x00),
     LocationData("Hoohoo Village Mole Behind Turtle", 0x277ab2, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts NE Solo Mario Mole 2", 0x1e9436, 0x02000000, 0x00),
-    LocationData("Badge Shop Starting Flag 1", 0x3c0618, 0x02000000, 0x00),
-    LocationData("Badge Shop Starting Flag 2", 0x3c061a, 0x02000000, 0x00),
-    LocationData("Harhall's Pants", 0x1e9444, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Boo Statue Mole", 0x1e9434, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts Thunder Hand Mole", 0x2779c8, 0x02000000, 0x00),
-    LocationData("Pants Shop Starting Flag 1", 0x3c061c, 0x02000000, 0x00),
-    LocationData("Pants Shop Starting Flag 2", 0x3c061e, 0x02000000, 0x00),
-    LocationData("Pants Shop Starting Flag 3", 0x3c0620, 0x02000000, 0x00),
-    LocationData("Beanstar Piece Harhall", 0x1e9441, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Peasley's Rose", 0x1e9430, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts Super Hammer Upgrade", 0x1e9404, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts Ultra Hammer Upgrade", 0x1e9405, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts NE Solo Mario Mole 1", 0x1e9435, 0x02000000, 0x00),
     LocationData("Hoohoo Village Hammers", 0x1e9403, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Solo Luigi Cave Mole", 0x242888, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Farm Room Mole Reward 1", 0x243844, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Farm Room Mole Reward 2", 0x24387d, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts South of Hooniversity Guards Digspot 1", 0x39e990, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts South of Hooniversity Guards Digspot 2", 0x39e998, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts South of Hooniversity Guards Digspot 3", 0x39e9a0, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Entrance to Hoohoo Mountain Base Digspot 1", 0x39eb5a, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Entrance to Hoohoo Mountain Base Digspot 2", 0x39eb62, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Pipe 2 Room Digspot", 0x39ec40, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Pipe 4 Room Digspot", 0x39ec4d, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Mini Mario Block 1", 0x39d813, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Mini Mario Block 2", 0x39d81b, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Mini Mario Block 3", 0x39d823, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Mini Mario Block 4", 0x39d82b, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Mini Mario Block 5", 0x39d833, 0x02000000, 0x00)
+]
+
+baseUltraRocks: typing.List[LocationData] = [
+    LocationData("Hoohoo Mountain Base Past Ultra Hammer Rocks Block 1", 0x39da42, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Past Ultra Hammer Rocks Block 2", 0x39da4a, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Past Ultra Hammer Rocks Block 3", 0x39da52, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Boostatue Room Digspot 3", 0x39d9e9, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Mole Near Teehee Valley", 0x277a45, 0x02000000, 0x00),
+    LocationData("Teehee Valley Entrance To Hoohoo Mountain Digspot", 0x39e5b5, 0x02000000, 0x00),
+    LocationData("Teehee Valley Solo Luigi Maze Room 2 Digspot 1", 0x39e5c8, 0x02000000, 0x00),
+    LocationData("Teehee Valley Solo Luigi Maze Room 2 Digspot 2", 0x39e5d0, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Guffawha Ruins Entrance Digspot", 0x39da0b, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Teehee Valley Entrance Digspot", 0x39da20, 0x02000000, 0x00),
+    LocationData("Hoohoo Mountain Base Teehee Valley Entrance Block", 0x39da18, 0x02000000, 0x00)
+]
+
+booStatue: typing.List[LocationData] = [
+    LocationData("Beanbean Outskirts Before Harhall Digspot 1", 0x39e951, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Before Harhall Digspot 2", 0x39e959, 0x02000000, 0x00),
+    LocationData("Beanstar Piece Harhall", 0x1e9441, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Boo Statue Mole", 0x1e9434, 0x02000000, 0x00),
+    LocationData("Harhall's Pants", 0x1e9444, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts S Room 2 Digspot 1", 0x39dc65, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts S Room 2 Digspot 2", 0x39dc5d, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts S Room 2 Block 2", 0x39dc45, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts S Room 2 Digspot 3", 0x39dc35, 0x02000000, 0x00)
 ]
 
 chucklehuck: typing.List[LocationData] = [
@@ -205,8 +224,8 @@ chucklehuck: typing.List[LocationData] = [
     LocationData("Chucklehuck Woods Room 4 Block 1", 0x39de06, 0x02000000, 0x00),
     LocationData("Chucklehuck Woods Room 4 Block 2", 0x39de0e, 0x02000000, 0x00),
     LocationData("Chucklehuck Woods Room 4 Block 3", 0x39de16, 0x02000000, 0x00),
-    LocationData("Chucklehuck Woods Room 7 Block Block 1", 0x39de29, 0x02000000, 0x00),
-    LocationData("Chucklehuck Woods Room 7 Block Block 2", 0x39de39, 0x02000000, 0x00),
+    LocationData("Chucklehuck Woods Room 7 Block 1", 0x39de29, 0x02000000, 0x00),
+    LocationData("Chucklehuck Woods Room 7 Block 2", 0x39de39, 0x02000000, 0x00),
     LocationData("Chucklehuck Woods Room 7 Digspot 1", 0x39de41, 0x02000000, 0x00),
     LocationData("Chucklehuck Woods Room 7 Digspot 2", 0x39de49, 0x02000000, 0x00),
     LocationData("Chucklehuck Woods Room 8 Digspot", 0x39de56, 0x02000000, 0x00),
@@ -238,7 +257,7 @@ chucklehuck: typing.List[LocationData] = [
     LocationData("Beanbean Outskirts Chateau Entrance Digspot 2", 0x39e983, 0x02000000, 0x00),
     LocationData("Chateau Green Goblet", 0x24e628, 0x02000000, 0x00),
     LocationData("Chateau Red Goblet", 0x1e943e, 0x02000000, 0x00),
-        LocationData("Chucklehuck Woods Red Chuckola Fruit", 0x250621, 0x02000000, 0x00),
+    LocationData("Chucklehuck Woods Red Chuckola Fruit", 0x250621, 0x02000000, 0x00),
     LocationData("Chucklehuck Woods White Chuckola Fruit", 0x24ff18, 0x02000000, 0x00),
     LocationData("Chucklehuck Woods Purple Chuckola Fruit", 0x24ed74, 0x02000000, 0x00)
 ]
@@ -252,11 +271,6 @@ castleTown: typing.List[LocationData] = [
     LocationData("Beanbean Castle Town Right Side House Block 2", 0x39d7e0, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Right Side House Block 3", 0x39d7e8, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Right Side House Block 4", 0x39d7f0, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Mini Mario Block 1", 0x39d813, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Mini Mario Block 2", 0x39d81b, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Mini Mario Block 3", 0x39d823, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Mini Mario Block 4", 0x39d82b, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Mini Mario Block 5", 0x39d833, 0x02000000, 0x00),
     LocationData("Beanbean Castle Peach's Extra Dress", 0x1e9433, 0x02000000, 0x00),
     LocationData("Beanbean Castle Fake Beastar", 0x1e9432, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanlet 1", 0x251347, 0x02000000, 0x00),
@@ -289,11 +303,18 @@ castleTown: typing.List[LocationData] = [
     LocationData("Coffee Shop Chuckoccino", 0x252dac, 0x02000000, 0x00),
     LocationData("Coffee Shop Teeheespresso", 0x252dcd, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanstone Reward", 0x251071, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanlet Reward", 0x2515eb, 0x02000000, 0x00)
 ]
 
-starting_flag: typing.List[LocationData]
+startingFlag: typing.List[LocationData] = [
+    LocationData("Badge Shop Starting Flag 1", 0x3c0618, 0x02000000, 0x00),
+    LocationData("Badge Shop Starting Flag 2", 0x3c061a, 0x02000000, 0x00),
+    LocationData("Pants Shop Starting Flag 1", 0x3c061c, 0x02000000, 0x00),
+    LocationData("Pants Shop Starting Flag 2", 0x3c061e, 0x02000000, 0x00),
+    LocationData("Pants Shop Starting Flag 3", 0x3c0620, 0x02000000, 0x00)
+]
 
-chuckolator_flag: typing.List[Locationdata] = [
+chuckolatorFlag: typing.List[Locationdata] = [
     LocationData("Shop Chuckolator Flag", 0x3c05f8, 0x02000000, 0x00),
     LocationData("Pants Shop Chuckolator Flag 1", 0x3c062a, 0x02000000, 0x00),
     LocationData("Pants Shop Chuckolator Flag 2", 0x3c062c, 0x02000000, 0x00),
@@ -303,7 +324,7 @@ chuckolator_flag: typing.List[Locationdata] = [
     LocationData("Badge Shop Chuckolator Flag 3", 0x3c0628, 0x02000000, 0x00)
 ]
 
-piranha_flag: typing.List[Locationdata] = [
+piranhaFlag: typing.List[Locationdata] = [
     LocationData("Shop Mom Piranha Flag 1", 0x3c05fc, 0x02000000, 0x00),
     LocationData("Shop Mom Piranha Flag 2", 0x3c05fe, 0x02000000, 0x00),
     LocationData("Shop Mom Piranha Flag 3", 0x3c0600, 0x02000000, 0x00),
@@ -313,10 +334,10 @@ piranha_flag: typing.List[Locationdata] = [
     LocationData("Pants Shop Mom Piranha Flag 3", 0x3c063c, 0x02000000, 0x00),
     LocationData("Badge Shop Mom Piranha Flag 1", 0x3c0632, 0x02000000, 0x00),
     LocationData("Badge Shop Mom Piranha Flag 2", 0x3c0634, 0x02000000, 0x00),
-    LocationData("Badge Shop Mom Piranha Flag 3", 0x3c0636, 0x02000000, 0x00),
+    LocationData("Badge Shop Mom Piranha Flag 3", 0x3c0636, 0x02000000, 0x00)
 ]
 
-kidnapped_flag: typing.List[Locationdata] = [
+kidnappedFlag: typing.List[Locationdata] = [
     LocationData("Badge Shop Peach Kidnapped Flag 1", 0x3c0640, 0x02000000, 0x00),
     LocationData("Badge Shop Peach Kidnapped Flag 2", 0x3c0642, 0x02000000, 0x00),
     LocationData("Badge Shop Peach Kidnapped Flag 3", 0x3c0644, 0x02000000, 0x00),
@@ -327,7 +348,7 @@ kidnapped_flag: typing.List[Locationdata] = [
     LocationData("Shop Peach Kidnapped Flag 2", 0x3c0608, 0x02000000, 0x00)
 ]
 
-beanstar_flag: typing.List[Locationdata] = [
+beanstarFlag: typing.List[Locationdata] = [
     LocationData("Badge Shop Beanstar Complete Flag 1", 0x3c064e, 0x02000000, 0x00),
     LocationData("Badge Shop Beanstar Complete Flag 2", 0x3c0650, 0x02000000, 0x00),
     LocationData("Badge Shop Beanstar Complete Flag 3", 0x3c0652, 0x02000000, 0x00),
@@ -339,7 +360,7 @@ beanstar_flag: typing.List[Locationdata] = [
     LocationData("Shop Beanstar Complete Flag 3", 0x3c0610, 0x02000000, 0x00)
 ]
 
-birdo_flag: typing.List[Locationdata] = [
+birdoFlag: typing.List[Locationdata] = [
     LocationData("Badge Shop Birdo Flag 1", 0x3c065c, 0x02000000, 0x00),
     LocationData("Badge Shop Birdo Flag 2", 0x3c065e, 0x02000000, 0x00),
     LocationData("Badge Shop Birdo Flag 3", 0x3c0660, 0x02000000, 0x00), 
@@ -357,15 +378,15 @@ winkle: typing.List[LocationData] = [
     LocationData("Winkle Area Outside Colloseum Block", 0x39df3b, 0x02000000, 0x00),
     LocationData("Winkle Area Colloseum Digspot", 0x39e8a3, 0x02000000, 0x00),
     LocationData("Beanstar Piece Winkle Area", 0x1e9440, 0x02000000, 0x00),
-        LocationData("Winkle Area Winkle Card", 0x261658, 0x02000000, 0x00)
+    LocationData("Winkle Area Winkle Card", 0x261658, 0x02000000, 0x00)
 ]
 
 sewers: typing.List[LocationData] = [
     LocationData("Sewers Room 3 Block 1", 0x39dfe6, 0x02000000, 0x00),
     LocationData("Sewers Room 3 Block 2", 0x39dfee, 0x02000000, 0x00),
     LocationData("Sewers Room 3 Block 3", 0x39dff6, 0x02000000, 0x00),
-    LocationData("Sewers Room 3 Block 1", 0x39e006, 0x02000000, 0x00),
-    LocationData("Sewers Room 3 Block 2", 0x39e00e, 0x02000000, 0x00),
+    LocationData("Sewers Room 5 Block 1", 0x39e006, 0x02000000, 0x00),
+    LocationData("Sewers Room 5 Block 2", 0x39e00e, 0x02000000, 0x00),
     LocationData("Sewers Prison Room Block 1", 0x39e026, 0x02000000, 0x00),
     LocationData("Sewers Prison Room Block 2", 0x39e02e, 0x02000000, 0x00),
     LocationData("Sewers Prison Room Block 3", 0x39e036, 0x02000000, 0x00),
@@ -388,11 +409,12 @@ hooniversity: typing.List[LocationData] = [
     LocationData("Woohoo Hooniversity Past Cackletta Room 2 Block 1", 0x39e2bf, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity Past Cackletta Room 2 Block 2", 0x39e2c7, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity Past Cackletta Room 2 Digspot", 0x39e2cf, 0x02000000, 0x00),
-    LocationData("Woohoo Hooniversity Basement Room 1 Digspot", 0x39e4d3, 0x02000000, 0x00),
-    LocationData("Woohoo Hooniversity Basement Room 2 Digspot", 0x39e4e0, 0x02000000, 0x00),
-    LocationData("Woohoo Hooniversity Basement Room 3 Block", 0x39e4ed, 0x02000000, 0x00),
-    LocationData("Woohoo Hooniversity Basement Room 4 Block", 0x39e4fa, 0x02000000, 0x00),
-    LocationData("Woohoo Hooniversity Popple Room Digspot 1", 0x39e502, 0x02000000, 0x00),
+    LocationData("Woohoo Hooniversity Basement Room 1 Digspot", 0x39e4c6, 0x02000000, 0x00),
+    LocationData("Woohoo Hooniversity Basement Room 2 Digspot", 0x39e4d3, 0x02000000, 0x00),
+    LocationData("Woohoo Hooniversity Basement Room 3 Block", 0x39e4e0, 0x02000000, 0x00),
+    LocationData("Woohoo Hooniversity Basement Room 4 Block", 0x39e4ed, 0x02000000, 0x00),
+    LocationData("Woohoo Hooniversity Popple Room Digspot 1", 0x39e4fa, 0x02000000, 0x00),
+    LocationData("Woohoo Hooniversity Popple Room Digspot 2", 0x39e502, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity Solo Mario Barrel Area Block 1", 0x39ec05, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity Solo Mario Barrel Area Block 2", 0x39ec0d, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity Solo Mario Barrel Area Block 3", 0x39ec15, 0x02000000, 0x00)
@@ -405,6 +427,7 @@ surfable: typing.List[LocationData] = [
     LocationData("Ocean North Whirlpool Block 4", 0x39e0bd, 0x02000000, 0x00),
     LocationData("Ocean North Whirlpool Digspot 1", 0x39e0c5, 0x02000000, 0x00),
     LocationData("Ocean North Whirlpool Digspot 2", 0x39e0cd, 0x02000000, 0x00),
+    LocationData("Oho Ocean Fire Puzzle Room Digspot", 0x39e057, 0x02000000, 0x00),
     LocationData("Ocean South Whirlpool Digspot 1", 0x39e0da, 0x02000000, 0x00),
     LocationData("Ocean South Whirlpool Digspot 2", 0x39e0e2, 0x02000000, 0x00),
     LocationData("Ocean South Whirlpool Digspot 3", 0x39e0ea, 0x02000000, 0x00),
@@ -415,7 +438,10 @@ surfable: typing.List[LocationData] = [
     LocationData("Jokes End Pipe Digspot", 0x39e6c2, 0x02000000, 0x00),
     LocationData("Jokes End Staircase Digspot", 0x39e6cf, 0x02000000, 0x00),
     LocationData("Surf Minigame", 0x2753ea, 0x02000000, 0x00),
-    LocationData("North Ocean Whirlpool Mole", 0x277956, 0x02000000, 0x00)
+    LocationData("North Ocean Whirlpool Mole", 0x277956, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Surf Beach Digspot 1", 0x39dcfb, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Surf Beach Digspot 2", 0x39dd0b, 0x02000000, 0x00),
+    LocationData("Beanbean Outskirts Surf Beach Digspot 3", 0x39dd13, 0x02000000, 0x00)
 ]
 
 airport: typing.List[LocationData] = [
@@ -435,60 +461,54 @@ airport: typing.List[LocationData] = [
     LocationData("Airport Right Digspot 2", 0x39e358, 0x02000000, 0x00),
     LocationData("Airport Right Digspot 3", 0x39e360, 0x02000000, 0x00),
     LocationData("Airport Right Digspot 4", 0x39e368, 0x02000000, 0x00),
-    LocationData("Airport Right Digspot 5", 0x39e370, 0x02000000, 0x00),
+    LocationData("Airport Right Digspot 5", 0x39e370, 0x02000000, 0x00)
 ]
 
-gwarhar: typing.List[LocationData] = [
+gwarharEntrance: typing.List[LocationData] = [
     LocationData("Gwarhar Lagoon Pipe Room Digspot", 0x39e37d, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Massage Parlor Entrance Digspot", 0x39e396, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon First Underwater Area Room 1 Block", 0x39e438, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon First Underwater Area Room 2 Block 1", 0x39e445, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon First Underwater Area Room 2 Block 2", 0x39e44d, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Red Pearl Bean", 0x235c1c, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Green Pearl Bean", 0x235a5b, 0x02000000, 0x00)
+]
+
+gwarharMain: typing.List[LocationData] = [
     LocationData("Gwarhar Lagoon Past Hermie Digspot", 0x39e3a6, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon East of Stone Bridge Block", 0x39e403, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon North of Spangle Room Digspot", 0x39e40b, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon West of Spangle Room Digspot", 0x39e41b, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Second Underwater Area Room 4 Digspot", 0x39e462, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Second Underwater Area Room 2 Digspot 1", 0x39e46f, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Second Underwater Area Room 2 Digspot 2", 0x39e477, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Second Underwater Area Room 3 Block 1", 0x39e484, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Second Underwater Area Room 3 Block 2", 0x39e48c, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Second Underwater Area Room 3 Block 3", 0x39e494, 0x02000000, 0x00),
+    LocationData("Gwarhar Lagoon Second Underwater Area Room 1 Block", 0x39e4a1, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Entrance to West Underwater Area Digspot", 0x39e3bc, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Fire Dash Puzzle Room 1 Digspot 1", 0x39e3c9, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Fire Dash Puzzle Room 1 Digspot 2", 0x39e3d1, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Fire Dash Puzzle Room 2 Digspot", 0x39e3de, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Fire Dash Puzzle Room 3 Digspot 1", 0x39e3eb, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Fire Dash Puzzle Room 3 Digspot 2", 0x39e3f3, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon East of Stone Bridge Block", 0x39e403, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon North of Spangle Room Digspot", 0x39e40b, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon West of Spangle Room Digspot", 0x39e41b, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Spangle Room Block", 0x39e428, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon First Underwater Area Room 1 Block", 0x39e438, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon First Underwater Area Room 2 Digspot 1", 0x39e445, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon First Underwater Area Room 2 Digspot 2", 0x39e44d, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon First Underwater Area Room 2 Digspot 3", 0x39e462, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Second Underwater Area Room 4 Digspot", 0x39e46f, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Second Underwater Area Room 2 Digspot 1", 0x39e477, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Second Underwater Area Room 2 Digspot 2", 0x39e484, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Second Underwater Area Room 3 Block 1", 0x39e48c, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Second Underwater Area Room 3 Block 2", 0x39e494, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Second Underwater Area Room 3 Block 3", 0x39e4a1, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Second Underwater Area Room 1 Digspot", 0x39e4c6, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Spangle Reward", 0x236e73, 0x02000000, 0x00),
     LocationData("Beanstar Piece Hermie", 0x1e9443, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Red Pearl Bean", 0x235c1c, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Green Pearl Bean", 0x235a5b, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Spangle", 0x1e9437, 0x02000000, 0x00)
 ]
 
 teeheeValley: typing.List[LocationData] = [
-    LocationData("Teehee Valley Popple Room Digspot 2", 0x39e51e, 0x02000000, 0x00),
-    LocationData("Teehee Valley Room 1 Digspot 1", 0x39e526, 0x02000000, 0x00),
-    LocationData("Teehee Valley Room 1 Digspot 2", 0x39e52e, 0x02000000, 0x00),
-    LocationData("Teehee Valley Room 1 Digspot 3", 0x39e53b, 0x02000000, 0x00),
-    LocationData("Teehee Valley East Room Digspot 1", 0x39e543, 0x02000000, 0x00),
-    LocationData("Teehee Valley East Room Digspot 2", 0x39e54b, 0x02000000, 0x00),
-    LocationData("Teehee Valley East Room Digspot 3", 0x39e55b, 0x02000000, 0x00),
-    LocationData("Teehee Valley Solo Mario Room Digspot 1", 0x39e563, 0x02000000, 0x00),
-    LocationData("Teehee Valley Solo Mario Room Digspot 2", 0x39e56b, 0x02000000, 0x00),
-    LocationData("Teehee Valley Solo Mario Room Digspot 3", 0x39e573, 0x02000000, 0x00),
-    LocationData("Teehee Valley Solo Mario Room Digspot 4", 0x39e580, 0x02000000, 0x00),
-    LocationData("Teehee Valley Past Ultra Hammers Block 1", 0x39e590, 0x02000000, 0x00),
-    LocationData("Teehee Valley Past Ultra Hammers Block 2", 0x39e598, 0x02000000, 0x00),
-    LocationData("Teehee Valley Past Ultra Hammers Digspot 1", 0x39e5a0, 0x02000000, 0x00),
-    LocationData("Teehee Valley Past Ultra Hammers Digspot 2", 0x39e5a8, 0x02000000, 0x00),
-    LocationData("Teehee Valley Entrance To Hoohoo Mountain Digspot", 0x39e5b5, 0x02000000, 0x00),
-    LocationData("Teehee Valley Solo Luigi Maze Room 2 Digspot 1", 0x39e5c8, 0x02000000, 0x00),
-    LocationData("Teehee Valley Solo Luigi Maze Room 2 Digspot 2", 0x39e5d0, 0x02000000, 0x00),
+    LocationData("Teehee Valley Room 1 Digspot 1", 0x39e51e, 0x02000000, 0x00),
+    LocationData("Teehee Valley Room 1 Digspot 2", 0x39e526, 0x02000000, 0x00),
+    LocationData("Teehee Valley Room 1 Digspot 3", 0x39e52e, 0x02000000, 0x00),
+    LocationData("Teehee Valley Room 2 Digspot 1", 0x39e53b, 0x02000000, 0x00),
+    LocationData("Teehee Valley Room 2 Digspot 2", 0x39e543, 0x02000000, 0x00),
+    LocationData("Teehee Valley Room 2 Digspot 3", 0x39e54b, 0x02000000, 0x00),
+    LocationData("Teehee Valley Past Ultra Hammers Block 1", 0x39e580, 0x02000000, 0x00),
+    LocationData("Teehee Valley Past Ultra Hammers Block 2", 0x39e590, 0x02000000, 0x00),
+    LocationData("Teehee Valley Past Ultra Hammers Digspot 1", 0x39e598, 0x02000000, 0x00),
+    LocationData("Teehee Valley Past Ultra Hammers Digspot 3", 0x39e5a8, 0x02000000, 0x00),
     LocationData("Teehee Valley Solo Luigi Maze Room 1 Block", 0x39e5e0, 0x02000000, 0x00),
     LocationData("Teehee Valley Before Trunkle Digspot", 0x39e5f0, 0x02000000, 0x00),
     LocationData("S.S Chuckola Storage Room Block 1", 0x39e610, 0x02000000, 0x00),
@@ -503,10 +523,6 @@ fungitown: typing.List[LocationData] = [
     LocationData("Fungitown Badge Shop Starting Flag 1", 0x3c0684, 0x02000000, 0x00),
     LocationData("Fungitown Badge Shop Starting Flag 2", 0x3c0686, 0x02000000, 0x00),
     LocationData("Fungitown Badge Shop Starting Flag 3", 0x3c0688, 0x02000000, 0x00),
-    LocationData("Fungitown Badge Shop Beanstar Complete Flag 1", 0x3c0692, 0x02000000, 0x00),
-    LocationData("Fungitown Badge Shop Beanstar Complete Flag 2", 0x3c0694, 0x02000000, 0x00),
-    LocationData("Fungitown Badge Shop Birdo Flag 1", 0x3c069c, 0x02000000, 0x00),
-    LocationData("Fungitown Badge Shop Birdo Flag 2", 0x3c069e, 0x02000000, 0x00),
     LocationData("Fungitown Shop Starting Flag 1", 0x3c066a, 0x02000000, 0x00),
     LocationData("Fungitown Shop Starting Flag 2", 0x3c066c, 0x02000000, 0x00),
     LocationData("Fungitown Shop Starting Flag 3", 0x3c066e, 0x02000000, 0x00),
@@ -515,15 +531,25 @@ fungitown: typing.List[LocationData] = [
     LocationData("Fungitown Shop Starting Flag 6", 0x3c0674, 0x02000000, 0x00),
     LocationData("Fungitown Shop Starting Flag 7", 0x3c0676, 0x02000000, 0x00),
     LocationData("Fungitown Shop Starting Flag 8", 0x3c0678, 0x02000000, 0x00),
-    LocationData("Fungitown Shop Beanstar Complete Flag", 0x3c067c, 0x02000000, 0x00),
     LocationData("Fungitown Pants Shop Starting Flag 1", 0x3c068a, 0x02000000, 0x00),
     LocationData("Fungitown Pants Shop Starting Flag 2", 0x3c068c, 0x02000000, 0x00),
-    LocationData("Fungitown Pants Shop Starting Flag 3", 0x3c068e, 0x02000000, 0x00),
+    LocationData("Fungitown Pants Shop Starting Flag 3", 0x3c068e, 0x02000000, 0x00)
+]
+
+fungitownBeanstar: typing.List[LocationData] = [
+    LocationData("Fungitown Badge Shop Beanstar Complete Flag 1", 0x3c0692, 0x02000000, 0x00),
+    LocationData("Fungitown Badge Shop Beanstar Complete Flag 2", 0x3c0694, 0x02000000, 0x00),
     LocationData("Fungitown Pants Shop Beanstar Complete Flag 1", 0x3c0696, 0x02000000, 0x00),
     LocationData("Fungitown Pants Shop Beanstar Complete Flag 2", 0x3c0698, 0x02000000, 0x00),
+    LocationData("Fungitown Shop Beanstar Complete Flag", 0x3c067c, 0x02000000, 0x00)
+]
+
+fungitownBirdo: typing.List[LocationData] = [
+    LocationData("Fungitown Shop Birdo Flag", 0x3c0680, 0x02000000, 0x00),
     LocationData("Fungitown Pants Shop Birdo Flag 1", 0x3c06a0, 0x02000000, 0x00),
     LocationData("Fungitown Pants Shop Birdo Flag 2", 0x3c06a2, 0x02000000, 0x00),
-    LocationData("Fungitown Shop Birdo Flag", 0x3c0680, 0x02000000, 0x00),
+    LocationData("Fungitown Badge Shop Birdo Flag 1", 0x3c069c, 0x02000000, 0x00),
+    LocationData("Fungitown Badge Shop Birdo Flag 2", 0x3c069e, 0x02000000, 0x00)
 ]
 
 bowsers: typing.List[LocationData] = [
@@ -534,19 +560,18 @@ bowsers: typing.List[LocationData] = [
     LocationData("Bowsers Castle Iggy & Morton Hallway Block 2", 0x39e9f7, 0x02000000, 0x00),
     LocationData("Bowsers Castle Iggy & Morton Hallway Digspot", 0x39e9ff, 0x02000000, 0x00),
     LocationData("Bowsers Castle After Morton Block", 0x39ea0c, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Ludwig & Roy Hallway Block 1", 0x39ea1c, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Ludwig & Roy Hallway Block 2", 0x39ea24, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Roy Corridor Block 1", 0x39ea31, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Roy Corridor Block 2", 0x39ea39, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Wendy & Larry Hallway Digspot", 0x39ea46, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Before Fawful Fight Block 1", 0x39ea56, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Before Fawful Fight Block 2", 0x39ea5e, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Great Door Block 1", 0x39ea6b, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Great Door Block 2", 0x39ea73, 0x02000000, 0x00),
     LocationData("Bowsers Castle Morton Room 1 Digspot", 0x39ea89, 0x02000000, 0x00),
     LocationData("Bowsers Castle Lemmy Room 1 Block", 0x39ea9c, 0x02000000, 0x00),
     LocationData("Bowsers Castle Lemmy Room 1 Digspot", 0x39eaa4, 0x02000000, 0x00),
     LocationData("Bowsers Castle Ludwig Room 1 Block", 0x39eaba, 0x02000000, 0x00),
+    LocationData("Bowsers Castle Lemmy Room Mole", 0x277b1f, 0x02000000, 0x00)
+]
+
+bowsersMini: typing.List[LocationData] = [
+    LocationData("Bowsers Castle Ludwig & Roy Hallway Block 1", 0x39ea1c, 0x02000000, 0x00),
+    LocationData("Bowsers Castle Ludwig & Roy Hallway Block 2", 0x39ea24, 0x02000000, 0x00),
+    LocationData("Bowsers Castle Roy Corridor Block 1", 0x39ea31, 0x02000000, 0x00),
+    LocationData("Bowsers Castle Roy Corridor Block 2", 0x39ea39, 0x02000000, 0x00),
     LocationData("Bowsers Castle Mini Mario Sidescroller Block 1", 0x39ead6, 0x02000000, 0x00),
     LocationData("Bowsers Castle Mini Mario Sidescroller Block 2", 0x39eade, 0x02000000, 0x00),
     LocationData("Bowsers Castle Mini Mario Maze Block 1", 0x39eaeb, 0x02000000, 0x00),
@@ -554,10 +579,14 @@ bowsers: typing.List[LocationData] = [
     LocationData("Bowsers Castle Before Wendy Fight Block 1", 0x39eb12, 0x02000000, 0x00),
     LocationData("Bowsers Castle Before Wendy Fight Block 2", 0x39eb1a, 0x02000000, 0x00),
     LocationData("Bowsers Castle Larry Room Block", 0x39ebb6, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Lemmy Room Mole", 0x277b1f, 0x02000000, 0x00)
+    LocationData("Bowsers Castle Wendy & Larry Hallway Digspot", 0x39ea46, 0x02000000, 0x00),
+    LocationData("Bowsers Castle Before Fawful Fight Block 1", 0x39ea56, 0x02000000, 0x00),
+    LocationData("Bowsers Castle Before Fawful Fight Block 2", 0x39ea5e, 0x02000000, 0x00),
+    LocationData("Bowsers Castle Great Door Block 1", 0x39ea6b, 0x02000000, 0x00),
+    LocationData("Bowsers Castle Great Door Block 2", 0x39ea73, 0x02000000, 0x00)
 ]
 
-jokes_entrance: typing.List[LocationData] = [
+jokesEntrance: typing.List[LocationData] = [
     LocationData("Jokes End West of First Boiler Room Block 1", 0x39e6e5, 0x02000000, 0x00),
     LocationData("Jokes End West of First Boiler Room Block 2", 0x39e6ed, 0x02000000, 0x00),
     LocationData("Jokes End First Boiler Room Digspot 1", 0x39e6fa, 0x02000000, 0x00),
@@ -570,7 +599,7 @@ jokes_entrance: typing.List[LocationData] = [
     LocationData("Jokes End Mole Reward 2", 0x2778d2, 0x02000000, 0x00)
 ]
 
-jokes_main: typing.List[LocationData] = [
+jokesMain: typing.List[LocationData] = [
     LocationData("Jokes End Furnace Room 1 Block 1", 0x39e70f, 0x02000000, 0x00),
     LocationData("Jokes End Furnace Room 1 Block 2", 0x39e717, 0x02000000, 0x00),
     LocationData("Jokes End Furnace Room 1 Block 3", 0x39e71f, 0x02000000, 0x00),
@@ -601,6 +630,14 @@ jokes_main: typing.List[LocationData] = [
     LocationData("Jokes End Jojora Room Digspot", 0x39e944, 0x02000000, 0x00)
 ]
 
+postJokes: typing.List[LocationData] = [
+    LocationData("Teehee Valley Past Ultra Hammers Digspot 1", 0x39e5a0, 0x02000000, 0x00),
+    LocationData("Teehee Valley Before Popple Digspot 1", 0x39e55b, 0x02000000, 0x00),
+    LocationData("Teehee Valley Before Popple Digspot 2", 0x39e563, 0x02000000, 0x00),
+    LocationData("Teehee Valley Before Popple Digspot 3", 0x39e56b, 0x02000000, 0x00),
+    LocationData("Teehee Valley Before Popple Digspot 4", 0x39e573, 0x02000000, 0x00)
+]
+
 theater: typing.List[LocationData] = [
     LocationData("Yoshi Theater Blue Yoshi", 0x241155, 0x02000000, 0x00),
     LocationData("Yoshi Theater Red Yoshi", 0x240ebe, 0x02000000, 0x00),
@@ -612,28 +649,16 @@ theater: typing.List[LocationData] = [
     LocationData("Beanstar Piece Yoshi Theater", 0x1e9442, 0x02000000, 0x00)
 ]
     
-locations: typing.List[LocationData] = [
+oasis: typing.List[LocationData] = [
     LocationData("Oho Oasis West Digspot", 0x39df9f, 0x02000000, 0x00),
     LocationData("Oho Oasis Fire Palace Block", 0x39dfbe, 0x02000000, 0x00),
-    LocationData("Oho Ocean Fire Puzzle Room Digspot", 0x39e057, 0x02000000, 0x00),
     LocationData("Oho Ocean South Room 1 Block", 0x39e06a, 0x02000000, 0x00),
     LocationData("Oho Ocean South Room 2 Digspot", 0x39e077, 0x02000000, 0x00),
     LocationData("Oho Ocean Spike Room Digspot 1", 0x39e08a, 0x02000000, 0x00),
     LocationData("Oho Ocean Spike Room Digspot 2", 0x39e092, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Before Harhall Digspot 1", 0x39e951, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Before Harhall Digspot 2", 0x39e959, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts South of Hooniversity Guards Digspot 1", 0x39e990, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts South of Hooniversity Guards Digspot 2", 0x39e998, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts South of Hooniversity Guards Digspot 3", 0x39e9a0, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Entrance to Hoohoo Mountain Base Digspot 1", 0x39eb5a, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Entrance to Hoohoo Mountain Base Digspot 2", 0x39eb62, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Pipe 2 Room Digspot", 0x39ec40, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Pipe 4 Room Digspot", 0x39ec4d, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanlet Reward", 0x2515eb, 0x02000000, 0x00),
-    LocationData("Hoohoo Mountain Base Mole Near Teehee Valley", 0x277a45, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Solo Luigi Cave Mole", 0x242888, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Farm Room Mole Reward 1", 0x243844, 0x02000000, 0x00),
-    LocationData("Beanbean Outskirts Farm Room Mole Reward 2", 0x24387d, 0x02000000, 0x00),
     LocationData("Oho Oasis Firebrand", 0x1e9408, 0x02000000, 0x00),
-    LocationData("Oho Oasis Thunderhand", 0x1e9409, 0x02000000, 0x00),
+    LocationData("Oho Oasis Thunderhand", 0x1e9409, 0x02000000, 0x00)
 ]
+
+all_locations: typing.List[LocationData] = mainArea + booStatue + chucklehuck + castleTown + startingFlag + chuckolatorFlag + piranhaFlag + kidnappedFlag + beanstarFlag + birdoFlag + winkle + sewers + hooniversity \
+                                            + surfable + airport + gwarhar + teeheeValley + fungitown + fungitownBeanstar + fungitownBirdo + bowsers + jokesEntrance + jokesMain + postJokes + theater + oasis

@@ -104,7 +104,7 @@ itemList: typing.List[ItemData] = [
     ItemData(0x5A, "Mari-Lui Badge", ItemClassification.useful, 0xA8),
     ItemData(0x5B, "Muscle Badge", ItemClassification.useful, 0xA9),
     ItemData(0x5C, "Spiny Badge AA", ItemClassification.useful, 0xAA),
-    ItemData(0x5D, "Msuh Badge A", ItemClassification.useful, 0xAB),
+    ItemData(0x5D, "Mush Badge A", ItemClassification.useful, 0xAB),
     ItemData(0x5E, "Grab Badge", ItemClassification.useful, 0xAC),
     ItemData(0x5F, "Mush Badge AA", ItemClassification.useful, 0xAD),
     ItemData(0x60, "Power Badge", ItemClassification.useful, 0xAE),
