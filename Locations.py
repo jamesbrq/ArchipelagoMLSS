@@ -1,7 +1,6 @@
 import typing
 
 from BaseClasses import Location
-from .Names.LocationName import LocationName
 
 
 class LocationData:
@@ -11,16 +10,17 @@ class LocationData:
     flag_byte: int = 0x2000030
     flag_mask: int = 0x01
 
-    def __init__(self, name, id, flag, mask):
+    def __init__(self, name, id_, flag, mask):
         self.name = name
-        self.id = id
+        self.id = id_
         self.flag_byte = flag
         self.flag_mask = mask
 
 
 class MLSSLocation(Location):
-    game: str = "Mario & Luigi: Superstar Saga"
-    
+    game: str = "Mario & Luigi Superstar Saga"
+
+
 mainArea: typing.List[LocationData] = [
     LocationData("Stardust Fields 1 Block 1", 0x39d65d, 0x02000000, 0x00),
     LocationData("Stardust Fields 1 Block 2", 0x39d665, 0x02000000, 0x00),
@@ -314,7 +314,7 @@ startingFlag: typing.List[LocationData] = [
     LocationData("Pants Shop Starting Flag 3", 0x3c0620, 0x02000000, 0x00)
 ]
 
-chuckolatorFlag: typing.List[Locationdata] = [
+chuckolatorFlag: typing.List[LocationData] = [
     LocationData("Shop Chuckolator Flag", 0x3c05f8, 0x02000000, 0x00),
     LocationData("Pants Shop Chuckolator Flag 1", 0x3c062a, 0x02000000, 0x00),
     LocationData("Pants Shop Chuckolator Flag 2", 0x3c062c, 0x02000000, 0x00),
@@ -324,7 +324,7 @@ chuckolatorFlag: typing.List[Locationdata] = [
     LocationData("Badge Shop Chuckolator Flag 3", 0x3c0628, 0x02000000, 0x00)
 ]
 
-piranhaFlag: typing.List[Locationdata] = [
+piranhaFlag: typing.List[LocationData] = [
     LocationData("Shop Mom Piranha Flag 1", 0x3c05fc, 0x02000000, 0x00),
     LocationData("Shop Mom Piranha Flag 2", 0x3c05fe, 0x02000000, 0x00),
     LocationData("Shop Mom Piranha Flag 3", 0x3c0600, 0x02000000, 0x00),
@@ -337,7 +337,7 @@ piranhaFlag: typing.List[Locationdata] = [
     LocationData("Badge Shop Mom Piranha Flag 3", 0x3c0636, 0x02000000, 0x00)
 ]
 
-kidnappedFlag: typing.List[Locationdata] = [
+kidnappedFlag: typing.List[LocationData] = [
     LocationData("Badge Shop Peach Kidnapped Flag 1", 0x3c0640, 0x02000000, 0x00),
     LocationData("Badge Shop Peach Kidnapped Flag 2", 0x3c0642, 0x02000000, 0x00),
     LocationData("Badge Shop Peach Kidnapped Flag 3", 0x3c0644, 0x02000000, 0x00),
@@ -348,7 +348,7 @@ kidnappedFlag: typing.List[Locationdata] = [
     LocationData("Shop Peach Kidnapped Flag 2", 0x3c0608, 0x02000000, 0x00)
 ]
 
-beanstarFlag: typing.List[Locationdata] = [
+beanstarFlag: typing.List[LocationData] = [
     LocationData("Badge Shop Beanstar Complete Flag 1", 0x3c064e, 0x02000000, 0x00),
     LocationData("Badge Shop Beanstar Complete Flag 2", 0x3c0650, 0x02000000, 0x00),
     LocationData("Badge Shop Beanstar Complete Flag 3", 0x3c0652, 0x02000000, 0x00),
@@ -360,7 +360,7 @@ beanstarFlag: typing.List[Locationdata] = [
     LocationData("Shop Beanstar Complete Flag 3", 0x3c0610, 0x02000000, 0x00)
 ]
 
-birdoFlag: typing.List[Locationdata] = [
+birdoFlag: typing.List[LocationData] = [
     LocationData("Badge Shop Birdo Flag 1", 0x3c065c, 0x02000000, 0x00),
     LocationData("Badge Shop Birdo Flag 2", 0x3c065e, 0x02000000, 0x00),
     LocationData("Badge Shop Birdo Flag 3", 0x3c0660, 0x02000000, 0x00), 
@@ -553,37 +553,37 @@ fungitownBirdo: typing.List[LocationData] = [
 ]
 
 bowsers: typing.List[LocationData] = [
-    LocationData("Bowsers Castle Entrance Block 1", 0x39e9d2, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Entrance Block 2", 0x39e9da, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Entrance Digspot", 0x39e9e2, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Iggy & Morton Hallway Block 1", 0x39e9ef, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Iggy & Morton Hallway Block 2", 0x39e9f7, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Iggy & Morton Hallway Digspot", 0x39e9ff, 0x02000000, 0x00),
-    LocationData("Bowsers Castle After Morton Block", 0x39ea0c, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Morton Room 1 Digspot", 0x39ea89, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Lemmy Room 1 Block", 0x39ea9c, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Lemmy Room 1 Digspot", 0x39eaa4, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Ludwig Room 1 Block", 0x39eaba, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Lemmy Room Mole", 0x277b1f, 0x02000000, 0x00)
+    LocationData("Bowser's Castle Entrance Block 1", 0x39e9d2, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Entrance Block 2", 0x39e9da, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Entrance Digspot", 0x39e9e2, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Iggy & Morton Hallway Block 1", 0x39e9ef, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Iggy & Morton Hallway Block 2", 0x39e9f7, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Iggy & Morton Hallway Digspot", 0x39e9ff, 0x02000000, 0x00),
+    LocationData("Bowser's Castle After Morton Block", 0x39ea0c, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Morton Room 1 Digspot", 0x39ea89, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Lemmy Room 1 Block", 0x39ea9c, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Lemmy Room 1 Digspot", 0x39eaa4, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Ludwig Room 1 Block", 0x39eaba, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Lemmy Room Mole", 0x277b1f, 0x02000000, 0x00)
 ]
 
 bowsersMini: typing.List[LocationData] = [
-    LocationData("Bowsers Castle Ludwig & Roy Hallway Block 1", 0x39ea1c, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Ludwig & Roy Hallway Block 2", 0x39ea24, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Roy Corridor Block 1", 0x39ea31, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Roy Corridor Block 2", 0x39ea39, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Mini Mario Sidescroller Block 1", 0x39ead6, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Mini Mario Sidescroller Block 2", 0x39eade, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Mini Mario Maze Block 1", 0x39eaeb, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Mini Mario Maze Block 2", 0x39eaf3, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Before Wendy Fight Block 1", 0x39eb12, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Before Wendy Fight Block 2", 0x39eb1a, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Larry Room Block", 0x39ebb6, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Wendy & Larry Hallway Digspot", 0x39ea46, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Before Fawful Fight Block 1", 0x39ea56, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Before Fawful Fight Block 2", 0x39ea5e, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Great Door Block 1", 0x39ea6b, 0x02000000, 0x00),
-    LocationData("Bowsers Castle Great Door Block 2", 0x39ea73, 0x02000000, 0x00)
+    LocationData("Bowser's Castle Ludwig & Roy Hallway Block 1", 0x39ea1c, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Ludwig & Roy Hallway Block 2", 0x39ea24, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Roy Corridor Block 1", 0x39ea31, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Roy Corridor Block 2", 0x39ea39, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Mini Mario Sidescroller Block 1", 0x39ead6, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Mini Mario Sidescroller Block 2", 0x39eade, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Mini Mario Maze Block 1", 0x39eaeb, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Mini Mario Maze Block 2", 0x39eaf3, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Before Wendy Fight Block 1", 0x39eb12, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Before Wendy Fight Block 2", 0x39eb1a, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Larry Room Block", 0x39ebb6, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Wendy & Larry Hallway Digspot", 0x39ea46, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Before Fawful Fight Block 1", 0x39ea56, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Before Fawful Fight Block 2", 0x39ea5e, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Great Door Block 1", 0x39ea6b, 0x02000000, 0x00),
+    LocationData("Bowser's Castle Great Door Block 2", 0x39ea73, 0x02000000, 0x00)
 ]
 
 jokesEntrance: typing.List[LocationData] = [
@@ -594,7 +594,7 @@ jokesEntrance: typing.List[LocationData] = [
     LocationData("Jokes End Second Floor West Room Block 1", 0x39e761, 0x02000000, 0x00),
     LocationData("Jokes End Second Floor West Room Block 2", 0x39e769, 0x02000000, 0x00),
     LocationData("Jokes End Second Floor West Room Block 3", 0x39e779, 0x02000000, 0x00),
-    LocationData("Jokes End Second Floor West Room Block 4", 0x39e781, 0x02000000, 0x00)
+    LocationData("Jokes End Second Floor West Room Block 4", 0x39e781, 0x02000000, 0x00),
     LocationData("Jokes End Mole Reward 1", 0x27788e, 0x02000000, 0x00),
     LocationData("Jokes End Mole Reward 2", 0x2778d2, 0x02000000, 0x00)
 ]
@@ -631,7 +631,7 @@ jokesMain: typing.List[LocationData] = [
 ]
 
 postJokes: typing.List[LocationData] = [
-    LocationData("Teehee Valley Past Ultra Hammers Digspot 1", 0x39e5a0, 0x02000000, 0x00),
+    LocationData("Teehee Valley Past Ultra Hammers Digspot 2", 0x39e5a0, 0x02000000, 0x00),
     LocationData("Teehee Valley Before Popple Digspot 1", 0x39e55b, 0x02000000, 0x00),
     LocationData("Teehee Valley Before Popple Digspot 2", 0x39e563, 0x02000000, 0x00),
     LocationData("Teehee Valley Before Popple Digspot 3", 0x39e56b, 0x02000000, 0x00),
@@ -660,5 +660,8 @@ oasis: typing.List[LocationData] = [
     LocationData("Oho Oasis Thunderhand", 0x1e9409, 0x02000000, 0x00)
 ]
 
-all_locations: typing.List[LocationData] = mainArea + booStatue + chucklehuck + castleTown + startingFlag + chuckolatorFlag + piranhaFlag + kidnappedFlag + beanstarFlag + birdoFlag + winkle + sewers + hooniversity \
-                                            + surfable + airport + gwarhar + teeheeValley + fungitown + fungitownBeanstar + fungitownBirdo + bowsers + jokesEntrance + jokesMain + postJokes + theater + oasis
+all_locations: typing.List[LocationData] = mainArea + booStatue + chucklehuck + castleTown + startingFlag + \
+                                           chuckolatorFlag + piranhaFlag + kidnappedFlag + beanstarFlag + birdoFlag + \
+                                           winkle + sewers + hooniversity + surfable + airport + gwarharEntrance + \
+                                           teeheeValley + fungitown + fungitownBeanstar + fungitownBirdo + bowsers + \
+                                           jokesEntrance + jokesMain + postJokes + theater + oasis + gwarharMain + bowsersMini + baseUltraRocks

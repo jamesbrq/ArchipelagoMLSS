@@ -2,37 +2,39 @@ import typing
 
 from BaseClasses import Item, ItemClassification
 
+
 class ItemData(typing.NamedTuple):
     code: int
     itemName: str
     progression: ItemClassification
     itemID: int
-    
+
+
 class MLSSItem(Item):
-    game: str = "Mario & Luigi: Superstar Saga"
+    game: str = "Mario & Luigi Superstar Saga"
     
     
 itemList: typing.List[ItemData] = [
-    ItemData(0x00, "Mushroom", ItemClassification.filler, 0xA),
-    ItemData(0x01, "Super Mushroom", ItemClassification.filler, 0xB),
-    ItemData(0x02, "Ultra Mushroom", ItemClassification.filler, 0xC),
-    ItemData(0x03, "Max Mushroom", ItemClassification.filler, 0xD),
-    ItemData(0x04, "Nuts", ItemClassification.filler, 0xE),
-    ItemData(0x05, "Super Nuts", ItemClassification.filler, 0xF),
-    ItemData(0x06, "Ultra Nuts", ItemClassification.useful, 0x10),
-    ItemData(0x07, "Max Nuts", ItemClassification.useful, 0x11),
-    ItemData(0x08, "Syrup", ItemClassification.filler, 0x12),
-    ItemData(0x09, "Super Syrup", ItemClassification.filler, 0x13),
-    ItemData(0x0A, "Ultra Syrup", ItemClassification.useful, 0x14),
-    ItemData(0x0B, "Max Syrup", ItemClassification.useful, 0x15),
-    ItemData(0x0C, "1-UP Mushroom", ItemClassification.useful, 0x16),
-    ItemData(0x0D, "1-UP Super", ItemClassification.useful, 0x17),
-    ItemData(0x0E, "Golden Mushroom", ItemClassification.useful, 0x18),
-    ItemData(0x0F, "Refreshing Herb", ItemClassification.filler, 0x19),
-    ItemData(0x10, "Red Pepper", ItemClassification.filler, 0x1A),
-    ItemData(0x11, "Green Pepper", ItemClassification.filler, 0x1B),
-    ItemData(0x13, "Hoo Bean", ItemClassification.useful, 0x1D),
-    ItemData(0x14, "Chuckle Bean", ItemClassification.useful, 0x1E),
+    ItemData(0x01, "Mushroom", ItemClassification.filler, 0xA),
+    ItemData(0x02, "Super Mushroom", ItemClassification.filler, 0xB),
+    ItemData(0x03, "Ultra Mushroom", ItemClassification.filler, 0xC),
+    ItemData(0x04, "Max Mushroom", ItemClassification.filler, 0xD),
+    ItemData(0x05, "Nuts", ItemClassification.filler, 0xE),
+    ItemData(0x06, "Super Nuts", ItemClassification.filler, 0xF),
+    ItemData(0x07, "Ultra Nuts", ItemClassification.useful, 0x10),
+    ItemData(0x08, "Max Nuts", ItemClassification.useful, 0x11),
+    ItemData(0x09, "Syrup", ItemClassification.filler, 0x12),
+    ItemData(0x0A, "Super Syrup", ItemClassification.filler, 0x13),
+    ItemData(0x0B, "Ultra Syrup", ItemClassification.useful, 0x14),
+    ItemData(0x0C, "Max Syrup", ItemClassification.useful, 0x15),
+    ItemData(0x0D, "1-UP Mushroom", ItemClassification.useful, 0x16),
+    ItemData(0x0E, "1-UP Super", ItemClassification.useful, 0x17),
+    ItemData(0x0F, "Golden Mushroom", ItemClassification.useful, 0x18),
+    ItemData(0x10, "Refreshing Herb", ItemClassification.filler, 0x19),
+    ItemData(0x11, "Red Pepper", ItemClassification.filler, 0x1A),
+    ItemData(0x12, "Green Pepper", ItemClassification.filler, 0x1B),
+    ItemData(0x13, "Hoo Bean", ItemClassification.filler, 0x1D),
+    ItemData(0x14, "Chuckle Bean", ItemClassification.filler, 0x1E),
     ItemData(0x16, "Woohoo blend", ItemClassification.useful, 0x20),
     ItemData(0x17, "Hoohoo Blend", ItemClassification.useful, 0x21),
     ItemData(0x18, "Chuckle Blend", ItemClassification.useful, 0x22),
@@ -158,24 +160,25 @@ itemList: typing.List[ItemData] = [
 ]
 
 item_frequencies: typing.Dict[str, int] = {
-    "Mushroom": 52,
-    "Super Mushroom": 14,
-    "Ultra Mushroom": 4,
-    "Nuts": 9,
-    "Super Nuts": 4,
-    "Ultra Nuts": 2,
+    "Mushroom": 55,
+    "Super Mushroom": 15,
+    "Ultra Mushroom": 12,
+    "Nuts": 10,
+    "Super Nuts": 5,
+    "Ultra Nuts": 5,
     "Max Nuts": 2,
     "Syrup": 28,
-    "Super Syrup": 6,
+    "Super Syrup": 10,
+    "Ultra Syrup": 10,
     "Max Syrup": 2,
-    "1-Up Mushroom": 11,
-    "1-Up Super": 2,
+    "1-Up Mushroom": 15,
+    "1-Up Super": 5,
     "Golden Mushroom": 3,
     "Refreshing Herb": 9,
     "Red Pepper": 2,
     "Green Pepper": 2,
-    "Hoo Bean": 57,
-    "Chuckle Bean": 187,
+    "Hoo Bean": 100,
+    "Chuckle Bean": 200,
     "Hammers": 3
 }
 
