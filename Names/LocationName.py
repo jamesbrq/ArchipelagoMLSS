@@ -524,3 +524,4 @@ class LocationName():
     BowsersCastleBeforeWendyFightBlock2 = "Bowser's Castle Before Wendy Fight Block 2"
     BowsersCastleLarryRoomBlock = "Bowser's Castle Larry Room Block"
     BowsersCastleLemmyRoomMole = "Bowser's Castle Lemmy Room Mole"
+    SurfMinigame = "Surf Minigame"

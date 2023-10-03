@@ -1,6 +1,6 @@
 import typing
 
-from BaseClasses import MultiWorld, Region, Entrance
+from BaseClasses import MultiWorld, Region, Entrance, LocationProgressType
 from worlds.generic.Rules import add_rule, set_rule
 from .Locations import MLSSLocation, mainArea, chucklehuck, castleTown, startingFlag, chuckolatorFlag, piranhaFlag, \
                     kidnappedFlag, beanstarFlag, birdoFlag, surfable, hooniversity, gwarharEntrance, gwarharMain, \
@@ -10,95 +10,95 @@ from . import StateLogic
 from.Names.LocationName import LocationName
 
 
-def create_regions(world: MultiWorld, player: int):
+def create_regions(world: MultiWorld, player: int, excluded: typing.List[str]):
     menu_region = Region("Menu", player, world)
     world.regions.append(menu_region)
     
-    main_region = create_region(world, player, "Main Area", mainArea)
+    main_region = create_region(world, player, "Main Area", mainArea, excluded)
     world.regions.append(main_region)
     
-    chucklehuck_region = create_region(world, player, "Chucklehuck Woods", chucklehuck)
+    chucklehuck_region = create_region(world, player, "Chucklehuck Woods", chucklehuck, excluded)
     world.regions.append(chucklehuck_region)
     
-    castleTown_region = create_region(world, player, "Beanbean Castle Town", castleTown)
+    castleTown_region = create_region(world, player, "Beanbean Castle Town", castleTown, excluded)
     world.regions.append(castleTown_region)
     
-    startingFlag_region = create_region(world, player, "Shop Starting Flag", startingFlag)
+    startingFlag_region = create_region(world, player, "Shop Starting Flag", startingFlag, excluded)
     world.regions.append(startingFlag_region)
     
-    chuckolatorFlag_region = create_region(world, player, "Shop Chuckolator Flag", chuckolatorFlag)
+    chuckolatorFlag_region = create_region(world, player, "Shop Chuckolator Flag", chuckolatorFlag, excluded)
     world.regions.append(chuckolatorFlag_region)
     
-    piranhaFlag_region = create_region(world, player, "Shop Piranha Flag", piranhaFlag)
+    piranhaFlag_region = create_region(world, player, "Shop Piranha Flag", piranhaFlag, excluded)
     world.regions.append(piranhaFlag_region)
     
-    kidnappedFlag_region = create_region(world, player, "Shop Peach Kidnapped Flag", kidnappedFlag)
+    kidnappedFlag_region = create_region(world, player, "Shop Peach Kidnapped Flag", kidnappedFlag, excluded)
     world.regions.append(kidnappedFlag_region)
     
-    beanstarFlag_region = create_region(world, player, "Shop Beanstar Complete Flag", beanstarFlag)
+    beanstarFlag_region = create_region(world, player, "Shop Beanstar Complete Flag", beanstarFlag, excluded)
     world.regions.append(beanstarFlag_region)
     
-    birdoFlag_region = create_region(world, player, "Shop Birdo Flag", birdoFlag)
+    birdoFlag_region = create_region(world, player, "Shop Birdo Flag", birdoFlag, excluded)
     world.regions.append(birdoFlag_region)
     
-    surfable_region = create_region(world, player, "Surfable", surfable)
+    surfable_region = create_region(world, player, "Surfable", surfable, excluded)
     world.regions.append(surfable_region)
     
-    hooniversity_region = create_region(world, player, "Hooniversity", hooniversity)
+    hooniversity_region = create_region(world, player, "Hooniversity", hooniversity, excluded)
     world.regions.append(hooniversity_region)
 
-    gwarharEntrance_region = create_region(world, player, "GwarharEntrance", gwarharEntrance)
+    gwarharEntrance_region = create_region(world, player, "GwarharEntrance", gwarharEntrance, excluded)
     world.regions.append(gwarharEntrance_region)
     
-    gwarharMain_region = create_region(world, player, "GwarharMain", gwarharMain)
+    gwarharMain_region = create_region(world, player, "GwarharMain", gwarharMain, excluded)
     world.regions.append(gwarharMain_region)
 
-    teehee_valley_region = create_region(world, player, "TeeheeValley", teeheeValley)
+    teehee_valley_region = create_region(world, player, "TeeheeValley", teeheeValley, excluded)
     world.regions.append(teehee_valley_region)
 
-    winkle_region = create_region(world, player, "Winkle", winkle)
+    winkle_region = create_region(world, player, "Winkle", winkle, excluded)
     world.regions.append(winkle_region)
 
-    sewers_region = create_region(world, player, "Sewers", sewers)
+    sewers_region = create_region(world, player, "Sewers", sewers, excluded)
     world.regions.append(sewers_region)
 
-    airport_region = create_region(world, player, "Airport", airport)
+    airport_region = create_region(world, player, "Airport", airport, excluded)
     world.regions.append(airport_region)
 
-    jokesEntrance_region = create_region(world, player, "JokesEntrance", jokesEntrance)
+    jokesEntrance_region = create_region(world, player, "JokesEntrance", jokesEntrance, excluded)
     world.regions.append(jokesEntrance_region)
 
-    jokesMain_region = create_region(world, player, "JokesMain", jokesMain)
+    jokesMain_region = create_region(world, player, "JokesMain", jokesMain, excluded)
     world.regions.append(jokesMain_region)
     
-    postJokes_region = create_region(world, player, "PostJokes", postJokes)
+    postJokes_region = create_region(world, player, "PostJokes", postJokes, excluded)
     world.regions.append(postJokes_region)
 
-    theater_region = create_region(world, player, "Theater", theater)
+    theater_region = create_region(world, player, "Theater", theater, excluded)
     world.regions.append(theater_region)
     
-    fungitown_region = create_region(world, player, "Fungitown", fungitown)
+    fungitown_region = create_region(world, player, "Fungitown", fungitown, excluded)
     world.regions.append(fungitown_region)
     
-    fungitownBeanstar_region = create_region(world, player, "FungitownBeanstar", fungitownBeanstar)
+    fungitownBeanstar_region = create_region(world, player, "FungitownBeanstar", fungitownBeanstar, excluded)
     world.regions.append(fungitownBeanstar_region)
     
-    fungitownBirdo_region = create_region(world, player, "FungitownBirdo", fungitownBirdo)
+    fungitownBirdo_region = create_region(world, player, "FungitownBirdo", fungitownBirdo, excluded)
     world.regions.append(fungitownBirdo_region)
     
-    booStatue_region = create_region(world, player, "BooStatue", booStatue)
+    booStatue_region = create_region(world, player, "BooStatue", booStatue, excluded)
     world.regions.append(booStatue_region)
     
-    oasis_region = create_region(world, player, "Oasis", oasis)
+    oasis_region = create_region(world, player, "Oasis", oasis, excluded)
     world.regions.append(oasis_region)
     
-    bowsers_region = create_region(world, player, "Bowser's Castle", bowsers)
+    bowsers_region = create_region(world, player, "Bowser's Castle", bowsers, excluded)
     world.regions.append(bowsers_region)
     
-    bowsersMini_region = create_region(world, player, "Bowser's Castle Mini", bowsersMini)
+    bowsersMini_region = create_region(world, player, "Bowser's Castle Mini", bowsersMini, excluded)
     world.regions.append(bowsersMini_region)
     
-    baseUltraRocks_region = create_region(world, player, "BaseUltraRocks", baseUltraRocks)
+    baseUltraRocks_region = create_region(world, player, "BaseUltraRocks", baseUltraRocks, excluded)
     world.regions.append(baseUltraRocks_region)
 
 
@@ -139,10 +139,13 @@ def connect_regions(world: MultiWorld, player: int):
     connect(world, player, names, "GwarharEntrance", "GwarharMain", lambda state: StateLogic.canDash(state, player) and StateLogic.canCrash(state, player))
 
 
-def create_region(world, player, name, locations):
+def create_region(world, player, name, locations, excluded):
     ret = Region(name, player, world)
     for location in locations:
-        ret.locations.append(MLSSLocation(player, location.name, location.id, ret))
+        loc = MLSSLocation(player, location.name, location.id, ret)
+        if location.name in excluded:
+            loc.progress_type = LocationProgressType.EXCLUDED
+        ret.locations.append(loc)
     return ret
 
 

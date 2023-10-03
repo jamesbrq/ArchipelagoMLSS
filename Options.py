@@ -43,12 +43,12 @@ class LuigiColor(Choice):
     default = 0
 
 
-MLSS_Options: typing.Dict[str, type(Option)] = {
-    "SkipInto": IntroSkip,
-    "CastleSkip": BowsersCastleSkip,
-    "CastleStart": CastleStart,
-    "SkipMinecart": SkipMinecart,
-    "DisableSurf": DisableSurf,
-    "MarioColor": MarioColor,
-    "LuigiColor": LuigiColor
+mlss_options: typing.Dict[str, type(Option)] = {
+    "skip_intro": IntroSkip,
+    "castle_skip": BowsersCastleSkip,
+    "castle_start": CastleStart,
+    "skip_minecart": SkipMinecart,
+    "disable_surf": DisableSurf,
+    "mario_color": MarioColor,
+    "luigi_color": LuigiColor
 }
