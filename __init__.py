@@ -8,7 +8,7 @@ from .Regions import create_regions, connect_regions
 from .Rules import set_rules
 from .Items import MLSSItem, itemList, item_frequencies, item_table
 from .Rom import Rom
-from.Names.LocationName import LocationName
+from .Names.LocationName import LocationName
 
 
 class MLSSWebWorld(WebWorld):
@@ -83,15 +83,12 @@ class MLSSWorld(World):
         filler_items = []
         for item in itemList:
             if item.progression == ItemClassification.filler:
-                print(item.itemName)
                 freq = item_frequencies.get(item.itemName)
                 if freq is None:
                     freq = 1
                 filler_items += [item.itemName for _ in range(freq)]
 
         remaining = len(all_locations) - len(required_items)
-        print(remaining)
-        print(len(filler_items))
         for i in range(remaining):
             filler_item_name = self.multiworld.random.choice(filler_items)
             item = self.create_item(filler_item_name)

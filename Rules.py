@@ -22,6 +22,7 @@ def set_rules(world: MultiWorld, player: int):
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomDigspot3, player), lambda state: StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomMoleReward1, player), lambda state: StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomMoleReward2, player), lambda state: StateLogic.thunder(state, player))
+    add_rule(world.get_location(LocationName.BeanbeanOutskirtsThunderHandMole, player), lambda state: StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsNWBlock, player), lambda state: StateLogic.super(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsBeanFruit1, player), lambda state: StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsBeanFruit2, player), lambda state: StateLogic.canDig(state, player))
