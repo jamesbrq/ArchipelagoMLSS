@@ -9,6 +9,7 @@ from .Rules import set_rules
 from .Items import MLSSItem, itemList, item_frequencies, item_table
 from .Rom import Rom
 from .Names.LocationName import LocationName
+from .Client import MLSSClient
 
 
 class MLSSWebWorld(WebWorld):
@@ -48,6 +49,7 @@ class MLSSWorld(World):
     settings = typing.ClassVar[MLSSSettings]
     item_name_to_id = {name: data.code for name, data in item_table.items()}
     location_name_to_id = {loc_data.name: loc_data.id for loc_data in all_locations}
+    required_client_version = (0, 4, 3)
 
     excluded_locations = []
 
@@ -61,11 +63,10 @@ class MLSSWorld(World):
         if self.multiworld.disable_surf[self.player]:
             self.excluded_locations += LocationName.SurfMinigame
 
-      
     def create_regions(self) -> None:
         create_regions(self.multiworld, self.player, self.excluded_locations)
         connect_regions(self.multiworld, self.player)
-        
+
     def create_items(self) -> None:
         # First add in all progression and useful items
         required_items = []
@@ -94,12 +95,12 @@ class MLSSWorld(World):
             item = self.create_item(filler_item_name)
             self.multiworld.itempool.append(item)
             filler_items.remove(filler_item_name)
-    
+
     def set_rules(self) -> None:
         set_rules(self.multiworld, self.player)
         self.multiworld.completion_condition[self.player] = \
             lambda state: state.can_reach("Bowser's Castle", "Region", self.player)
-            
+
     def create_item(self, name: str) -> MLSSItem:
         item = item_table[name]
         return MLSSItem(item.itemName, item.progression, item.code, self.player)

@@ -1,5 +1,3 @@
-
-
 class LocationName():
     StardustFields1Block1 = "Stardust Fields 1 Block 1"
     StardustFields1Block2 = "Stardust Fields 1 Block 2"

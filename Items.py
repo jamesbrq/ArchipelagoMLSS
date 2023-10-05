@@ -12,8 +12,8 @@ class ItemData(typing.NamedTuple):
 
 class MLSSItem(Item):
     game: str = "Mario & Luigi Superstar Saga"
-    
-    
+
+
 itemList: typing.List[ItemData] = [
     ItemData(0x01, "Mushroom", ItemClassification.filler, 0xA),
     ItemData(0x02, "Super Mushroom", ItemClassification.filler, 0xB),

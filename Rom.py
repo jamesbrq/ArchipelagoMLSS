@@ -64,7 +64,7 @@ class Rom:
         self.player = player
 
     def swap_colors(self, color, bro):
-        temp = pkgutil.get_data(__name__,  "colors/" + color + ".txt")
+        temp = pkgutil.get_data(__name__, "colors/" + color + ".txt")
         temp_io = io.BytesIO(temp)
         color_arr = []
 
@@ -74,7 +74,8 @@ class Rom:
             if color != "Chaos" and color != "TrueChaos":
                 color_arr.append(Color(int(arr[0], 16), int(arr[1], 16), int(arr[2], 16), int(arr[3], 16)))
             else:
-                color_arr.append(Color(int(arr[0], 16), self.random.randint(0, 255), self.random.randint(0, 127), int(arr[1], 16)))
+                color_arr.append(
+                    Color(int(arr[0], 16), self.random.randint(0, 255), self.random.randint(0, 127), int(arr[1], 16)))
 
         colors_ = [c for c in color_arr if c.bro == bro]
 
@@ -100,7 +101,8 @@ class Rom:
             if color != "Chaos" and color != "TrueChaos":
                 color_arr.append(Color(int(arr[0], 16), int(arr[1], 16), int(arr[2], 16), int(arr[3], 16)))
             else:
-                color_arr.append(Color(int(arr[0], 16), self.random.randint(0, 255), self.random.randint(0, 127), int(arr[1], 16)))
+                color_arr.append(
+                    Color(int(arr[0], 16), self.random.randint(0, 255), self.random.randint(0, 127), int(arr[1], 16)))
 
         colors_ = [c for c in color_arr if c.bro == bro]
 
@@ -148,6 +150,11 @@ class Rom:
             self.stream.write(bytes([0x18]))
 
     def patch_options(self):
+        name = self.world.player_name[self.player]
+
+        self.stream.seek(0xB0, 0)
+        self.stream.write(name.encode("UTF-8"))
+
         if self.world.skip_intro[self.player]:
             # Enable Skip Intro in ROM
             self.stream.seek(0x244D08, 0)
@@ -298,7 +305,8 @@ class Rom:
                     break
                 self.stream.seek(-3, os.SEEK_CUR)
                 id_val = self.stream.read(1)[0]
-                if id_val in [int(hex_value) for hex_value in [0x18, 0x53, 0x4B]] or (0x2D <= id_val <= 0x30) or id_val == 0x3C:
+                if id_val in [int(hex_value) for hex_value in [0x18, 0x53, 0x4B]] or (
+                        0x2D <= id_val <= 0x30) or id_val == 0x3C:
                     type_val = 0x4
                 if id_val == 0xF and type_val == 0x3:
                     i += 1

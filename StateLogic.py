@@ -27,15 +27,21 @@ def ultra(state, player):
 
 
 def fruits(state, player):
-    return state.has("Red Chuckola Fruit", player) and state.has("Purple Chuckola Fruit", player) and state.has("White Chuckola Fruit", player)
-
+    return state.has("Red Chuckola Fruit", player) and state.has("Purple Chuckola Fruit", player) and state.has(
+        "White Chuckola Fruit", player)
 
 
 def pieces(state, player):
-    return state.has("Beanstar Piece 1", player) and state.has("Beanstar Piece 2", player) and state.has("Beanstar Piece 3", player) and state.has("Beanstar Piece 4", player)
-    
+    return state.has("Beanstar Piece 1", player) and state.has("Beanstar Piece 2", player) and state.has(
+        "Beanstar Piece 3", player) and state.has("Beanstar Piece 4", player)
+
+
 def neon(state, player):
-    return state.has("Blue Neon Egg", player) and state.has("Red Neon Egg", player) and state.has("Green Neon Egg", player) and state.has("Yellow Neon Egg", player) and state.has("Purple Neon Egg", player) and state.has("Orange Neon Egg", player) and state.has("Azure Neon Egg", player)
+    return state.has("Blue Neon Egg", player) and state.has("Red Neon Egg", player) and state.has("Green Neon Egg",
+                                                                                                  player) and state.has(
+        "Yellow Neon Egg", player) and state.has("Purple Neon Egg", player) and state.has("Orange Neon Egg",
+                                                                                          player) and state.has(
+        "Azure Neon Egg", player)
 
 
 def spangle(state, player):
@@ -71,7 +77,10 @@ def winkle(state, player):
 
 
 def beanFruit(state, player):
-    return state.has("Beanfruit 1", player) or state.has("Beanfruit 2", player) or state.has("Beanfruit 3", player) or state.has("Beanfruit 4", player) or state.has("Beanfruit 5", player) or state.has("Beanfruit 6", player) or state.has("Beanfruit 7", player)
+    return state.has("Beanfruit 1", player) or state.has("Beanfruit 2", player) or state.has("Beanfruit 3",
+                                                                                             player) or state.has(
+        "Beanfruit 4", player) or state.has("Beanfruit 5", player) or state.has("Beanfruit 6", player) or state.has(
+        "Beanfruit 7", player)
 
 
 def surfable(state, player):
@@ -79,4 +88,7 @@ def surfable(state, player):
 
 
 def postJokes(state, player):
-    return surfable(state, player) and canDig(state, player) and canDash(state, player) and canCrash(state, player) and dressBeanstar(state, player) and pieces(state, player) and fruits(state, player) and brooch(state, player) and rose(state, player)
+    return surfable(state, player) and canDig(state, player) and canDash(state, player) and canCrash(state,
+                                                                                                     player) and dressBeanstar(
+        state, player) and pieces(state, player) and fruits(state, player) and brooch(state, player) and rose(state,
+                                                                                                              player)
