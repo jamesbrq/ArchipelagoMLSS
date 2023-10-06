@@ -59,6 +59,7 @@ class LocationName():
     HoohooMountainBaseBoostatueRoomDigspot1 = "Hoohoo Mountain Base Boostatue Room Digspot 1"
     HoohooMountainBaseBoostatueRoomDigspot2 = "Hoohoo Mountain Base Boostatue Room Digspot 2"
     HoohooMountainBaseBoostatueRoomDigspot3 = "Hoohoo Mountain Base Boostatue Room Digspot 3"
+    BeanbeanOutskirtsBooStatueMole = "Beanbean Outskirts Boo Statue Mole"
     HoohooMountainBaseGrassyAreaBlock1 = "Hoohoo Mountain Base Grassy Area Block 1"
     HoohooMountainBaseGrassyAreaBlock2 = "Hoohoo Mountain Base Grassy Area Block 2"
     HoohooMountainBaseGuffawhaRuinsEntranceDigspot = "Hoohoo Mountain Base Guffawha Ruins Entrance Digspot"

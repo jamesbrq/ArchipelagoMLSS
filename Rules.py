@@ -16,6 +16,8 @@ def set_rules(world: MultiWorld, player: int):
              lambda state: StateLogic.hammers(state, player))
     add_rule(world.get_location(LocationName.HoohooMountainBaseBoostatueRoomBlock2, player),
              lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
+    add_rule(world.get_location(LocationName.BeanbeanOutskirtsBooStatueMole, player),
+             lambda state: StateLogic.canMini(state, player) and StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.HoohooMountainBaseBoostatueRoomDigspot2, player),
              lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
     add_rule(world.get_location(LocationName.HoohooVillageSuperHammerCaveBlock, player),
