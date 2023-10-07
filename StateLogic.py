@@ -77,7 +77,10 @@ def winkle(state, player):
 
 
 def beanFruit(state, player):
-    return state.has("Beanfruit 1", player) and state.has("Beanfruit 2", player) and state.has("Beanfruit 3", player) and state.has("Beanfruit 4", player) and state.has("Beanfruit 5", player) and state.has("Beanfruit 6", player) and state.has("Beanfruit 7", player)
+    return state.has("Beanfruit 1", player) and state.has("Beanfruit 2", player) and state.has("Beanfruit 3",
+                                                                                               player) and state.has(
+        "Beanfruit 4", player) and state.has("Beanfruit 5", player) and state.has("Beanfruit 6", player) and state.has(
+        "Beanfruit 7", player)
 
 
 def surfable(state, player):
@@ -88,4 +91,17 @@ def postJokes(state, player):
     return surfable(state, player) and canDig(state, player) and canDash(state, player) and canCrash(state,
                                                                                                      player) and dressBeanstar(
         state, player) and pieces(state, player) and fruits(state, player) and brooch(state, player) and rose(state,
+
                                                                                                               player)
+
+
+def teehee(state, player):
+    return super(state, player) or canDash(state, player)
+
+
+def castleTown(state, player):
+    return fruits(state, player) and brooch(state, player)
+
+
+def fungitown(state, player):
+    return castleTown(state, player) and thunder(state, player)

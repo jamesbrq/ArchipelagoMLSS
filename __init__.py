@@ -70,8 +70,9 @@ class MLSSWorld(World):
     def create_items(self) -> None:
         # First add in all progression and useful items
         required_items = []
+        precollected = [item for item in itemList if item in self.multiworld.precollected_items[self.player]]
         for item in itemList:
-            if item.progression != ItemClassification.filler:
+            if item.progression != ItemClassification.filler and item not in precollected:
                 freq = item_frequencies.get(item.itemName, 1)
                 if freq is None:
                     freq = 1

@@ -1,49 +1,72 @@
 import typing
-from Options import Choice, Option, Toggle
+from Options import Choice, Option, Toggle, StartInventoryPool
 
 
 class IntroSkip(Toggle):
-    """Intro Skip option"""
+    """
+    Skip the intro sequence. Spawns you in pipe 1 on game start.
+    This does not affect any items.
+    """
     display_name = "Intro Skip"
 
 
 class BowsersCastleSkip(Toggle):
-    """Bowser's Castle Skip Option"""
+    """
+    Skip straight from the entrance hall to bowletta in Bowser's Castle.
+    All Bowser's Castle items will be removed from the location pool.
+    """
     display_name = "Bowser's Castle Skip"
 
 
 class CastleStart(Toggle):
-    """Castle Start option"""
+    """
+    Skip the intro sequence, but start in pipe 3 instead of pipe 1.
+    This does not affect any items.
+    """
     display_name = "Start in Castle Town"
 
 
 class SkipMinecart(Toggle):
-    """Skip Minecart Minigame Option"""
+    """
+    Skip the minecart minigame that leads you through Hoohoo Mountain Base.
+    This will remove the 1 item in the minecart cave from the location pool.
+    """
     display_name = "Skip Minecart Minigame"
 
 
 class DisableSurf(Toggle):
-    """Disable Surf Minigame Option"""
+    """
+    Remove the surf minigame item from the location pool.
+    """
     display_name = "Disable Surf Minigame"
 
 
 class RandomMusic(Toggle):
-    """Randomize Music Option"""
+    """
+    Randomize all music in the game, including overworld, battle, and all minigame and menu music.
+    Includes unused beta music tracks as well.
+    """
     display_name = "Randomize Music"
 
 
 class DisableMusic(Toggle):
-    """Disable Music Option"""
+    """
+    Disable all music in the game. You will still hear all normal sounds but there will be no music.
+    """
     display_name = "Disable Music"
 
 
 class RandomSounds(Toggle):
-    """Randomize Sounds Option"""
+    """
+    Randomizes every sound in the game, minus a few sounds that can softlock the game* (UNSTABLE OPTION)
+    """
     display_name = "Randomize Sounds"
 
 
 class MarioColor(Choice):
-    """Mario Color Option"""
+    """
+    This changes the color of Mario's hat, as well as some key colors that are red including UI etc.
+    """
     display_name = "Mario's Color"
     option_red = 0
     option_green = 1
@@ -62,7 +85,9 @@ class MarioColor(Choice):
 
 
 class LuigiColor(Choice):
-    """Luigi Color Option"""
+    """
+    This changes the color of Luigi's hat, as well as some key colors that are green including UI etc.
+    """
     display_name = "Luigi's Color"
     option_red = 0
     option_green = 1
@@ -81,7 +106,9 @@ class LuigiColor(Choice):
 
 
 class MarioPants(Choice):
-    """Mario Pants Color Option"""
+    """
+    This changes the color of Mario's trousers.
+    """
     display_name = "Mario's Pants Color"
     option_vanilla = 0
     option_red = 1
@@ -99,7 +126,9 @@ class MarioPants(Choice):
 
 
 class LuigiPants(Choice):
-    """Luigi Pants Color Option"""
+    """
+    This changes the color of Luigi's trousers.
+    """
     display_name = "Luigi's Pants Color"
     option_vanilla = 0
     option_red = 1
@@ -117,12 +146,21 @@ class LuigiPants(Choice):
 
 
 class RandomizeEnemies(Toggle):
-    """Randomize Enemies Option"""
+    """
+    Randomize all normal enemy encounters in the game.
+    If Bowser's castle skip is enabled then enemies from Bowser's Castle will not be included.
+    """
     display_name = "Randomize Enemies"
 
 
 class RandomizeBosses(Choice):
-    """Randomize Bosses Option"""
+    """
+    Randomize all boss encounters in the game.
+    If Bowser's castle skip is enabled then bosses from Bowser's Castle will not be included.
+    Some bosses are not randomized due to flags, and story (Such as the final boss)
+    Boss Only: Bosses will only be swapped with another boss
+    Boss Normal: Bosses can be swapped with normal enemy encounters.
+    """
     display_name = "Randomize Bosses"
     option_none = 0
     option_bossonly = 1
@@ -131,21 +169,28 @@ class RandomizeBosses(Choice):
 
 
 class ScaleStats(Toggle):
-    """Scale Stats Option"""
+    """
+    This scales enemy HP and XP according to the area of the game you are in scaling linearly.
+    """
     display_name = "Scale Enemy Stats"
 
 
 class ScalePow(Toggle):
-    """Scale POW Option"""
+    """
+    This scales enemy POW according to the area of the game you are in scaling linearly.
+    """
     display_name = "Scale Enemy POW"
 
 
 class RandomizeBackgrounds(Toggle):
-    """Randomize Backgrounds Option"""
+    """
+    This randomizes the background image in battles
+    """
     display_name = "Randomize Battle Backgrounds"
 
 
 mlss_options: typing.Dict[str, type(Option)] = {
+    "start_inventory_from_pool": StartInventoryPool,
     "skip_intro": IntroSkip,
     "castle_skip": BowsersCastleSkip,
     "castle_start": CastleStart,

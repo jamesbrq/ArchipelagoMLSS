@@ -51,7 +51,7 @@ def set_rules(world: MultiWorld, player: int):
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsBeanFruit6, player),
              lambda state: StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsBeanFruit7, player),
-             lambda state: state.can_reach("TeeheeValley", "Region", player) and StateLogic.canDig(state, player))
+             lambda state: StateLogic.teehee(state, player) and StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsSRoom1Block, player),
              lambda state: StateLogic.ultra(state, player) and StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsSRoom1Digspot2, player),
@@ -87,8 +87,7 @@ def set_rules(world: MultiWorld, player: int):
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsSuperHammerUpgrade, player),
              lambda state: StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsUltraHammerUpgrade, player),
-             lambda state: StateLogic.thunder(state, player) and StateLogic.pieces(state, player) and state.can_reach(
-                 "Beanbean Castle Town", "Region", player))
+             lambda state: StateLogic.thunder(state, player) and StateLogic.pieces(state, player) and StateLogic.castleTown(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsSoloLuigiCaveMole, player),
              lambda state: StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.ChucklehuckWoodsRedChuckolaFruit, player),
@@ -156,7 +155,7 @@ def set_rules(world: MultiWorld, player: int):
     add_rule(world.get_location(LocationName.TeeheeValleyPastUltraHammersBlock2, player),
              lambda state: StateLogic.ultra(state, player))
     add_rule(world.get_location(LocationName.TeeheeValleySoloLuigiMazeRoom1Block, player),
-             lambda state: StateLogic.ultra(state, player) or state.can_reach("Fungitown", "Region", player))
+             lambda state: StateLogic.ultra(state, player))
     add_rule(world.get_location(LocationName.JokesEndJojoraRoomDigspot, player),
              lambda state: StateLogic.canDash(state, player))
     add_rule(world.get_location(LocationName.OhoOasisFirebrand, player),

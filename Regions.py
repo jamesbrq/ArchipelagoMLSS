@@ -117,8 +117,7 @@ def connect_regions(world: MultiWorld, player: int):
     connect(world, player, names, "TeeheeValley", "GwarharEntrance", lambda state: StateLogic.membership(state, player))
     connect(world, player, names, "TeeheeValley", "Oasis", lambda state: StateLogic.membership(state, player))
     connect(world, player, names, "TeeheeValley", "Fungitown",
-            lambda state: state.can_reach("Airport", "Region", player) and state.can_reach("Beanbean Castle Town",
-                                                                                           "Region", player))
+            lambda state: StateLogic.thunder(state, player) and StateLogic.castleTown(state, player))
     connect(world, player, names, "Fungitown", "FungitownBeanstar",
             lambda state: StateLogic.pieces(state, player) or state.can_reach("FungitownBirdo", "Region", player))
     connect(world, player, names, "Fungitown", "FungitownBirdo", lambda state: StateLogic.postJokes(state, player))
@@ -131,10 +130,9 @@ def connect_regions(world: MultiWorld, player: int):
             lambda state: StateLogic.thunder(state, player) or state.can_reach("Shop Peach Kidnapped Flag", "Region",
                                                                                player))
     connect(world, player, names, "Shop Starting Flag", "Shop Peach Kidnapped Flag", lambda state: (StateLogic.thunder(
-        state, player) and state.can_reach("Fungitown", "Region", player)) or state.can_reach(
+        state, player) and StateLogic.fungitown(state, player)) or state.can_reach(
         "Shop Beanstar Complete Flag", "Region", player))
-    connect(world, player, names, "Shop Starting Flag", "Shop Beanstar Complete Flag", lambda state: (state.can_reach(
-        "Beanbean Castle Town", "Region", player) and StateLogic.pieces(state, player)) or state.can_reach(
+    connect(world, player, names, "Shop Starting Flag", "Shop Beanstar Complete Flag", lambda state: (StateLogic.castleTown(state, player) and StateLogic.pieces(state, player)) or state.can_reach(
         "Shop Birdo Flag", "Region", player))
     connect(world, player, names, "Shop Starting Flag", "Shop Birdo Flag",
             lambda state: StateLogic.postJokes(state, player))

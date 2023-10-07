@@ -111,8 +111,9 @@ class Rom:
             self.stream.write(bytes([c.byte1, c.byte2]))
 
     def item_inject(self, location: int, item_type: int, item: Item):
-        code = item_table[item.name].itemID
-        if item.player != self.player:
+        if item.player == self.player:
+            code = item_table[item.name].itemID
+        else:
             code = 0x3F
         if item_type == 0:
             self.stream.seek(location, 0)

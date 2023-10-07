@@ -76,7 +76,7 @@ class MLSSClient(BizHawkClient):
             return False  # Should verify on the next pass
 
         ctx.game = self.game
-        ctx.items_handling = 0b001
+        ctx.items_handling = 0b111
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
         self.rom_slot_name = rom_name
@@ -93,30 +93,34 @@ class MLSSClient(BizHawkClient):
         from CommonClient import logger
         try:
             read_state = await bizhawk.read(ctx.bizhawk_ctx, [(0x4564, 59, "EWRAM"),
-                                                              (0x2330, 2, "IWRAM"), (0x3FE0, 1, "IWRAM"), (0x3FE4, 1, "IWRAM"), (0x304B, 1, "EWRAM"), (0x304C, 4, "EWRAM"), (0x3058, 6, "EWRAM")])
+                                                              (0x2330, 2, "IWRAM"), (0x3FE0, 1, "IWRAM"), (0x3FE4, 1, "IWRAM"), (0x304B, 1, "EWRAM"), (0x304C, 4, "EWRAM"), (0x3058, 6, "EWRAM"), (0x4808, 2, "EWRAM")])
             flags = read_state[0]
             room = (read_state[1][1] << 8) + read_state[1][0]
             shop_init = read_state[2][0]
             shop_scroll = read_state[3][0]
             is_buy = (read_state[4][0] != 0)
             shop_address = (struct.unpack('<I', read_state[5])[0]) & 0xFFFFFF
-            logo = bytes([byte for byte in read_state[6] if byte != 0]).decode("UTF-8")
+            logo = bytes([byte for byte in read_state[6] if byte < 0x70]).decode("UTF-8")
+            received_index = (read_state[7][0] << 8) + read_state[7][1]
+            logger.info(read_state[7][0])
+            logger.info(read_state[7][1])
 
             if logo != "MLSSAP":
                 return
-            # TODO Confirm a save has been made
 
             locs_to_send = set()
             location = 0
-
+            i = 0
             for item in ctx.items_received:
+                if i < received_index:
+                    i += 1
+                    continue
                 item_data = items_by_id[item.item]
                 b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
                 if b[0][0] == 0:
-                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [item_data.itemID], "EWRAM")])
+                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(i + 1) // 0x100, (i + 1) % 0x100], "EWRAM")])
                 else:
                     break
-
 
             if is_buy:
                 is_buy = False
@@ -194,3 +198,12 @@ def find_key(dictionary, target):
             leftover -= value
         else:
             return key, leftover
+
+
+def id_to_RAM(id_: int):
+    code = id_
+    if code == 0x1D or code == 0x1E:
+        code += 0xE
+    if 0x20 <= code <= 0x26:
+        code -= 0x4
+    return code
