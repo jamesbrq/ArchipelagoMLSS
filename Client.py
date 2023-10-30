@@ -1,11 +1,14 @@
-from typing import TYPE_CHECKING, Optional, Dict, Set
+from typing import TYPE_CHECKING, Optional, Dict, Set, List
 import struct
+from BaseClasses import MultiWorld
 from NetUtils import ClientStatus
 from .Locations import roomCount, nonBlock, beanstones, roomException, shop, badge, pants
 from .Items import items_by_id, ItemData
+from collections import defaultdict
 import sys
 import logging
 import math
+import asyncio
 
 # This imports the bizhawk apworld if it's not already imported. This code block should be removed for a PR.
 if "worlds._bizhawk" not in sys.modules:
@@ -42,7 +45,9 @@ class MLSSClient(BizHawkClient):
     local_checked_locations: Set[int]
     goal_flag: int
     rom_slot_name: Optional[str]
+    player: int
     player_name: Optional[str]
+    checked_flags: dict[int, list] = {}
 
     def __init__(self) -> None:
         super().__init__()
@@ -50,6 +55,7 @@ class MLSSClient(BizHawkClient):
         self.local_set_events = {}
         self.local_found_key_items = {}
         self.rom_slot_name = None
+        self.lock = asyncio.Lock
 
     async def validate_rom(self, ctx: BizHawkClientContext) -> bool:
         from CommonClient import logger
@@ -65,7 +71,6 @@ class MLSSClient(BizHawkClient):
                             "You need to generate a patch file and use it to create a patched ROM.")
                 return False
             if rom_name != "MARIO&LUIGIUAP":
-                logger.info(rom_name)
                 logger.info("ERROR: The patch file used to create this ROM is not compatible with "
                             "this client. Double check your client version against the version being "
                             "used by the generator.")
@@ -81,8 +86,13 @@ class MLSSClient(BizHawkClient):
         ctx.watcher_timeout = 0.125
         self.rom_slot_name = rom_name
         name_bytes = ((await bizhawk.read(ctx.bizhawk_ctx, [(0xB0, 16, "ROM")]))[0])
+        player = ((await bizhawk.read(ctx.bizhawk_ctx, [(0xAF, 1, "ROM")]))[0][0])
+        self.player = player + 1
         name = bytes([byte for byte in name_bytes if byte != 0]).decode("UTF-8")
         self.player_name = name
+
+        for i in range(59):
+            self.checked_flags[i] = [9, 10]
 
         return True
 
@@ -93,17 +103,16 @@ class MLSSClient(BizHawkClient):
         from CommonClient import logger
         try:
             read_state = await bizhawk.read(ctx.bizhawk_ctx, [(0x4564, 59, "EWRAM"),
-                                                              (0x2330, 2, "IWRAM"), (0x3FE0, 1, "IWRAM"), (0x3FE4, 1, "IWRAM"), (0x304B, 1, "EWRAM"), (0x304C, 4, "EWRAM"), (0x3058, 6, "EWRAM"), (0x4808, 2, "EWRAM")])
+                                                              (0x2330, 2, "IWRAM"), (0x3FE0, 1, "IWRAM"), (0x3FE4, 1, "IWRAM"), (0x304B, 1, "EWRAM"), (0x304C, 4, "EWRAM"), (0x4800, 6, "EWRAM"), (0x4808, 2, "EWRAM"), (0x4407, 1, "EWRAM")])
             flags = read_state[0]
             room = (read_state[1][1] << 8) + read_state[1][0]
             shop_init = read_state[2][0]
-            shop_scroll = read_state[3][0]
+            shop_scroll = read_state[3][0] & 0x1F
             is_buy = (read_state[4][0] != 0)
             shop_address = (struct.unpack('<I', read_state[5])[0]) & 0xFFFFFF
             logo = bytes([byte for byte in read_state[6] if byte < 0x70]).decode("UTF-8")
             received_index = (read_state[7][0] << 8) + read_state[7][1]
-            logger.info(read_state[7][0])
-            logger.info(read_state[7][1])
+            cackletta = (read_state[8][0] & 0x40)
 
             if logo != "MLSSAP":
                 return
@@ -111,37 +120,51 @@ class MLSSClient(BizHawkClient):
             locs_to_send = set()
             location = 0
             i = 0
-            for item in ctx.items_received:
-                if i < received_index:
-                    i += 1
-                    continue
-                item_data = items_by_id[item.item]
-                b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
-                if b[0][0] == 0:
-                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(i + 1) // 0x100, (i + 1) % 0x100], "EWRAM")])
-                else:
-                    break
 
+            # Checking shop purchases
             if is_buy:
-                is_buy = False
                 if shop_address != 0x3c0618 and shop_address != 0x3c0684:
                     location = shop[shop_address][shop_scroll]
                 else:
                     if shop_init & 0x1 != 0:
-                        location = badge[shop_address][shop_scroll & 0x1F]
+                        location = badge[shop_address][shop_scroll]
                     else:
-                        location = pants[shop_address][shop_scroll & 0x1F]
+                        location = pants[shop_address][shop_scroll]
+                if location in ctx.server_locations:
+                    locs_to_send.add(location)
                 await bizhawk.write(ctx.bizhawk_ctx, [(0x304B, [0x0], "EWRAM")])
 
-            if location in ctx.server_locations:
-                locs_to_send.add(location)
+            # Checking flags that aren't digspots or blocks
+            for item in nonBlock:
+                if is_buy:
+                    break
+                address, mask, location = item
+                flag_bytes = await bizhawk.read(ctx.bizhawk_ctx, [(address, 1, "EWRAM"), (0x4800, 6, "EWRAM")])
+                flag_byte = flag_bytes[0][0]
+                backup_logo = bytes([byte for byte in flag_bytes[1] if byte < 0x70]).decode("UTF-8")
+                if backup_logo != "MLSSAP":
+                    return
+                if flag_byte & mask != 0:
+                    if location in roomException:
+                        if roomException[location] == room:
+                            exception = True
+                        else:
+                            exception = False
+                    else:
+                        exception = True
+                    if location in ctx.server_locations and exception:
+                        locs_to_send.add(location)
 
             # Check for set location flags.
             for byte_i, byte in enumerate(bytearray(flags)):
-                for i in range(8):
-                    and_value = 1 << i
+                if is_buy:
+                    break
+                for j in range(8):
+                    if j in self.checked_flags[byte_i]:
+                        continue
+                    and_value = 1 << j
                     if byte & and_value != 0:
-                        flag_id = byte_i * 8 + (i + 1)
+                        flag_id = byte_i * 8 + (j + 1)
                         room, item = find_key(roomCount, flag_id)
                         pointer_arr = await bizhawk.read(ctx.bizhawk_ctx,
                                                          [(ROOM_ARRAY_POINTER + ((room - 1) * 4), 4, "ROM")])
@@ -157,22 +180,30 @@ class MLSSClient(BizHawkClient):
                                 pointer = key
                                 break
                         if pointer in ctx.server_locations:
+                            self.checked_flags[byte_i] += [j]
                             locs_to_send.add(pointer)
 
-            for item in nonBlock:
-                address, mask, location = item
-                flag_bytes = await bizhawk.read(ctx.bizhawk_ctx, [(address, 1, "EWRAM")])
-                flag_byte = flag_bytes[0][0]
-                if flag_byte & mask != 0:
-                    if location in roomException:
-                        if roomException[location] == room:
-                            exception = True
-                        else:
-                            exception = False
-                    else:
-                        exception = True
-                    if location in ctx.server_locations and exception:
-                        locs_to_send.add(location)
+            for item in ctx.items_received:
+                if is_buy:
+                    break
+                if i < received_index:
+                    i += 1
+                    continue
+                if self.player == item.player:
+                    i += 1
+                    continue
+                item_data = items_by_id[item.item]
+                b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
+                if b[0][0] == 0:
+                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(i + 1) // 0x100, (i + 1) % 0x100], "EWRAM")])
+                else:
+                    break
+
+            if not ctx.finished_game and cackletta != 0:
+                await ctx.send_msgs([{
+                    "cmd": "StatusUpdate",
+                    "status": ClientStatus.CLIENT_GOAL
+                }])
 
             # Send locations if there are any to send.
             if locs_to_send != self.local_checked_locations:

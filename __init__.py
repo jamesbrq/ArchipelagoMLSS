@@ -107,7 +107,7 @@ class MLSSWorld(World):
         return MLSSItem(item.itemName, item.progression, item.code, self.player)
 
     def generate_output(self, output_directory: str) -> None:
-        rom = Rom("C:/Users/james/Downloads/armips-v0.11.0-windows-x86/", self.multiworld, self.player)
+        rom = Rom(self.multiworld, self.player)
 
         for location_name in location_table.keys():
             location = self.multiworld.get_location(location_name, self.player)

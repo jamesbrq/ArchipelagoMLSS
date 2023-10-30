@@ -53,11 +53,10 @@ pants = [
 class Rom:
     hash = "4b1a5897d89d9e74ec7f630eefdfd435"
 
-    def __init__(self, path: str, world: MultiWorld, player: int):
+    def __init__(self, world: MultiWorld, player: int):
         with open("Mario & Luigi - Superstar Saga (U).gba", 'rb') as file:
             content = file.read()
         patched = self.apply_delta(content)
-        self.path = path
         self.random = world.per_slot_randoms[player]
         self.stream = io.BytesIO(patched)
         self.world = world
@@ -155,6 +154,8 @@ class Rom:
 
         self.stream.seek(0xB0, 0)
         self.stream.write(name.encode("UTF-8"))
+        self.stream.seek(0xAF, 0)
+        self.stream.write(bytes(self.player))
 
         if self.world.skip_intro[self.player]:
             # Enable Skip Intro in ROM
@@ -516,9 +517,12 @@ class Rom:
                     self.stream.write(temp_group.data)
 
     def close(self, path):
-        with open(os.path.join(path, f"{self.world.get_out_file_name_base(self.player)}.gba"), 'wb') as output:
-            self.stream.seek(0)
-            output.write(self.stream.read())
+        output = open(os.path.join(path, f"{self.world.player_name[self.player]}.bsdiff"), 'wb')
+        with open("Mario & Luigi - Superstar Saga (U).gba", 'rb') as file:
+            base = file.read()
+        diff = bsdiff4.diff(base, self.stream.getvalue())
+        output.write(diff)
+        output.close()
 
     def apply_delta(self, b: bytes) -> bytes:
         """

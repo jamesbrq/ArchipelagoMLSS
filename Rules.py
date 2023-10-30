@@ -1,4 +1,4 @@
-from worlds.generic.Rules import add_rule
+from worlds.generic.Rules import add_rule, forbid_item
 from BaseClasses import MultiWorld
 from .Names.LocationName import LocationName
 from .Locations import all_locations
@@ -11,6 +11,8 @@ def set_rules(world: MultiWorld, player: int):
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
         if "Beanstone" in location.name:
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
+        if "Shop" in location.name:
+            forbid_item(world.get_location(location.name, player), "Hammers", player)
 
     add_rule(world.get_location(LocationName.HoohooVillageHammerHouseBlock, player),
              lambda state: StateLogic.hammers(state, player))

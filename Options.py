@@ -158,7 +158,7 @@ class RandomizeBosses(Choice):
     Randomize all boss encounters in the game.
     If Bowser's castle skip is enabled then bosses from Bowser's Castle will not be included.
     Some bosses are not randomized due to flags, and story (Such as the final boss)
-    Boss Only: Bosses will only be swapped with another boss
+    Boss Only: Bosses will only be swapped with another boss.
     Boss Normal: Bosses can be swapped with normal enemy encounters.
     """
     display_name = "Randomize Bosses"

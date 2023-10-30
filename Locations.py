@@ -67,7 +67,7 @@ mainArea: typing.List[LocationData] = [
     LocationData("Cave Connecting Stardust Fields and Hoohoo Village Block 2", 0x39da7f, 0, 0x02000000, 0x00),
     LocationData("Hoohoo Village South Cave Block", 0x39dacd, 0, 0x02000000, 0x00),
     LocationData("Hoohoo Village North Cave Room 1 Block", 0x39da98, 0, 0x02000000, 0x00),
-    LocationData("Hoohoo Village North Cave Room 2 Block", 0x39dab5, 0, 0x02000000, 0x00),
+    LocationData("Hoohoo Village North Cave Room 2 Block", 0x39daad, 0, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts Surf Beach Block", 0x39dd03, 0, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity Star Room Block 1", 0x39e13d, 0, 0x02000000, 0x00),
     LocationData("Woohoo Hooniversity Star Room Block 2", 0x39e145, 0, 0x02000000, 0x00),
@@ -95,7 +95,7 @@ mainArea: typing.List[LocationData] = [
     LocationData("Hoohoo Village Right Side Digspot", 0x39d95f, 0, 0x02000000, 0x00),
     LocationData("Hoohoo Village Super Hammer Cave Digspot", 0x39db02, 0, 0x02000000, 0x00),
     LocationData("Hoohoo Village Super Hammer Cave Block", 0x39daea, 0, 0x02000000, 0x00),
-    LocationData("Hoohoo Village North Cave Room 2 Digspot", 0x39daad, 0, 0x02000000, 0x00),
+    LocationData("Hoohoo Village North Cave Room 2 Digspot", 0x39dab5, 0, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Base Minecart Cave Digspot", 0x39db0f, 0, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts Farm Room Digspot 1", 0x39db22, 0, 0x02000000, 0x00),
     LocationData("Beanbean Outskirts Farm Room Digspot 2", 0x39db2a, 0, 0x02000000, 0x00),
@@ -676,7 +676,7 @@ nonBlock: list[(int, int, int)] = [
     (0x432D, 0x20, 0x1e9431),  # Piranha Bean
     (0x434E, 0x2, 0x1e9411),  # Secret Scroll 1
     (0x434E, 0x4, 0x1e9412),  # Secret Scroll 2
-    (0x4375, 0x8, 0x243844),  # Membership Card
+    (0x4375, 0x8, 0x260637),  # Membership Card
     (0x4373, 0x10, 0x277a45),  # Teehee Valley Mole
     (0x434D, 0x8, 0x1E9444),  # Harhall's Pants
     (0x432E, 0x10, 0x1e9441),  # Harhall Beanstar Piece
