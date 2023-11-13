@@ -182,6 +182,13 @@ class ScalePow(Toggle):
     display_name = "Scale Enemy POW"
 
 
+class TattleHp(Toggle):
+    """
+    This will display the enemies current and max health while in battle.
+    """
+    display_name = "Tattle HP"
+
+
 class RandomizeBackgrounds(Toggle):
     """
     This randomizes the background image in battles
@@ -204,6 +211,7 @@ mlss_options: typing.Dict[str, type(Option)] = {
     "randomize_backgrounds": RandomizeBackgrounds,
     "scale_stats": ScaleStats,
     "scale_pow": ScalePow,
+    "tattle_hp": TattleHp,
     "mario_color": MarioColor,
     "luigi_color": LuigiColor,
     "mario_pants": MarioPants,

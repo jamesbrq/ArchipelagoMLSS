@@ -91,12 +91,11 @@ def create_regions(world: MultiWorld, player: int, excluded: typing.List[str]):
 
     oasis_region = create_region(world, player, "Oasis", oasis, excluded)
     world.regions.append(oasis_region)
-
-    bowsers_region = create_region(world, player, "Bowser's Castle", bowsers, excluded)
-    world.regions.append(bowsers_region)
-
-    bowsersMini_region = create_region(world, player, "Bowser's Castle Mini", bowsersMini, excluded)
-    world.regions.append(bowsersMini_region)
+    if not world.castle_skip[player]:
+        bowsers_region = create_region(world, player, "Bowser's Castle", bowsers, excluded)
+        world.regions.append(bowsers_region)
+        bowsersMini_region = create_region(world, player, "Bowser's Castle Mini", bowsersMini, excluded)
+        world.regions.append(bowsersMini_region)
 
     baseUltraRocks_region = create_region(world, player, "BaseUltraRocks", baseUltraRocks, excluded)
     world.regions.append(baseUltraRocks_region)
@@ -114,7 +113,7 @@ def connect_regions(world: MultiWorld, player: int):
     connect(world, player, names, "Hooniversity", "Oasis")
     connect(world, player, names, "Main Area", "TeeheeValley",
             lambda state: StateLogic.super(state, player) or StateLogic.canDash(state, player))
-    connect(world, player, names, "TeeheeValley", "GwarharEntrance", lambda state: StateLogic.membership(state, player))
+    connect(world, player, names, "TeeheeValley", "GwarharEntrance", lambda state: StateLogic.membership(state, player) and StateLogic.fire(state, player))
     connect(world, player, names, "TeeheeValley", "Oasis", lambda state: StateLogic.membership(state, player))
     connect(world, player, names, "TeeheeValley", "Fungitown",
             lambda state: StateLogic.thunder(state, player) and StateLogic.castleTown(state, player))
@@ -146,9 +145,9 @@ def connect_regions(world: MultiWorld, player: int):
     connect(world, player, names, "JokesEntrance", "JokesMain",
             lambda state: StateLogic.canCrash(state, player) and StateLogic.canDig(state, player))
     connect(world, player, names, "JokesMain", "PostJokes", lambda state: StateLogic.postJokes(state, player))
-    connect(world, player, names, "PostJokes", "Bowser's Castle")
-    connect(world, player, names, "Bowser's Castle", "Bowser's Castle Mini",
-            lambda state: StateLogic.canMini(state, player))
+    if not world.castle_skip[player]:
+        connect(world, player, names, "PostJokes", "Bowser's Castle")
+        connect(world, player, names, "Bowser's Castle", "Bowser's Castle Mini", lambda state: StateLogic.canMini(state, player))
     connect(world, player, names, "Chucklehuck Woods", "Winkle", lambda state: StateLogic.canDash(state, player))
     connect(world, player, names, "Chucklehuck Woods", "Beanbean Castle Town",
             lambda state: StateLogic.fruits(state, player))
@@ -161,7 +160,7 @@ def create_region(world, player, name, locations, excluded):
     for location in locations:
         loc = MLSSLocation(player, location.name, location.id, ret)
         if location.name in excluded:
-            loc.progress_type = LocationProgressType.EXCLUDED
+            continue
         ret.locations.append(loc)
     return ret
 

@@ -2,7 +2,7 @@ import typing
 import settings
 from BaseClasses import Tutorial, ItemClassification
 from ..AutoWorld import WebWorld, World
-from .Locations import all_locations, location_table
+from .Locations import all_locations, location_table, bowsers, bowsersMini
 from .Options import mlss_options
 from .Regions import create_regions, connect_regions
 from .Rules import set_rules
@@ -54,14 +54,10 @@ class MLSSWorld(World):
     excluded_locations = []
 
     def generate_early(self) -> None:
-        if self.multiworld.castle_skip[self.player]:
-            loc = [loc.name for loc in Locations.bowsers]
-            self.excluded_locations += [loc.name for loc in Locations.bowsers]
-            self.excluded_locations += [loc.name for loc in Locations.bowsersMini]
         if self.multiworld.skip_minecart[self.player]:
-            self.excluded_locations += LocationName.HoohooMountainBaseMinecartCaveDigspot
+            self.excluded_locations += [LocationName.HoohooMountainBaseMinecartCaveDigspot]
         if self.multiworld.disable_surf[self.player]:
-            self.excluded_locations += LocationName.SurfMinigame
+            self.excluded_locations += [LocationName.SurfMinigame]
 
     def create_regions(self) -> None:
         create_regions(self.multiworld, self.player, self.excluded_locations)
@@ -91,6 +87,12 @@ class MLSSWorld(World):
                 filler_items += [item.itemName for _ in range(freq)]
 
         remaining = len(all_locations) - len(required_items)
+        if self.multiworld.castle_skip[self.player]:
+            remaining -= (len(bowsers) + len(bowsersMini))
+        if self.multiworld.skip_minecart[self.player]:
+            remaining -= 1
+        if self.multiworld.disable_surf[self.player]:
+            remaining -= 1
         for i in range(remaining):
             filler_item_name = self.multiworld.random.choice(filler_items)
             item = self.create_item(filler_item_name)
@@ -100,7 +102,7 @@ class MLSSWorld(World):
     def set_rules(self) -> None:
         set_rules(self.multiworld, self.player)
         self.multiworld.completion_condition[self.player] = \
-            lambda state: state.can_reach("Bowser's Castle", "Region", self.player)
+            lambda state: state.can_reach("PostJokes", "Region", self.player)
 
     def create_item(self, name: str) -> MLSSItem:
         item = item_table[name]
@@ -110,6 +112,8 @@ class MLSSWorld(World):
         rom = Rom(self.multiworld, self.player)
 
         for location_name in location_table.keys():
+            if (self.multiworld.skip_minecart[self.player] and "Minecart" in location_name) or (self.multiworld.castle_skip[self.player] and "Bowser" in location_name) or (self.multiworld.disable_surf[self.player] and "Surf Minigame" in location_name):
+                continue
             location = self.multiworld.get_location(location_name, self.player)
             item = location.item
             address = [address for address in all_locations if address.name == location.name]

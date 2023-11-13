@@ -1,3 +1,4 @@
+import time
 from typing import TYPE_CHECKING, Optional, Dict, Set, List
 import struct
 from BaseClasses import MultiWorld
@@ -37,6 +38,13 @@ else:
     BizHawkClientContext = object
 
 ROOM_ARRAY_POINTER = 0x51fa00
+
+# Add .apmlss suffix to bizhawk client
+from worlds.LauncherComponents import SuffixIdentifier, components
+for component in components:
+    if component.script_name == "BizHawkClient":
+        component.file_identifier = SuffixIdentifier(*(*component.file_identifier.suffixes, ".apmlss"))
+        break
 
 
 class MLSSClient(BizHawkClient):
@@ -81,7 +89,7 @@ class MLSSClient(BizHawkClient):
             return False  # Should verify on the next pass
 
         ctx.game = self.game
-        ctx.items_handling = 0b111
+        ctx.items_handling = 0b101
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
         self.rom_slot_name = rom_name
@@ -90,6 +98,7 @@ class MLSSClient(BizHawkClient):
         self.player = player + 1
         name = bytes([byte for byte in name_bytes if byte != 0]).decode("UTF-8")
         self.player_name = name
+        logger.info(name)
 
         for i in range(59):
             self.checked_flags[i] = [9, 10]
@@ -119,10 +128,10 @@ class MLSSClient(BizHawkClient):
 
             locs_to_send = set()
             location = 0
-            i = 0
 
             # Checking shop purchases
             if is_buy:
+                await bizhawk.write(ctx.bizhawk_ctx, [(0x304B, [0x0], "EWRAM")])
                 if shop_address != 0x3c0618 and shop_address != 0x3c0684:
                     location = shop[shop_address][shop_scroll]
                 else:
@@ -132,7 +141,6 @@ class MLSSClient(BizHawkClient):
                         location = pants[shop_address][shop_scroll]
                 if location in ctx.server_locations:
                     locs_to_send.add(location)
-                await bizhawk.write(ctx.bizhawk_ctx, [(0x304B, [0x0], "EWRAM")])
 
             # Checking flags that aren't digspots or blocks
             for item in nonBlock:
@@ -152,7 +160,7 @@ class MLSSClient(BizHawkClient):
                             exception = False
                     else:
                         exception = True
-                    if location in ctx.server_locations and exception:
+                    if (location in ctx.server_locations) and exception:
                         locs_to_send.add(location)
 
             # Check for set location flags.
@@ -183,17 +191,15 @@ class MLSSClient(BizHawkClient):
                             self.checked_flags[byte_i] += [j]
                             locs_to_send.add(pointer)
 
-            for item in ctx.items_received:
+            for i, item in enumerate(ctx.items_received):
                 if is_buy:
                     break
                 if i < received_index:
                     i += 1
                     continue
-                if self.player == item.player:
-                    i += 1
-                    continue
                 item_data = items_by_id[item.item]
                 b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
+                await asyncio.sleep(.05)
                 if b[0][0] == 0:
                     await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(i + 1) // 0x100, (i + 1) % 0x100], "EWRAM")])
                 else:

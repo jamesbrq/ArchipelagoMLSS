@@ -308,67 +308,67 @@ castleTown: typing.List[LocationData] = [
 ]
 
 startingFlag: typing.List[LocationData] = [
-    LocationData("Badge Shop Starting Flag 1", 0x3c0618, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Starting Flag 2", 0x3c061a, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Starting Flag 1", 0x3c061c, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Starting Flag 2", 0x3c061e, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Starting Flag 3", 0x3c0620, 0, 0x02000000, 0x00)
+    LocationData("Badge Shop Starting Flag 1", 0x3c0618, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Starting Flag 2", 0x3c061a, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Starting Flag 1", 0x3c061c, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Starting Flag 2", 0x3c061e, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Starting Flag 3", 0x3c0620, 2, 0x02000000, 0x00)
 ]
 
 chuckolatorFlag: typing.List[LocationData] = [
-    LocationData("Shop Chuckolator Flag", 0x3c05f8, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Chuckolator Flag 1", 0x3c062a, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Chuckolator Flag 2", 0x3c062c, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Chuckolator Flag 3", 0x3c062e, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Chuckolator Flag 1", 0x3c0624, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Chuckolator Flag 2", 0x3c0626, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Chuckolator Flag 3", 0x3c0628, 0, 0x02000000, 0x00)
+    LocationData("Shop Chuckolator Flag", 0x3c05f8, 3, 0x02000000, 0x00),
+    LocationData("Pants Shop Chuckolator Flag 1", 0x3c062a, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Chuckolator Flag 2", 0x3c062c, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Chuckolator Flag 3", 0x3c062e, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Chuckolator Flag 1", 0x3c0624, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Chuckolator Flag 2", 0x3c0626, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Chuckolator Flag 3", 0x3c0628, 2, 0x02000000, 0x00)
 ]
 
 piranhaFlag: typing.List[LocationData] = [
-    LocationData("Shop Mom Piranha Flag 1", 0x3c05fc, 0, 0x02000000, 0x00),
-    LocationData("Shop Mom Piranha Flag 2", 0x3c05fe, 0, 0x02000000, 0x00),
-    LocationData("Shop Mom Piranha Flag 3", 0x3c0600, 0, 0x02000000, 0x00),
-    LocationData("Shop Mom Piranha Flag 4", 0x3c0602, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Mom Piranha Flag 1", 0x3c0638, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Mom Piranha Flag 2", 0x3c063a, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Mom Piranha Flag 3", 0x3c063c, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Mom Piranha Flag 1", 0x3c0632, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Mom Piranha Flag 2", 0x3c0634, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Mom Piranha Flag 3", 0x3c0636, 0, 0x02000000, 0x00)
+    LocationData("Shop Mom Piranha Flag 1", 0x3c05fc, 3, 0x02000000, 0x00),
+    LocationData("Shop Mom Piranha Flag 2", 0x3c05fe, 3, 0x02000000, 0x00),
+    LocationData("Shop Mom Piranha Flag 3", 0x3c0600, 3, 0x02000000, 0x00),
+    LocationData("Shop Mom Piranha Flag 4", 0x3c0602, 3, 0x02000000, 0x00),
+    LocationData("Pants Shop Mom Piranha Flag 1", 0x3c0638, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Mom Piranha Flag 2", 0x3c063a, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Mom Piranha Flag 3", 0x3c063c, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Mom Piranha Flag 1", 0x3c0632, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Mom Piranha Flag 2", 0x3c0634, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Mom Piranha Flag 3", 0x3c0636, 2, 0x02000000, 0x00)
 ]
 
 kidnappedFlag: typing.List[LocationData] = [
-    LocationData("Badge Shop Peach Kidnapped Flag 1", 0x3c0640, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Peach Kidnapped Flag 2", 0x3c0642, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Peach Kidnapped Flag 3", 0x3c0644, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Peach Kidnapped Flag 1", 0x3c0646, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Peach Kidnapped Flag 2", 0x3c0648, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Peach Kidnapped Flag 3", 0x3c064a, 0, 0x02000000, 0x00),
-    LocationData("Shop Peach Kidnapped Flag 1", 0x3c0606, 0, 0x02000000, 0x00),
-    LocationData("Shop Peach Kidnapped Flag 2", 0x3c0608, 0, 0x02000000, 0x00)
+    LocationData("Badge Shop Peach Kidnapped Flag 1", 0x3c0640, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Peach Kidnapped Flag 2", 0x3c0642, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Peach Kidnapped Flag 3", 0x3c0644, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Peach Kidnapped Flag 1", 0x3c0646, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Peach Kidnapped Flag 2", 0x3c0648, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Peach Kidnapped Flag 3", 0x3c064a, 2, 0x02000000, 0x00),
+    LocationData("Shop Peach Kidnapped Flag 1", 0x3c0606, 3, 0x02000000, 0x00),
+    LocationData("Shop Peach Kidnapped Flag 2", 0x3c0608, 3, 0x02000000, 0x00)
 ]
 
 beanstarFlag: typing.List[LocationData] = [
-    LocationData("Badge Shop Beanstar Complete Flag 1", 0x3c064e, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Beanstar Complete Flag 2", 0x3c0650, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Beanstar Complete Flag 3", 0x3c0652, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Beanstar Complete Flag 1", 0x3c0654, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Beanstar Complete Flag 2", 0x3c0656, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Beanstar Complete Flag 3", 0x3c0658, 0, 0x02000000, 0x00),
-    LocationData("Shop Beanstar Complete Flag 1", 0x3c060c, 0, 0x02000000, 0x00),
-    LocationData("Shop Beanstar Complete Flag 2", 0x3c060e, 0, 0x02000000, 0x00),
-    LocationData("Shop Beanstar Complete Flag 3", 0x3c0610, 0, 0x02000000, 0x00)
+    LocationData("Badge Shop Beanstar Complete Flag 1", 0x3c064e, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Beanstar Complete Flag 2", 0x3c0650, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Beanstar Complete Flag 3", 0x3c0652, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Beanstar Complete Flag 1", 0x3c0654, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Beanstar Complete Flag 2", 0x3c0656, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Beanstar Complete Flag 3", 0x3c0658, 2, 0x02000000, 0x00),
+    LocationData("Shop Beanstar Complete Flag 1", 0x3c060c, 3, 0x02000000, 0x00),
+    LocationData("Shop Beanstar Complete Flag 2", 0x3c060e, 3, 0x02000000, 0x00),
+    LocationData("Shop Beanstar Complete Flag 3", 0x3c0610, 3, 0x02000000, 0x00)
 ]
 
 birdoFlag: typing.List[LocationData] = [
-    LocationData("Badge Shop Birdo Flag 1", 0x3c065c, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Birdo Flag 2", 0x3c065e, 0, 0x02000000, 0x00),
-    LocationData("Badge Shop Birdo Flag 3", 0x3c0660, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Birdo Flag 1", 0x3c0662, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Birdo Flag 2", 0x3c0664, 0, 0x02000000, 0x00),
-    LocationData("Pants Shop Birdo Flag 3", 0x3c0666, 0, 0x02000000, 0x00),
-    LocationData("Shop Birdo Flag", 0x3c0614, 0, 0x02000000, 0x00)
+    LocationData("Badge Shop Birdo Flag 1", 0x3c065c, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Birdo Flag 2", 0x3c065e, 2, 0x02000000, 0x00),
+    LocationData("Badge Shop Birdo Flag 3", 0x3c0660, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Birdo Flag 1", 0x3c0662, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Birdo Flag 2", 0x3c0664, 2, 0x02000000, 0x00),
+    LocationData("Pants Shop Birdo Flag 3", 0x3c0666, 2, 0x02000000, 0x00),
+    LocationData("Shop Birdo Flag", 0x3c0614, 3, 0x02000000, 0x00)
 ]
 
 winkle: typing.List[LocationData] = [
@@ -668,8 +668,8 @@ nonBlock: list[(int, int, int)] = [
     (0x42F9, 0x4, 0x1E9403),  # Hammers
     (0x434B, 0x10, 0x1E9435),  # Solo Mario Mole 1
     (0x434B, 0x20, 0x1E9436),  # Solo Mario Mole 2
-    (0x433E, 0x20, 0x1E9404),  # Super Hammers
-    (0x433E, 0x40, 0x1E9405),  # Ultra Hammers
+    (0x4359, 0x20, 0x1E9404),  # Super Hammers
+    (0x4359, 0x40, 0x1E9405),  # Ultra Hammers
     (0x42F9, 0x2, 0x1E9430),  # Rose
     (0x434B, 0x4, 0x242888),  # Solo Luigi Cave Mole
     (0x4373, 0x20, 0x277ab2),  # Hoohoo Village Turtle Mole
@@ -978,7 +978,7 @@ badge: dict[int, []] = {
 }
 
 pants: dict[int, []] = {
-    0x3c0618: [0x3c061C, 0x3c061E, 0x3c0620, 0x3c0626, 0x3c062a, 0x3c062c, 0x3c062e, 0x3c0638, 0x3c063a, 0x3c063c, 0x3c0646, 0x3c0648, 0x3c064a, 0x3c0654, 0x3c0656, 0x3c0658, 0x3c0662, 0x3c0664, 0x3c0666],
+    0x3c0618: [0x3c061C, 0x3c061E, 0x3c0620, 0x3c062a, 0x3c062c, 0x3c062e, 0x3c0638, 0x3c063a, 0x3c063c, 0x3c0646, 0x3c0648, 0x3c064a, 0x3c0654, 0x3c0656, 0x3c0658, 0x3c0662, 0x3c0664, 0x3c0666],
     0x3c0684: [0x3c068a, 0x3c068c, 0x3c068e, 0x3c0696, 0x3c0698, 0x3c06a0, 0x3c06a2]
 }
 

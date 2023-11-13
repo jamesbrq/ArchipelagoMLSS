@@ -8,6 +8,8 @@ from . import StateLogic
 def set_rules(world: MultiWorld, player: int):
     for location in all_locations:
         if "Digspot" in location.name:
+            if (world.skip_minecart[player] and "Minecart" in location.name) or (world.castle_skip[player] and "Bowser" in location.name):
+                continue
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
         if "Beanstone" in location.name:
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
@@ -166,8 +168,20 @@ def set_rules(world: MultiWorld, player: int):
              lambda state: StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.BeanstarPieceYoshiTheater, player),
              lambda state: StateLogic.neon(state, player))
-    add_rule(world.get_location(LocationName.BeanstarPieceYoshiTheater, player),
-             lambda state: StateLogic.neon(state, player))
+    add_rule(world.get_location(LocationName.YoshiTheaterAzureYoshi, player),
+             lambda state: StateLogic.beanFruit(state, player))
+    add_rule(world.get_location(LocationName.YoshiTheaterBlueYoshi, player),
+             lambda state: StateLogic.beanFruit(state, player))
+    add_rule(world.get_location(LocationName.YoshiTheaterGreenYoshi, player),
+             lambda state: StateLogic.beanFruit(state, player))
+    add_rule(world.get_location(LocationName.YoshiTheaterOrangeYoshi, player),
+             lambda state: StateLogic.beanFruit(state, player))
+    add_rule(world.get_location(LocationName.YoshiTheaterPurpleYoshi, player),
+             lambda state: StateLogic.beanFruit(state, player))
+    add_rule(world.get_location(LocationName.YoshiTheaterRedYoshi, player),
+             lambda state: StateLogic.beanFruit(state, player))
+    add_rule(world.get_location(LocationName.YoshiTheaterYellowYoshi, player),
+             lambda state: StateLogic.beanFruit(state, player))
     add_rule(world.get_location(LocationName.WinkleAreaBeanstarRoomBlock, player),
              lambda state: StateLogic.winkle(state, player))
     add_rule(world.get_location(LocationName.BeanstarPieceWinkleArea, player),

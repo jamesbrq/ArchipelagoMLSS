@@ -77,14 +77,11 @@ def winkle(state, player):
 
 
 def beanFruit(state, player):
-    return state.has("Beanfruit 1", player) and state.has("Beanfruit 2", player) and state.has("Beanfruit 3",
-                                                                                               player) and state.has(
-        "Beanfruit 4", player) and state.has("Beanfruit 5", player) and state.has("Beanfruit 6", player) and state.has(
-        "Beanfruit 7", player)
+    return state.has("Beanfruit 1", player) and state.has("Beanfruit 2", player) and state.has("Beanfruit 3", player) and state.has("Beanfruit 4", player) and state.has("Beanfruit 5", player) and state.has("Beanfruit 6", player) and state.has("Beanfruit 7", player)
 
 
 def surfable(state, player):
-    return ultra(state, player) and ((canDig(state, player) and canMini(state, player)) or membership(state, player))
+    return ultra(state, player) and ((canDig(state, player) and canMini(state, player)) or (membership(state, player) and fire(state, player)))
 
 
 def postJokes(state, player):
