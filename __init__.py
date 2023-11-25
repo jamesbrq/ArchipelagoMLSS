@@ -63,6 +63,14 @@ class MLSSWorld(World):
         create_regions(self.multiworld, self.player, self.excluded_locations)
         connect_regions(self.multiworld, self.player)
 
+    def generate_basic(self) -> None:
+        item = self.create_item("Mushroom")
+        self.multiworld.get_location(LocationName.ShopStartingFlag1, self.player).place_locked_item(item)
+        item = self.create_item("Syrup")
+        self.multiworld.get_location(LocationName.ShopStartingFlag2, self.player).place_locked_item(item)
+        item = self.create_item("1-UP Mushroom")
+        self.multiworld.get_location(LocationName.ShopStartingFlag3, self.player).place_locked_item(item)
+
     def create_items(self) -> None:
         # First add in all progression and useful items
         required_items = []
@@ -112,12 +120,14 @@ class MLSSWorld(World):
         rom = Rom(self.multiworld, self.player)
 
         for location_name in location_table.keys():
-            if (self.multiworld.skip_minecart[self.player] and "Minecart" in location_name) or (self.multiworld.castle_skip[self.player] and "Bowser" in location_name) or (self.multiworld.disable_surf[self.player] and "Surf Minigame" in location_name):
+            if (self.multiworld.skip_minecart[self.player] and "Minecart" in location_name and "After" not in location_name) or (self.multiworld.castle_skip[self.player] and "Bowser" in location_name) or (self.multiworld.disable_surf[self.player] and "Surf Minigame" in location_name):
                 continue
             location = self.multiworld.get_location(location_name, self.player)
             item = location.item
             address = [address for address in all_locations if address.name == location.name]
             rom.item_inject(location.address, address[0].itemType, item)
+            if "Shop" in location_name and item.player != self.player:
+                dummy = 0
 
         rom.patch_options()
 

@@ -4,6 +4,9 @@ import sys
 import hashlib
 import bsdiff4
 import pkgutil
+import Utils
+import settings
+
 
 from worlds.Files import APDeltaPatch
 from settings import get_settings
@@ -53,10 +56,19 @@ pants = [
 
 
 def get_base_rom_as_bytes() -> bytes:
-    with open("Mario & Luigi - Superstar Saga (U).gba", "rb") as infile:
+    with open(get_base_rom_path("Mario & Luigi - Superstar Saga (U).gba"), "rb") as infile:
         base_rom_bytes = bytes(infile.read())
 
     return base_rom_bytes
+
+
+def get_base_rom_path(file_name: str = "") -> str:
+    options: settings.Settings = settings.get_settings()
+    if not file_name:
+        file_name = options["mlss_options"]["rom_file"]
+    if not os.path.exists(file_name):
+        file_name = Utils.user_path(file_name)
+    return file_name
 
 
 class MLSSDeltaPatch(APDeltaPatch):
@@ -554,6 +566,7 @@ class Rom:
                 if len(temp_group.data) > 0:
                     self.stream.seek(location + 4)
                     self.stream.write(temp_group.data)
+
 
     def close(self, path):
         output_path = os.path.join(path, f"AP_{self.world.seed_name}_P{self.player}.gba")

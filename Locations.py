@@ -731,6 +731,7 @@ nonBlock: list[(int, int, int)] = [
     (0x434D, 0x40, 0x1e9442),  # Yellow Neon Egg
     (0x4345, 0x8, 0x1e9408),  # Firebrand
     (0x4345, 0x4, 0x1e9409),  # Thunder Hand
+    (0x42FF, 0x80, 0x251071),  # Beanstone Reward
 ]
 
 roomException: dict[int, int] = {

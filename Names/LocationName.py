@@ -525,3 +525,6 @@ class LocationName():
     BowsersCastleLemmyRoomMole = "Bowser's Castle Lemmy Room Mole"
     SurfMinigame = "Surf Minigame"
     BeanbeanOutskirtsThunderHandMole = "Beanbean Outskirts Thunder Hand Mole"
+    BadgeShopMomPiranhaFlag1 = "Badge Shop Mom Piranha Flag 1"
+    BadgeShopMomPiranhaFlag2 = "Badge Shop Mom Piranha Flag 2"
+    BadgeShopMomPiranhaFlag3 = "Badge Shop Mom Piranha Flag 3"

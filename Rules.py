@@ -64,6 +64,8 @@ def set_rules(world: MultiWorld, player: int):
              lambda state: StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsEDigspot2, player),
              lambda state: StateLogic.thunder(state, player))
+    add_rule(world.get_location(LocationName.BeanbeanOutskirtsSRoom2Block1, player),
+             lambda state: StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsNorthBeachDigspot3, player),
              lambda state: StateLogic.canDash(state, player))
     add_rule(world.get_location(LocationName.WoohooHooniversityMiniMarioPuzzleSecretAreaBlock1, player),
@@ -188,3 +190,15 @@ def set_rules(world: MultiWorld, player: int):
              lambda state: StateLogic.winkle(state, player))
     add_rule(world.get_location(LocationName.GwarharLagoonSpangleReward, player),
              lambda state: StateLogic.spangle(state, player))
+    add_rule(world.get_location(LocationName.PantsShopMomPiranhaFlag1, player),
+             lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
+    add_rule(world.get_location(LocationName.PantsShopMomPiranhaFlag2, player),
+             lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
+    add_rule(world.get_location(LocationName.PantsShopMomPiranhaFlag3, player),
+             lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
+    add_rule(world.get_location(LocationName.BadgeShopMomPiranhaFlag1, player),
+             lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
+    add_rule(world.get_location(LocationName.BadgeShopMomPiranhaFlag2, player),
+             lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
+    add_rule(world.get_location(LocationName.BadgeShopMomPiranhaFlag3, player),
+             lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
