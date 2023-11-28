@@ -132,15 +132,16 @@ class MLSSClient(BizHawkClient):
             # Checking shop purchases
             if is_buy:
                 await bizhawk.write(ctx.bizhawk_ctx, [(0x304B, [0x0], "EWRAM")])
-                if shop_address != 0x3c0618 and shop_address != 0x3c0684:
-                    location = shop[shop_address][shop_scroll]
-                else:
-                    if shop_init & 0x1 != 0:
-                        location = badge[shop_address][shop_scroll]
+                if shop_init <= 0x81:
+                    if shop_address != 0x3c0618 and shop_address != 0x3c0684:
+                        location = shop[shop_address][shop_scroll]
                     else:
-                        location = pants[shop_address][shop_scroll]
-                if location in ctx.server_locations:
-                    locs_to_send.add(location)
+                        if shop_init & 0x1 != 0:
+                            location = badge[shop_address][shop_scroll]
+                        else:
+                            location = pants[shop_address][shop_scroll]
+                    if location in ctx.server_locations:
+                        locs_to_send.add(location)
 
             # Checking flags that aren't digspots or blocks
             for item in nonBlock:

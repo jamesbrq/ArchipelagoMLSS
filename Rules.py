@@ -5,7 +5,7 @@ from .Locations import all_locations
 from . import StateLogic
 
 
-def set_rules(world: MultiWorld, player: int):
+def set_rules(world: MultiWorld, player: int, excluded):
     for location in all_locations:
         if "Digspot" in location.name:
             if (world.skip_minecart[player] and "Minecart" in location.name) or (world.castle_skip[player] and "Bowser" in location.name):
@@ -13,7 +13,7 @@ def set_rules(world: MultiWorld, player: int):
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
         if "Beanstone" in location.name:
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
-        if "Shop" in location.name:
+        if "Shop" in location.name and location not in excluded:
             forbid_item(world.get_location(location.name, player), "Hammers", player)
 
     add_rule(world.get_location(LocationName.HoohooVillageHammerHouseBlock, player),

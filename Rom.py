@@ -10,9 +10,10 @@ import settings
 
 from worlds.Files import APDeltaPatch
 from settings import get_settings
-from BaseClasses import MultiWorld, Item
+from BaseClasses import MultiWorld, Item, Location
 from .Items import item_table
-from .Enemies import enemies, bosses, EnemyRandomize, Enemy, EnemyGroup, StatCount
+from .Enemies import enemies, bosses, EnemyRandomize, Enemy, EnemyGroup
+from .Locations import shop, badge, pants
 
 
 class Color:
@@ -39,7 +40,7 @@ colors = [
     "TrueChaos"
 ]
 
-pants = [
+cpants = [
     "Vanilla",
     "Red",
     "Green",
@@ -183,8 +184,6 @@ class Rom:
 
     def patch_options(self):
         name = self.world.player_name[self.player].encode("UTF-8")
-        print(name)
-        print(self.player)
         self.stream.seek(0xB0, 0)
         self.stream.write(name)
         self.stream.seek(0xAF, 0)
@@ -258,8 +257,8 @@ class Rom:
 
         self.swap_colors(colors[self.world.mario_color[self.player]], 0)
         self.swap_colors(colors[self.world.luigi_color[self.player]], 1)
-        self.swap_pants(pants[self.world.mario_pants[self.player]], 0)
-        self.swap_pants(pants[self.world.luigi_pants[self.player]], 1)
+        self.swap_pants(cpants[self.world.mario_pants[self.player]], 0)
+        self.swap_pants(cpants[self.world.luigi_pants[self.player]], 1)
 
     def enemy_randomize(self):
         enemy_data = EnemyRandomize()
@@ -453,12 +452,11 @@ class Rom:
                             type_list.append(0x3)
 
             if len(enemy_data.stardustGroups) < 3:
-                enemy_data.stardustGroups.append(EnemyGroup(id_list, type_list, temp_size, script, special))
+                enemy_data.stardustGroups.append(EnemyGroup(bytes(id_list), bytes(type_list), temp_size, script, special))
             else:
-                enemy_data.groups.append(EnemyGroup(id_list, type_list, temp_size, script, special))
+                enemy_data.groups.append(EnemyGroup(bytes(id_list), bytes(type_list), temp_size, script, special))
 
             if len(enemy_data.stardustGroups) == 3 and not no_spike:
-                print("here")
                 enemies_copy.extend(spiked_copy)
                 self.random.shuffle(enemies_copy)
                 no_spike = True
@@ -494,7 +492,7 @@ class Rom:
                     break
             stream_seek_position = boss_val + 1
             self.stream.seek(stream_seek_position, os.SEEK_SET)
-            enemy_data.bossGroups.append(EnemyGroup(id, types, self.stream.read(1), data, boss))
+            enemy_data.bossGroups.append(EnemyGroup(bytes(id), bytes(types), self.stream.read(1)[0], data, boss))
 
         return enemy_data
 
@@ -520,14 +518,15 @@ class Rom:
                 count += 1
                 temp_group = enemy_data.groups[0]
                 enemy_data.groups = enemy_data.groups[1:]
+                self.stream.seek(location + 1, 0)
+                b = temp_group.position.to_bytes(1, byteorder='big')
+                self.stream.write(b)
                 for i in range(6):
                     if i < len(temp_group.id):
                         self.stream.seek(location + 8 + (i * 4))
                         self.stream.write(bytes([temp_group.id[i]]))
                         self.stream.seek(1, os.SEEK_CUR)
                         self.stream.write(bytes([temp_group.type[i]]))
-                        self.stream.seek(location + 1)
-                        self.stream.write(bytes([temp_group.position]))
                     else:
                         self.stream.seek(location + 8 + (i * 4))
                         self.stream.write(bytes([0]))
@@ -545,17 +544,17 @@ class Rom:
                     continue
                 self.random.shuffle(enemy_data.bossGroups)
                 count += 1
-                print(len(enemy_data.bossGroups))
                 temp_group = enemy_data.bossGroups[0]
                 enemy_data.bossGroups = enemy_data.bossGroups[1:]
+                self.stream.seek(location + 1, 0)
+                b = temp_group.position.to_bytes(1, byteorder='big')
+                self.stream.write(b)
                 for i in range(6):
                     if i < len(temp_group.id):
                         self.stream.seek(location + 8 + (i * 4))
                         self.stream.write(bytes([temp_group.id[i]]))
                         self.stream.seek(1, os.SEEK_CUR)
                         self.stream.write(bytes([temp_group.type[i]]))
-                        self.stream.seek(location + 1)
-                        self.stream.write(bytes([temp_group.position[0]]))
                     else:
                         self.stream.seek(location + 8 + (i * 4))
                         self.stream.write(bytes([0]))
@@ -567,9 +566,43 @@ class Rom:
                     self.stream.seek(location + 4)
                     self.stream.write(temp_group.data)
 
+    def desc_inject(self, location: Location, item: Item):
+        index = -1
+        for key, value in shop.items():
+            if location.address in value:
+                match key:
+                    case 0x3C05f0:
+                        index = value.index(location.address)
+                    case _:
+                        index = value.index(location.address) + 14
+
+        for key, value in badge.items():
+            if index != -1:
+                break
+            if location.address in value:
+                match key:
+                    case 0x3C0618:
+                        index = value.index(location.address) + 24
+                    case _:
+                        index = value.index(location.address) + 41
+
+        for key, value in pants.items():
+            if index != -1:
+                break
+            if location.address in value:
+                match key:
+                    case 0x3C0618:
+                        index = value.index(location.address) + 48
+                    case _:
+                        index = value.index(location.address) + 66
+
+        dstring = f"{self.world.player_name[item.player]}: {item.name}"
+        self.stream.seek(0xD11000 + (index * 0x40), 0)
+        self.stream.write(dstring.encode("UTF8"))
+
 
     def close(self, path):
-        output_path = os.path.join(path, f"AP_{self.world.seed_name}_P{self.player}.gba")
+        output_path = os.path.join(path, f"AP_{self.world.seed_name}_P{self.player}_{self.world.player_name[self.player]}.gba")
         with open(output_path, 'wb') as outfile:
             outfile.write(self.stream.getvalue())
         patch = MLSSDeltaPatch(os.path.splitext(output_path)[0] + ".apmlss", player=self.player,

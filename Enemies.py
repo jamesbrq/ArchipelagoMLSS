@@ -1,5 +1,5 @@
 class EnemyGroup:
-    def __init__(self, id: bytes, type: bytes, position, data: bytes, boss, group_type=0x64):
+    def __init__(self, id: bytes, type: bytes, position: int, data: bytes, boss, group_type=0x64):
         self.id = id
         self.type = type
         self.position = position

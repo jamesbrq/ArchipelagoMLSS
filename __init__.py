@@ -94,7 +94,7 @@ class MLSSWorld(World):
                     freq = 1
                 filler_items += [item.itemName for _ in range(freq)]
 
-        remaining = len(all_locations) - len(required_items)
+        remaining = len(all_locations) - len(required_items) - 3
         if self.multiworld.castle_skip[self.player]:
             remaining -= (len(bowsers) + len(bowsersMini))
         if self.multiworld.skip_minecart[self.player]:
@@ -108,7 +108,7 @@ class MLSSWorld(World):
             filler_items.remove(filler_item_name)
 
     def set_rules(self) -> None:
-        set_rules(self.multiworld, self.player)
+        set_rules(self.multiworld, self.player, self.excluded_locations)
         self.multiworld.completion_condition[self.player] = \
             lambda state: state.can_reach("PostJokes", "Region", self.player)
 
@@ -126,9 +126,8 @@ class MLSSWorld(World):
             item = location.item
             address = [address for address in all_locations if address.name == location.name]
             rom.item_inject(location.address, address[0].itemType, item)
-            if "Shop" in location_name and item.player != self.player:
-                dummy = 0
-
+            if "Shop" in location_name and "Coffee" not in location_name and item.player != self.player:
+                rom.desc_inject(location, item)
         rom.patch_options()
 
         rom.close(output_directory)
