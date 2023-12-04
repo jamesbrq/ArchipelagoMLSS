@@ -202,3 +202,7 @@ def set_rules(world: MultiWorld, player: int, excluded):
              lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
     add_rule(world.get_location(LocationName.BadgeShopMomPiranhaFlag3, player),
              lambda state: StateLogic.brooch(state, player) or StateLogic.rose(state, player))
+    add_rule(world.get_location(LocationName.ChateauGreenGoblet, player),
+             lambda state: StateLogic.brooch(state, player) and StateLogic.canDig(state, player))
+    add_rule(world.get_location(LocationName.ChateauRedGoblet, player),
+             lambda state: StateLogic.brooch(state, player) and StateLogic.canMini(state, player))

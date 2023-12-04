@@ -155,7 +155,7 @@ class MLSSClient(BizHawkClient):
                     return
                 if flag_byte & mask != 0:
                     if location in roomException:
-                        if roomException[location] == room:
+                        if roomException[location] != room:
                             exception = True
                         else:
                             exception = False

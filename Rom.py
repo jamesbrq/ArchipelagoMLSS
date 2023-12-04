@@ -150,6 +150,12 @@ class Rom:
         if item_type == 0:
             self.stream.seek(location, 0)
             self.stream.write(bytes([code]))
+            if self.world.hidden_visible[self.player]:
+                self.stream.seek(location - 6, 0)
+                b = self.stream.read(1)
+                if b[0] == 0x10:
+                    self.stream.seek(location - 6, 0)
+                    self.stream.write(bytes([0x0]))
         elif item_type == 1:
             if code == 0x1D or code == 0x1E:
                 code += 0xE

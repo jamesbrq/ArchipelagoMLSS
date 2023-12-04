@@ -5,7 +5,7 @@ from worlds.generic.Rules import add_rule, set_rule
 from .Locations import MLSSLocation, mainArea, chucklehuck, castleTown, startingFlag, chuckolatorFlag, piranhaFlag, \
     kidnappedFlag, beanstarFlag, birdoFlag, surfable, hooniversity, gwarharEntrance, gwarharMain, \
     fungitown, fungitownBeanstar, fungitownBirdo, teeheeValley, winkle, sewers, airport, \
-    bowsers, bowsersMini, jokesEntrance, jokesMain, theater, booStatue, oasis, postJokes, baseUltraRocks
+    bowsers, bowsersMini, jokesEntrance, jokesMain, theater, booStatue, oasis, postJokes, baseUltraRocks, event
 from . import StateLogic
 from .Names.LocationName import LocationName
 
@@ -91,6 +91,10 @@ def create_regions(world: MultiWorld, player: int, excluded: typing.List[str]):
 
     oasis_region = create_region(world, player, "Oasis", oasis, excluded)
     world.regions.append(oasis_region)
+
+    event_region = create_region(world, player, "Event", event, excluded)
+    world.regions.append(event_region)
+
     if not world.castle_skip[player]:
         bowsers_region = create_region(world, player, "Bowser's Castle", bowsers, excluded)
         world.regions.append(bowsers_region)
@@ -105,6 +109,7 @@ def connect_regions(world: MultiWorld, player: int):
     names: typing.Dict[str, int] = {}
 
     connect(world, player, names, "Menu", "Main Area")
+    connect(world, player, names, "Main Area", "Event")
     connect(world, player, names, "Main Area", "BaseUltraRocks", lambda state: StateLogic.ultra(state, player))
     connect(world, player, names, "Main Area", "Chucklehuck Woods", lambda state: StateLogic.brooch(state, player))
     connect(world, player, names, "Main Area", "BooStatue", lambda state: StateLogic.canCrash(state, player))

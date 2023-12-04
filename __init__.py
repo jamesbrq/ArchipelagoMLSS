@@ -2,7 +2,7 @@ import typing
 import settings
 from BaseClasses import Tutorial, ItemClassification
 from ..AutoWorld import WebWorld, World
-from .Locations import all_locations, location_table, bowsers, bowsersMini
+from .Locations import all_locations, location_table, bowsers, bowsersMini, event
 from .Options import mlss_options
 from .Regions import create_regions, connect_regions
 from .Rules import set_rules
@@ -70,13 +70,31 @@ class MLSSWorld(World):
         self.multiworld.get_location(LocationName.ShopStartingFlag2, self.player).place_locked_item(item)
         item = self.create_item("1-UP Mushroom")
         self.multiworld.get_location(LocationName.ShopStartingFlag3, self.player).place_locked_item(item)
+        item = self.create_item("Dragohoho Defeated")
+        self.multiworld.get_location("Dragohoho", self.player).place_locked_item(item)
+        item = self.create_item("Queen Bean Defeated")
+        self.multiworld.get_location("Queen Bean", self.player).place_locked_item(item)
+        item = self.create_item("Chuckolator Defeated")
+        self.multiworld.get_location("Chuckolator", self.player).place_locked_item(item)
+        item = self.create_item("Popple 2 Defeated")
+        self.multiworld.get_location("Popple 2", self.player).place_locked_item(item)
+        item = self.create_item("Mom Piranha Defeated")
+        self.multiworld.get_location("Mom Piranha", self.player).place_locked_item(item)
+        item = self.create_item("Entered Fungitown")
+        self.multiworld.get_location("Fungitown", self.player).place_locked_item(item)
+        item = self.create_item("Beanstar Complete")
+        self.multiworld.get_location("Beanstar", self.player).place_locked_item(item)
+        item = self.create_item("Jojora Defeated")
+        self.multiworld.get_location("Jojora", self.player).place_locked_item(item)
+        item = self.create_item("Birdo Defeated")
+        self.multiworld.get_location("Birdo", self.player).place_locked_item(item)
 
     def create_items(self) -> None:
         # First add in all progression and useful items
         required_items = []
         precollected = [item for item in itemList if item in self.multiworld.precollected_items[self.player]]
         for item in itemList:
-            if item.progression != ItemClassification.filler and item not in precollected:
+            if item.progression != ItemClassification.filler and item.progression != ItemClassification.skip_balancing and item not in precollected:
                 freq = item_frequencies.get(item.itemName, 1)
                 if freq is None:
                     freq = 1
@@ -94,7 +112,7 @@ class MLSSWorld(World):
                     freq = 1
                 filler_items += [item.itemName for _ in range(freq)]
 
-        remaining = len(all_locations) - len(required_items) - 3
+        remaining = len(all_locations) - len(required_items) - len(event) - 3
         if self.multiworld.castle_skip[self.player]:
             remaining -= (len(bowsers) + len(bowsersMini))
         if self.multiworld.skip_minecart[self.player]:
@@ -123,6 +141,8 @@ class MLSSWorld(World):
             if (self.multiworld.skip_minecart[self.player] and "Minecart" in location_name and "After" not in location_name) or (self.multiworld.castle_skip[self.player] and "Bowser" in location_name) or (self.multiworld.disable_surf[self.player] and "Surf Minigame" in location_name):
                 continue
             location = self.multiworld.get_location(location_name, self.player)
+            if location in self.multiworld.get_region("Event", self.player).locations:
+                continue
             item = location.item
             address = [address for address in all_locations if address.name == location.name]
             rom.item_inject(location.address, address[0].itemType, item)

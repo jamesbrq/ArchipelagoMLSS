@@ -606,8 +606,8 @@ jokesMain: typing.List[LocationData] = [
     LocationData("Jokes End Furnace Room 1 Block 3", 0x39e71f, 0, 0x02000000, 0x00),
     LocationData("Jokes End Northeast of Boiler Room 1 Block", 0x39e732, 0, 0x02000000, 0x00),
     LocationData("Jokes End Northeast of Boiler Room 3 Digspot", 0x39e73f, 0, 0x02000000, 0x00),
-    LocationData("Jokes End Northeast of Boiler Room 2 Block 1", 0x39e74c, 0, 0x02000000, 0x00),
-    LocationData("Jokes End Northeast of Boiler Room 2 Block 2", 0x39e754, 0, 0x02000000, 0x00),
+    LocationData("Jokes End Northeast of Boiler Room 2 Block", 0x39e74c, 0, 0x02000000, 0x00),
+    LocationData("Jokes End Northeast of Boiler Room 2 Digspot", 0x39e754, 0, 0x02000000, 0x00),
     LocationData("Jokes End Second Floor East Room Digspot", 0x39e794, 0, 0x02000000, 0x00),
     LocationData("Jokes End Final Split up Room Digspot", 0x39e7a7, 0, 0x02000000, 0x00),
     LocationData("Jokes End South of Bridge Room Block", 0x39e7b4, 0, 0x02000000, 0x00),
@@ -659,6 +659,18 @@ oasis: typing.List[LocationData] = [
     LocationData("Oho Ocean Spike Room Digspot 2", 0x39e092, 0, 0x02000000, 0x00),
     LocationData("Oho Oasis Firebrand", 0x1e9408, 2, 0x02000000, 0x00),
     LocationData("Oho Oasis Thunderhand", 0x1e9409, 2, 0x02000000, 0x00)
+]
+
+event: typing.List[LocationData] = [
+    LocationData("Dragohoho", 0xDA0000, 0, 0x02000000, 0x00),
+    LocationData("Queen Bean", 0xDA0001, 0, 0x02000000, 0x00),
+    LocationData("Chuckolator", 0xDA0002, 0, 0x02000000, 0x00),
+    LocationData("Popple 2", 0xDA0003, 0, 0x02000000, 0x00),
+    LocationData("Mom Piranha", 0xDA0004, 0, 0x02000000, 0x00),
+    LocationData("Fungitown", 0xDA0005, 0, 0x02000000, 0x00),
+    LocationData("Beanstar", 0xDA0006, 2, 0x02000000, 0x00),
+    LocationData("Jojora", 0xDA0007, 2, 0x02000000, 0x00),
+    LocationData("Birdo", 0xDA0008, 2, 0x02000000, 0x00)
 ]
 
 nonBlock: list[(int, int, int)] = [
@@ -732,16 +744,26 @@ nonBlock: list[(int, int, int)] = [
     (0x4345, 0x8, 0x1e9408),  # Firebrand
     (0x4345, 0x4, 0x1e9409),  # Thunder Hand
     (0x42FF, 0x80, 0x251071),  # Beanstone Reward
+    (0x42F9, 0x2, 0x0),  # Dragohoho
+    (0x4741, 0x1, 0x1),  # Queen Bean
+    (0x433D, 0x1, 0x2),  # Chuckolator
+    (0x43FC, 0x80, 0x3),  # Popple 2
+    (0x433D, 0x2, 0x4),  # Mom Piranha
+    (0x4342, 0x10, 0x5),  # Fungitowm
+    (0x433D, 0x8, 0x6),  # Beanstar
+    (0x430F, 0x40, 0x7),  # Jojora
+    (0x433D, 0x10, 0x8)  # Birdo
 ]
 
 roomException: dict[int, int] = {
-    0x1e9437: 0x10A,
-    0x24ed74: 0x8C,
-    0x250621: 0x9B,
-    0x24ff18: 0x98,
-    0x261658: 0x181,
-    0x260637: 0x137,
-    0x1E9403: 0x27
+    0x1e9437: 0xFF,
+    0x24ed74: 0x95,
+    0x250621: 0x95,
+    0x24ff18: 0x95,
+    0x261658: 0x9E,
+    0x260637: 0x135,
+    0x1E9403: 0x4D,
+    0x1: 0x40
 }
 
 beanstones: dict[int, int] = {
@@ -987,6 +1009,6 @@ all_locations: typing.List[LocationData] = mainArea + booStatue + chucklehuck + 
                                            chuckolatorFlag + piranhaFlag + kidnappedFlag + beanstarFlag + birdoFlag + \
                                            winkle + sewers + hooniversity + surfable + airport + gwarharEntrance + \
                                            teeheeValley + fungitown + fungitownBeanstar + fungitownBirdo + bowsers + \
-                                           jokesEntrance + jokesMain + postJokes + theater + oasis + gwarharMain + bowsersMini + baseUltraRocks
+                                           jokesEntrance + jokesMain + postJokes + theater + oasis + gwarharMain + bowsersMini + baseUltraRocks + event
 
 location_table: typing.Dict[str, int] = {locData.name: locData.id for locData in all_locations}

@@ -196,6 +196,13 @@ class RandomizeBackgrounds(Toggle):
     display_name = "Randomize Battle Backgrounds"
 
 
+class HiddenVisible(Toggle):
+    """
+    This makes any hidden blocks in the game into regular item blocks.
+    """
+    display_name = "Hidden Blocks Visible"
+
+
 mlss_options: typing.Dict[str, type(Option)] = {
     "start_inventory_from_pool": StartInventoryPool,
     "skip_intro": IntroSkip,
@@ -203,6 +210,7 @@ mlss_options: typing.Dict[str, type(Option)] = {
     "castle_start": CastleStart,
     "skip_minecart": SkipMinecart,
     "disable_surf": DisableSurf,
+    "hidden_visible": HiddenVisible,
     "randomize_music": RandomMusic,
     "disable_music": DisableMusic,
     "randomize_sounds": RandomSounds,

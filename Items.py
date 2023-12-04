@@ -156,7 +156,16 @@ itemList: typing.List[ItemData] = [
     ItemData(77771139, "Great Force", ItemClassification.useful, 0xFB),
     ItemData(77771140, "Power Grip", ItemClassification.useful, 0xFC),
     ItemData(77771141, "Cobalt Necktie", ItemClassification.useful, 0xFD),
-    ItemData(77771142, "Gameboy Horror SP", ItemClassification.useful, 0xFE)
+    ItemData(77771142, "Gameboy Horror SP", ItemClassification.useful, 0xFE),
+    ItemData(77771143, "Dragohoho Defeated", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771144, "Queen Bean Defeated", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771145, "Chuckolator Defeated", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771146, "Popple 2 Defeated", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771147, "Mom Piranha Defeated", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771148, "Entered Fungitown", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771149, "Beanstar Complete", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771150, "Jojora Defeated", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771151, "Birdo Defeated", ItemClassification.skip_balancing, 0x0)
 ]
 
 item_frequencies: typing.Dict[str, int] = {
