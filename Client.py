@@ -212,6 +212,14 @@ class MLSSClient(BizHawkClient):
                     "status": ClientStatus.CLIENT_GOAL
                 }])
 
+            await ctx.send_msgs([{
+                "cmd": "Set",
+                "key": "room",
+                "default": 0,
+                "want_reply": False,
+                "operations": [{"operation": "replace", "value": room}]
+            }])
+
             # Send locations if there are any to send.
             if locs_to_send != self.local_checked_locations:
                 self.local_checked_locations = locs_to_send
