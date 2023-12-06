@@ -54,6 +54,7 @@ class MLSSWorld(World):
     excluded_locations = []
 
     def generate_early(self) -> None:
+        self.excluded_locations = []
         if self.multiworld.skip_minecart[self.player]:
             self.excluded_locations += [LocationName.HoohooMountainBaseMinecartCaveDigspot]
         if self.multiworld.disable_surf[self.player]:
@@ -62,6 +63,13 @@ class MLSSWorld(World):
     def create_regions(self) -> None:
         create_regions(self.multiworld, self.player, self.excluded_locations)
         connect_regions(self.multiworld, self.player)
+
+    def fill_slot_data(self) -> dict:
+        return {
+            "castle_skip": self.multiworld.castle_skip[self.player].value,
+            "skip_minecart": self.multiworld.skip_minecart[self.player].value,
+            "disable_surf": self.multiworld.disable_surf[self.player].value
+        }
 
     def generate_basic(self) -> None:
         item = self.create_item("Mushroom")
