@@ -22,15 +22,78 @@ class MLSSLocation(Location):
     game: str = "Mario & Luigi Superstar Saga"
 
 
+hidden: typing.List[int] = [
+    0x39D8C5,
+    0x39D90F,
+    0x39D9E9,
+    0x39DB02,
+    0x39DAB5,
+    0x39DB0F,
+    0x39DB2A,
+    0x39DB32,
+    0x39DBBC,
+    0x39DBE1,
+    0x39DC65,
+    0x39DC5D,
+    0x39DC82,
+    0x39DCC4,
+    0x39DCE1,
+    0x39DD13,
+    0x39DDF6,
+    0x39DEA8,
+    0x39DED7,
+    0x39DF63,
+    0x39E077,
+    0x39E092,
+    0x39E0CD,
+    0x39E0FA,
+    0x39E102,
+    0x39E187,
+    0x39E1BC,
+    0x39E1C9,
+    0x39E1E3,
+    0x39E21D,
+    0x39E232,
+    0x39E2DC,
+    0x39E2E9,
+    0x39E316,
+    0x39E343,
+    0x39E370,
+    0x39E396,
+    0x39E3D1,
+    0x39E3F3,
+    0x39E462,
+    0x39E477,
+    0x39E51E,
+    0x39E5B5,
+    0x39E5C8,
+    0x39E5D0,
+    0x39E5F0,
+    0x39E5FD,
+    0x39E6C2,
+    0x39E6CF,
+    0x39E702,
+    0x39E857,
+    0x39E8A3,
+    0x39E91A,
+    0x39E944,
+    0x39E959,
+    0x39E983,
+    0x39E9A0,
+    0x39EC40,
+    0x39EC4D
+]
+
+
 mainArea: typing.List[LocationData] = [
-    LocationData("Stardust Fields 1 Block 1", 0x39d65d, 0, 0x02000000, 0x00),
-    LocationData("Stardust Fields 1 Block 2", 0x39d665, 0, 0x02000000, 0x00),
-    LocationData("Stardust Fields 2 Block", 0x39d678, 0, 0x02000000, 0x00),
-    LocationData("Stardust Fields 3 Block", 0x39d6ad, 0, 0x02000000, 0x00),
-    LocationData("Stardust Fields 4 Block 1", 0x39d6ca, 0, 0x02000000, 0x00),
-    LocationData("Stardust Fields 4 Block 2", 0x39d6c2, 0, 0x02000000, 0x00),
-    LocationData("Stardust Fields 4 Block 3", 0x39d6ba, 0, 0x02000000, 0x00),
-    LocationData("Stardust Fields 5 Block", 0x39d713, 0, 0x02000000, 0x00),
+    LocationData("Stardust Fields Room 1 Block 1", 0x39d65d, 0, 0x02000000, 0x00),
+    LocationData("Stardust Fields Room 1 Block 2", 0x39d665, 0, 0x02000000, 0x00),
+    LocationData("Stardust Fields Room 2 Block", 0x39d678, 0, 0x02000000, 0x00),
+    LocationData("Stardust Fields Room 3 Block", 0x39d6ad, 0, 0x02000000, 0x00),
+    LocationData("Stardust Fields Room 4 Block 1", 0x39d6ca, 0, 0x02000000, 0x00),
+    LocationData("Stardust Fields Room 4 Block 2", 0x39d6c2, 0, 0x02000000, 0x00),
+    LocationData("Stardust Fields Room 4 Block 3", 0x39d6ba, 0, 0x02000000, 0x00),
+    LocationData("Stardust Fields Room 5 Block", 0x39d713, 0, 0x02000000, 0x00),
     LocationData("Hoohoo Village Hammer House Block", 0x39d731, 0, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Below Summit Block 1", 0x39d873, 0, 0x02000000, 0x00),
     LocationData("Hoohoo Mountain Below Summit Block 2", 0x39d87b, 0, 0x02000000, 0x00),
@@ -273,22 +336,22 @@ castleTown: typing.List[LocationData] = [
     LocationData("Beanbean Castle Town Right Side House Block 3", 0x39d7e8, 0, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Right Side House Block 4", 0x39d7f0, 0, 0x02000000, 0x00),
     LocationData("Beanbean Castle Peach's Extra Dress", 0x1e9433, 2, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Fake Beastar", 0x1e9432, 2, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Fake Beanstar", 0x1e9432, 2, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanlet 1", 0x251347, 1, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanlet 2", 0x2513fb, 1, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanlet 3", 0x2513a1, 1, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanlet 4", 0x251988, 1, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanlet 5", 0x25192e, 1, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanstone 1", 0x25117d, 1, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanstone 2", 0x2511d6, 1, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanstone 1", 0x251288, 1, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanstone 2", 0x2512e1, 1, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanstone 3", 0x25122f, 1, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanstone 4", 0x251288, 1, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanstone 5", 0x2512e1, 1, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanstone 6", 0x2517c3, 1, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanstone 7", 0x25181f, 1, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanstone 4", 0x25117d, 1, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanstone 5", 0x2511d6, 1, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanstone 6", 0x25170b, 1, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanstone 7", 0x251767, 1, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanstone 8", 0x25187b, 1, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanstone 9", 0x25170b, 1, 0x02000000, 0x00),
-    LocationData("Beanbean Castle Town Beanstone 10", 0x251767, 1, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanstone 9", 0x2517c3, 1, 0x02000000, 0x00),
+    LocationData("Beanbean Castle Town Beanstone 10", 0x25181f, 1, 0x02000000, 0x00),
     LocationData("Coffee Shop Brew Reward 1", 0x253515, 1, 0x02000000, 0x00),
     LocationData("Coffee Shop Brew Reward 2", 0x253776, 1, 0x02000000, 0x00),
     LocationData("Coffee Shop Brew Reward 3", 0x253c70, 1, 0x02000000, 0x00),
@@ -305,6 +368,16 @@ castleTown: typing.List[LocationData] = [
     LocationData("Coffee Shop Teeheespresso", 0x252dcd, 1, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanstone Reward", 0x251071, 1, 0x02000000, 0x00),
     LocationData("Beanbean Castle Town Beanlet Reward", 0x2515eb, 1, 0x02000000, 0x00)
+]
+
+eReward: typing.List[int] = [
+    0x253515,
+    0x253776,
+    0x253c70,
+    0x254324,
+    0x254718,
+    0x254a34,
+    0x254e24
 ]
 
 startingFlag: typing.List[LocationData] = [
@@ -472,7 +545,9 @@ gwarharEntrance: typing.List[LocationData] = [
     LocationData("Gwarhar Lagoon First Underwater Area Room 2 Block 1", 0x39e445, 0, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon First Underwater Area Room 2 Block 2", 0x39e44d, 0, 0x02000000, 0x00),
     LocationData("Gwarhar Lagoon Red Pearl Bean", 0x235c1c, 1, 0x02000000, 0x00),
-    LocationData("Gwarhar Lagoon Green Pearl Bean", 0x235a5b, 1, 0x02000000, 0x00)
+    LocationData("Gwarhar Lagoon Green Pearl Bean", 0x235a5b, 1, 0x02000000, 0x00),
+    LocationData("Oho Ocean South Room 1 Block", 0x39e06a, 0, 0x02000000, 0x00),
+    LocationData("Oho Ocean South Room 2 Digspot", 0x39e077, 0, 0x02000000, 0x00)
 ]
 
 gwarharMain: typing.List[LocationData] = [
@@ -653,8 +728,6 @@ theater: typing.List[LocationData] = [
 oasis: typing.List[LocationData] = [
     LocationData("Oho Oasis West Digspot", 0x39df9f, 0, 0x02000000, 0x00),
     LocationData("Oho Oasis Fire Palace Block", 0x39dfbe, 0, 0x02000000, 0x00),
-    LocationData("Oho Ocean South Room 1 Block", 0x39e06a, 0, 0x02000000, 0x00),
-    LocationData("Oho Ocean South Room 2 Digspot", 0x39e077, 0, 0x02000000, 0x00),
     LocationData("Oho Ocean Spike Room Digspot 1", 0x39e08a, 0, 0x02000000, 0x00),
     LocationData("Oho Ocean Spike Room Digspot 2", 0x39e092, 0, 0x02000000, 0x00),
     LocationData("Oho Oasis Firebrand", 0x1e9408, 2, 0x02000000, 0x00),
@@ -722,7 +795,7 @@ nonBlock: list[(int, int, int)] = [
     (0x430B, 0x10, 0x1e9432),  # Fake Beanstar
     (0x430F, 0x1, 0x1e9440),  # Popple Beanstar Piece
     (0x430C, 0x80, 0x261658),  # Winkle Card
-    (0x4741, 0x1, 0x2578e7),  # Brooch
+    (0x4300, 0x40, 0x2578e7),  # Brooch
     (0x4375, 0x2, 0x2753ea),  # Surf Minigame
     (0x4373, 0x1, 0x277956),  # North Whirlpool Mole
     (0x4346, 0x40, 0x235a5b),  # Green Pearl Bean
@@ -745,7 +818,7 @@ nonBlock: list[(int, int, int)] = [
     (0x4345, 0x4, 0x1e9409),  # Thunder Hand
     (0x42FF, 0x80, 0x251071),  # Beanstone Reward
     (0x42F9, 0x2, 0xDA0000),  # Dragohoho
-    (0x4741, 0x1, 0xDA0001),  # Queen Bean
+    (0x4300, 0x40, 0xDA0001),  # Queen Bean
     (0x433D, 0x1, 0xDA0002),  # Chuckolator
     (0x43FC, 0x80, 0xDA0003),  # Popple 2
     (0x433D, 0x2, 0xDA0004),  # Mom Piranha
@@ -762,7 +835,9 @@ roomException: dict[int, int] = {
     0x24ff18: 0x95,
     0x261658: 0x9E,
     0x260637: 0x135,
-    0x1E9403: 0x4D
+    0x1E9403: 0x4D,
+    0xDA0001: 0x192,
+    0x2578e7: 0x192
 }
 
 beanstones: dict[int, int] = {

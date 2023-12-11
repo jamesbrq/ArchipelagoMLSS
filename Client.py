@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Optional, Dict, Set, List
 import struct
 from BaseClasses import MultiWorld
 from NetUtils import ClientStatus
-from .Locations import roomCount, nonBlock, beanstones, roomException, shop, badge, pants
+from .Locations import roomCount, nonBlock, beanstones, roomException, shop, badge, pants, eReward
 from .Items import items_by_id, ItemData
 from collections import defaultdict
 import sys
@@ -54,6 +54,8 @@ class MLSSClient(BizHawkClient):
     goal_flag: int
     rom_slot_name: Optional[str]
     player: int
+    eCount: int
+    eUsed: [int]
     player_name: Optional[str]
     checked_flags: dict[int, list] = {}
 
@@ -64,6 +66,8 @@ class MLSSClient(BizHawkClient):
         self.local_found_key_items = {}
         self.rom_slot_name = None
         self.lock = asyncio.Lock
+        self.eCount = 0
+        self.eUsed = []
 
     async def validate_rom(self, ctx: BizHawkClientContext) -> bool:
         from CommonClient import logger
@@ -161,6 +165,13 @@ class MLSSClient(BizHawkClient):
                             exception = False
                     else:
                         exception = True
+
+                    if location in eReward:
+                        if location not in self.eUsed:
+                            self.eUsed += [location]
+                            location = eReward[len(self.eUsed) - 1]
+                        else:
+                            continue
                     if (location in ctx.server_locations) and exception:
                         locs_to_send.add(location)
 

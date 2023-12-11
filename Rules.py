@@ -1,7 +1,7 @@
 from worlds.generic.Rules import add_rule, forbid_item
 from BaseClasses import MultiWorld
 from .Names.LocationName import LocationName
-from .Locations import all_locations
+from .Locations import all_locations, hidden
 from . import StateLogic
 
 
@@ -10,11 +10,45 @@ def set_rules(world: MultiWorld, player: int, excluded):
         if "Digspot" in location.name:
             if (world.skip_minecart[player] and "Minecart" in location.name) or (world.castle_skip[player] and "Bowser" in location.name):
                 continue
+            if world.chuckle_beans[player] == 0 or world.chuckle_beans[player] == 1 and location.id in hidden:
+                continue
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
         if "Beanstone" in location.name:
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
         if "Shop" in location.name and location not in excluded:
             forbid_item(world.get_location(location.name, player), "Hammers", player)
+
+    if world.chuckle_beans[player] == 2:
+        add_rule(world.get_location(LocationName.HoohooVillageSuperHammerCaveDigspot, player),
+                 lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
+        add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomDigspot2, player),
+                 lambda state: StateLogic.thunder(state, player))
+        add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomDigspot3, player),
+                 lambda state: StateLogic.thunder(state, player))
+        add_rule(world.get_location(LocationName.ChucklehuckWoodsWhiteFruitRoomDigspot3, player),
+                 lambda state: StateLogic.canMini(state, player))
+        add_rule(world.get_location(LocationName.JokesEndJojoraRoomDigspot, player),
+                 lambda state: StateLogic.canDash(state, player))
+
+    if world.chuckle_beans[player] == 1 or world.chuckle_beans[player] == 2:
+        add_rule(world.get_location(LocationName.HoohooMountainBaseBoostatueRoomDigspot2, player),
+                 lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
+        add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomDigspot1, player),
+                 lambda state: StateLogic.thunder(state, player))
+        add_rule(world.get_location(LocationName.ChucklehuckWoodsWhiteFruitRoomDigspot2, player),
+                 lambda state: StateLogic.canMini(state, player))
+        add_rule(world.get_location(LocationName.TeeheeValleyPastUltraHammersDigspot1, player),
+                 lambda state: StateLogic.ultra(state, player))
+        add_rule(world.get_location(LocationName.TeeheeValleyPastUltraHammersDigspot3, player),
+                 lambda state: StateLogic.ultra(state, player))
+        add_rule(world.get_location(LocationName.BeanbeanOutskirtsNorthBeachDigspot3, player),
+                 lambda state: StateLogic.canDash(state, player) or StateLogic.super(state, player))
+        add_rule(world.get_location(LocationName.BeanbeanOutskirtsEDigspot2, player),
+                 lambda state: StateLogic.thunder(state, player))
+        add_rule(world.get_location(LocationName.BeanbeanOutskirtsNEDigspot1, player),
+                 lambda state: StateLogic.thunder(state, player))
+        add_rule(world.get_location(LocationName.BeanbeanOutskirtsSRoom1Digspot2, player),
+                 lambda state: StateLogic.ultra(state, player) and StateLogic.thunder(state, player))
 
     add_rule(world.get_location(LocationName.HoohooVillageHammerHouseBlock, player),
              lambda state: StateLogic.hammers(state, player))
@@ -22,18 +56,8 @@ def set_rules(world: MultiWorld, player: int, excluded):
              lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsBooStatueMole, player),
              lambda state: StateLogic.canMini(state, player) and StateLogic.canDig(state, player))
-    add_rule(world.get_location(LocationName.HoohooMountainBaseBoostatueRoomDigspot2, player),
-             lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
     add_rule(world.get_location(LocationName.HoohooVillageSuperHammerCaveBlock, player),
              lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
-    add_rule(world.get_location(LocationName.HoohooVillageSuperHammerCaveDigspot, player),
-             lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
-    add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomDigspot1, player),
-             lambda state: StateLogic.thunder(state, player))
-    add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomDigspot2, player),
-             lambda state: StateLogic.thunder(state, player))
-    add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomDigspot3, player),
-             lambda state: StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomMoleReward1, player),
              lambda state: StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsFarmRoomMoleReward2, player),
@@ -58,16 +82,8 @@ def set_rules(world: MultiWorld, player: int, excluded):
              lambda state: StateLogic.teehee(state, player) and StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsSRoom1Block, player),
              lambda state: StateLogic.ultra(state, player) and StateLogic.thunder(state, player))
-    add_rule(world.get_location(LocationName.BeanbeanOutskirtsSRoom1Digspot2, player),
-             lambda state: StateLogic.ultra(state, player) and StateLogic.thunder(state, player))
-    add_rule(world.get_location(LocationName.BeanbeanOutskirtsNEDigspot1, player),
-             lambda state: StateLogic.thunder(state, player))
-    add_rule(world.get_location(LocationName.BeanbeanOutskirtsEDigspot2, player),
-             lambda state: StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.BeanbeanOutskirtsSRoom2Block1, player),
              lambda state: StateLogic.canDig(state, player))
-    add_rule(world.get_location(LocationName.BeanbeanOutskirtsNorthBeachDigspot3, player),
-             lambda state: StateLogic.canDash(state, player))
     add_rule(world.get_location(LocationName.WoohooHooniversityMiniMarioPuzzleSecretAreaBlock1, player),
              lambda state: StateLogic.canMini(state, player))
     add_rule(world.get_location(LocationName.WoohooHooniversityMiniMarioPuzzleSecretAreaBlock2, player),
@@ -112,14 +128,16 @@ def set_rules(world: MultiWorld, player: int, excluded):
              lambda state: StateLogic.fruits(state, player))
     add_rule(world.get_location(LocationName.ChucklehuckWoodsAfterChucklerootBlock6, player),
              lambda state: StateLogic.fruits(state, player))
-    add_rule(world.get_location(LocationName.ChucklehuckWoodsWhiteFruitRoomDigspot2, player),
-             lambda state: StateLogic.canMini(state, player))
-    add_rule(world.get_location(LocationName.ChucklehuckWoodsWhiteFruitRoomDigspot3, player),
-             lambda state: StateLogic.canMini(state, player))
     add_rule(world.get_location(LocationName.ChucklehuckWoodsRoom7Block1, player),
              lambda state: StateLogic.hammers(state, player))
     add_rule(world.get_location(LocationName.ChucklehuckWoodsRoom7Block2, player),
              lambda state: StateLogic.hammers(state, player))
+    add_rule(world.get_location(LocationName.ChucklehuckWoodsRoom4Block1, player),
+             lambda state: StateLogic.canMini(state, player))
+    add_rule(world.get_location(LocationName.ChucklehuckWoodsRoom4Block2, player),
+             lambda state: StateLogic.canMini(state, player))
+    add_rule(world.get_location(LocationName.ChucklehuckWoodsRoom4Block3, player),
+             lambda state: StateLogic.canMini(state, player))
     add_rule(world.get_location(LocationName.ChucklehuckWoodsPipeRoomBlock1, player),
              lambda state: StateLogic.hammers(state, player))
     add_rule(world.get_location(LocationName.ChucklehuckWoodsPipeRoomBlock2, player),
@@ -152,18 +170,12 @@ def set_rules(world: MultiWorld, player: int, excluded):
              lambda state: StateLogic.fire(state, player) and StateLogic.thunder(state, player))
     add_rule(world.get_location(LocationName.GwarharLagoonGreenPearlBean, player),
              lambda state: StateLogic.fire(state, player) and StateLogic.thunder(state, player))
-    add_rule(world.get_location(LocationName.TeeheeValleyPastUltraHammersDigspot1, player),
-             lambda state: StateLogic.ultra(state, player))
-    add_rule(world.get_location(LocationName.TeeheeValleyPastUltraHammersDigspot3, player),
-             lambda state: StateLogic.ultra(state, player))
     add_rule(world.get_location(LocationName.TeeheeValleyPastUltraHammersBlock1, player),
              lambda state: StateLogic.ultra(state, player))
     add_rule(world.get_location(LocationName.TeeheeValleyPastUltraHammersBlock2, player),
              lambda state: StateLogic.ultra(state, player))
     add_rule(world.get_location(LocationName.TeeheeValleySoloLuigiMazeRoom1Block, player),
              lambda state: StateLogic.ultra(state, player))
-    add_rule(world.get_location(LocationName.JokesEndJojoraRoomDigspot, player),
-             lambda state: StateLogic.canDash(state, player))
     add_rule(world.get_location(LocationName.OhoOasisFirebrand, player),
              lambda state: StateLogic.canMini(state, player))
     add_rule(world.get_location(LocationName.OhoOasisThunderhand, player),

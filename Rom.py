@@ -284,43 +284,47 @@ class Rom:
             self.stream.write(bytes([self.random.randint(0x0, 0x26)]))
 
     def randomize_sounds(self):
+        pointers = []
         sounds = []
         self.stream.seek(0x21CC44)
-        while True:
-            current_pos = self.stream.tell()
-            temp2 = self.stream.read(4)
-            self.stream.seek(temp2[0] | temp2[1] << 8 | temp2[2] << 16)
-            temp_byte = 0x0
-            while temp_byte != 0xFF:
-                temp_byte = self.stream.read(1)[0]
-            if self.stream.read(1)[0] == 0xFF:
-                self.stream.seek(current_pos + 4)
+        for i in range(353):
+            p_arr = bytearray(self.stream.read(4))
+            pointers.append(p_arr[0] | p_arr[1] << 8 | p_arr[2] << 16)
+            pointers.sort(reverse=True)
+
+        for i in range(len(pointers) - 1, -1, -1):
+            if i == 0:
                 continue
-            if self.stream.tell() >= 0x21D1CC:
-                break
-            if current_pos == 0x21CDFC:
-                self.stream.seek(current_pos + 4)
-                continue
-            self.stream.seek(current_pos)
-            temp = self.stream.read(4)
-            sounds.append(temp)
+            j = 1
+            while True:
+                self.stream.seek(pointers[i - 1] - j)
+                read_byte = self.stream.read(1)
+                if read_byte != b'\xFF':
+                    j += 1
+                    continue
+                else:
+                    break
+            self.stream.seek(pointers[i - 1] - (j + 1))
+            if self.stream.read(1) >= b'\xFE' and i != 0:
+                pointers.pop(i)
+            else:
+                temp = bytearray([
+                    pointers[i] & 0xFF,
+                    (pointers[i] >> 8) & 0xFF,
+                    (pointers[i] >> 16) & 0xFF,
+                    0x8
+                ])
+                sounds.append(temp)
+
         self.random.shuffle(sounds)
         self.stream.seek(0x21CC44)
-        for i in range(len(sounds) - 1, -1, -1):
+        for i in range(len(pointers)):
             current_pos = self.stream.tell()
-            temp2 = self.stream.read(4)
-            self.stream.seek(temp2[0] | temp2[1] << 8 | temp2[2] << 16)
-            temp = 0x0
-            while temp != 0xFF:
-                temp = self.stream.read(1)[0]
-            if self.stream.read(1)[0] == 0xFF:
-                self.stream.seek(current_pos + 4)
-                continue
-            if current_pos == 0x21CDFC:
-                self.stream.seek(current_pos + 4)
+            p_arr = bytearray(self.stream.read(4))
+            if (p_arr[0] | p_arr[1] << 8 | p_arr[2] << 16) not in pointers:
                 continue
             self.stream.seek(current_pos)
-            self.stream.write(sounds[i])
+            self.stream.write(self.random.choice(sounds))
 
     def disable_music(self):
         self.stream.seek(0x19B118)

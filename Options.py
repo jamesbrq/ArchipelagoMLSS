@@ -203,6 +203,27 @@ class HiddenVisible(Toggle):
     display_name = "Hidden Blocks Visible"
 
 
+class HarhallsPants(Toggle):
+    """
+    This will remove the Harhall's Pants check from the pool.
+    """
+    display_name = "Remove Harhall's Pants"
+
+
+class ChuckleBeans(Choice):
+    """
+    Choose how you want chuckle bean digspots to be randomized.
+    none: No chuckle bean digspots will be added into the item pool.
+    only_visible: Only chuckle bean digspots clearly marked with an X will be added into the item pool.
+    all: All chuckle bean digspots will be added into the item pool.
+    """
+    display_name = "Chuckle Beans"
+    option_none = 0
+    option_only_visible = 1
+    option_all = 2
+    default = 2
+
+
 mlss_options: typing.Dict[str, type(Option)] = {
     "start_inventory_from_pool": StartInventoryPool,
     "skip_intro": IntroSkip,
@@ -210,7 +231,9 @@ mlss_options: typing.Dict[str, type(Option)] = {
     "castle_start": CastleStart,
     "skip_minecart": SkipMinecart,
     "disable_surf": DisableSurf,
+    "harhalls_pants": HarhallsPants,
     "hidden_visible": HiddenVisible,
+    "chuckle_beans": ChuckleBeans,
     "randomize_music": RandomMusic,
     "disable_music": DisableMusic,
     "randomize_sounds": RandomSounds,

@@ -1,8 +1,9 @@
 import typing
 import settings
+from typing import Dict, Any
 from BaseClasses import Tutorial, ItemClassification
 from ..AutoWorld import WebWorld, World
-from .Locations import all_locations, location_table, bowsers, bowsersMini, event
+from .Locations import all_locations, location_table, bowsers, bowsersMini, event, hidden
 from .Options import mlss_options
 from .Regions import create_regions, connect_regions
 from .Rules import set_rules
@@ -55,10 +56,16 @@ class MLSSWorld(World):
 
     def generate_early(self) -> None:
         self.excluded_locations = []
+        if self.multiworld.chuckle_beans[self.player] == 0:
+            self.excluded_locations += [location.name for location in all_locations if "Digspot" in location.name]
+        if self.multiworld.chuckle_beans[self.player] == 1:
+            self.excluded_locations = [location.name for location in all_locations if location.id in hidden]
         if self.multiworld.skip_minecart[self.player]:
             self.excluded_locations += [LocationName.HoohooMountainBaseMinecartCaveDigspot]
         if self.multiworld.disable_surf[self.player]:
             self.excluded_locations += [LocationName.SurfMinigame]
+        if self.multiworld.harhalls_pants[self.player]:
+            self.excluded_locations += [LocationName.HarhallsPants]
 
     def create_regions(self) -> None:
         create_regions(self.multiworld, self.player, self.excluded_locations)
@@ -66,10 +73,10 @@ class MLSSWorld(World):
 
     def fill_slot_data(self) -> dict:
         return {
-            "castle_skip": self.multiworld.castle_skip[self.player].value,
-            "skip_minecart": self.multiworld.skip_minecart[self.player].value,
-            "disable_surf": self.multiworld.disable_surf[self.player].value,
-            "room": 0
+            "CastleSkip": self.multiworld.castle_skip[self.player].value,
+            "SkipMinecart": self.multiworld.skip_minecart[self.player].value,
+            "DisableSurf": self.multiworld.disable_surf[self.player].value,
+            "HarhallsPants": self.multiworld.harhalls_pants[self.player].value
         }
 
     def generate_basic(self) -> None:
@@ -107,6 +114,8 @@ class MLSSWorld(World):
                 freq = item_frequencies.get(item.itemName, 1)
                 if freq is None:
                     freq = 1
+                if self.multiworld.harhalls_pants[self.player] and "Harhall's" in item.itemName:
+                    continue
                 required_items += [item.itemName for _ in range(freq)]
 
         for itemName in required_items:
@@ -117,6 +126,12 @@ class MLSSWorld(World):
         for item in itemList:
             if item.progression == ItemClassification.filler:
                 freq = item_frequencies.get(item.itemName)
+                if self.multiworld.chuckle_beans[self.player] == 0:
+                    if item.itemName == "Chuckle Bean":
+                        continue
+                if self.multiworld.chuckle_beans[self.player] == 1:
+                    if item.itemName == "Chuckle Bean":
+                        freq -= 59
                 if freq is None:
                     freq = 1
                 filler_items += [item.itemName for _ in range(freq)]
@@ -128,6 +143,12 @@ class MLSSWorld(World):
             remaining -= 1
         if self.multiworld.disable_surf[self.player]:
             remaining -= 1
+        if self.multiworld.harhalls_pants[self.player]:
+            remaining -= 1
+        if self.multiworld.chuckle_beans[self.player] == 0:
+            remaining -= 186
+        if self.multiworld.chuckle_beans[self.player] == 1:
+            remaining -= 58
         for i in range(remaining):
             filler_item_name = self.multiworld.random.choice(filler_items)
             item = self.create_item(filler_item_name)
@@ -147,7 +168,9 @@ class MLSSWorld(World):
         rom = Rom(self.multiworld, self.player)
 
         for location_name in location_table.keys():
-            if (self.multiworld.skip_minecart[self.player] and "Minecart" in location_name and "After" not in location_name) or (self.multiworld.castle_skip[self.player] and "Bowser" in location_name) or (self.multiworld.disable_surf[self.player] and "Surf Minigame" in location_name):
+            if (self.multiworld.skip_minecart[self.player] and "Minecart" in location_name and "After" not in location_name) or (self.multiworld.castle_skip[self.player] and "Bowser" in location_name) or (self.multiworld.disable_surf[self.player] and "Surf Minigame" in location_name) or (self.multiworld.harhalls_pants[self.player] and "Harhall's" in location_name):
+                continue
+            if (self.multiworld.chuckle_beans[self.player] == 0 and "Digspot" in location_name) or (self.multiworld.chuckle_beans[self.player] == 1 and location_table[location_name] in hidden):
                 continue
             location = self.multiworld.get_location(location_name, self.player)
             if location in self.multiworld.get_region("Event", self.player).locations:

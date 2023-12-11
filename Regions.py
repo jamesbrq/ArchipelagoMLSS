@@ -117,7 +117,7 @@ def connect_regions(world: MultiWorld, player: int):
     connect(world, player, names, "Hooniversity", "Oasis")
     connect(world, player, names, "Main Area", "TeeheeValley", lambda state: StateLogic.super(state, player) or StateLogic.canDash(state, player))
     connect(world, player, names, "TeeheeValley", "GwarharEntrance", lambda state: StateLogic.membership(state, player) and StateLogic.fire(state, player))
-    connect(world, player, names, "TeeheeValley", "Oasis", lambda state: StateLogic.membership(state, player))
+    connect(world, player, names, "TeeheeValley", "Oasis", lambda state: StateLogic.membership(state, player) and StateLogic.fire(state, player))
     connect(world, player, names, "TeeheeValley", "Fungitown", lambda state: StateLogic.thunder(state, player) and StateLogic.castleTown(state, player) and StateLogic.rose(state, player))
     connect(world, player, names, "Fungitown", "FungitownBeanstar", lambda state: StateLogic.pieces(state, player) or state.can_reach("FungitownBirdo", "Region", player))
     connect(world, player, names, "Fungitown", "FungitownBirdo", lambda state: StateLogic.postJokes(state, player))
