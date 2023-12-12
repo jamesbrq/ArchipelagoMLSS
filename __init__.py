@@ -76,7 +76,8 @@ class MLSSWorld(World):
             "CastleSkip": self.multiworld.castle_skip[self.player].value,
             "SkipMinecart": self.multiworld.skip_minecart[self.player].value,
             "DisableSurf": self.multiworld.disable_surf[self.player].value,
-            "HarhallsPants": self.multiworld.harhalls_pants[self.player].value
+            "HarhallsPants": self.multiworld.harhalls_pants[self.player].value,
+            "ChuckleBeans": self.multiworld.chuckle_beans[self.player].value
         }
 
     def generate_basic(self) -> None:
