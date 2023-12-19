@@ -116,7 +116,7 @@ class MLSSClient(BizHawkClient):
         from CommonClient import logger
         try:
             read_state = await bizhawk.read(ctx.bizhawk_ctx, [(0x4564, 59, "EWRAM"),
-                                                              (0x2330, 2, "IWRAM"), (0x3FE0, 1, "IWRAM"), (0x3FE4, 1, "IWRAM"), (0x304B, 1, "EWRAM"), (0x304C, 4, "EWRAM"), (0x4800, 6, "EWRAM"), (0x4808, 2, "EWRAM"), (0x4407, 1, "EWRAM")])
+                                                              (0x2330, 2, "IWRAM"), (0x3FE0, 1, "IWRAM"), (0x304A, 1, "EWRAM"), (0x304B, 1, "EWRAM"), (0x304C, 4, "EWRAM"), (0x4800, 6, "EWRAM"), (0x4808, 2, "EWRAM"), (0x4407, 1, "EWRAM"), (0x2339, 1, "IWRAM")])
             flags = read_state[0]
             room = (read_state[1][1] << 8) + read_state[1][0]
             shop_init = read_state[2][0]
@@ -126,6 +126,7 @@ class MLSSClient(BizHawkClient):
             logo = bytes([byte for byte in read_state[6] if byte < 0x70]).decode("UTF-8")
             received_index = (read_state[7][0] << 8) + read_state[7][1]
             cackletta = (read_state[8][0] & 0x40)
+            shopping = (read_state[9][0] & 0xF)
 
             if logo != "MLSSAP":
                 return
@@ -135,23 +136,54 @@ class MLSSClient(BizHawkClient):
 
             # Checking shop purchases
             if is_buy:
-                await bizhawk.write(ctx.bizhawk_ctx, [(0x304B, [0x0], "EWRAM")])
-                if shop_init <= 0x81:
-                    if shop_address != 0x3c0618 and shop_address != 0x3c0684:
-                        location = shop[shop_address][shop_scroll]
+                await bizhawk.write(ctx.bizhawk_ctx, [(0x304A, [0x0, 0x0], "EWRAM")])
+                if shop_address != 0x3c0618 and shop_address != 0x3c0684:
+                    location = shop[shop_address][shop_scroll]
+                else:
+                    if shop_init & 0x1 != 0:
+                        location = badge[shop_address][shop_scroll]
                     else:
-                        if shop_init & 0x1 != 0:
-                            location = badge[shop_address][shop_scroll]
-                        else:
-                            location = pants[shop_address][shop_scroll]
-                    if location in ctx.server_locations:
-                        locs_to_send.add(location)
+                        location = pants[shop_address][shop_scroll]
+                if location in ctx.server_locations:
+                    locs_to_send.add(location)
+
+            for i in range(len(ctx.items_received) - received_index):
+                item_data = items_by_id[ctx.items_received[received_index + i].item]
+                b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
+                await asyncio.sleep(.05)
+                if b[0][0] == 0:
+                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(received_index + i + 1) // 0x100, (received_index + i + 1) % 0x100], "EWRAM")])
+                else:
+                    break
+
+            '''for i, item in enumerate(ctx.items_received):
+                if i < received_index:
+                    i += 1
+                    continue
+                item_data = items_by_id[item.item]
+                b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
+                await asyncio.sleep(.05)
+                if b[0][0] == 0:
+                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(i + 1) // 0x100, (i + 1) % 0x100], "EWRAM")])
+                else:
+                    break '''
+
+            if shopping & 0x3 == 0x3:
+                if locs_to_send != self.local_checked_locations:
+                    self.local_checked_locations = locs_to_send
+
+                    if locs_to_send is not None:
+                        await ctx.send_msgs([{
+                            "cmd": "LocationChecks",
+                            "locations": list(locs_to_send)
+                        }])
+                return
 
             # Checking flags that aren't digspots or blocks
             for item in nonBlock:
-                if is_buy:
-                    break
                 address, mask, location = item
+                if location in self.local_checked_locations:
+                    continue
                 flag_bytes = await bizhawk.read(ctx.bizhawk_ctx, [(address, 1, "EWRAM"), (0x4800, 6, "EWRAM")])
                 flag_byte = flag_bytes[0][0]
                 backup_logo = bytes([byte for byte in flag_bytes[1] if byte < 0x70]).decode("UTF-8")
@@ -160,7 +192,10 @@ class MLSSClient(BizHawkClient):
                 if flag_byte & mask != 0:
                     if location in roomException:
                         if roomException[location] != room:
-                            exception = True
+                            if (location == 0xDA0001 or location == 0x2578e7) and room == 0x79:
+                                exception = False
+                            else:
+                                exception = True
                         else:
                             exception = False
                     else:
@@ -177,8 +212,6 @@ class MLSSClient(BizHawkClient):
 
             # Check for set location flags.
             for byte_i, byte in enumerate(bytearray(flags)):
-                if is_buy:
-                    break
                 for j in range(8):
                     if j in self.checked_flags[byte_i]:
                         continue
@@ -202,20 +235,6 @@ class MLSSClient(BizHawkClient):
                         if pointer in ctx.server_locations:
                             self.checked_flags[byte_i] += [j]
                             locs_to_send.add(pointer)
-
-            for i, item in enumerate(ctx.items_received):
-                if is_buy:
-                    break
-                if i < received_index:
-                    i += 1
-                    continue
-                item_data = items_by_id[item.item]
-                b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
-                await asyncio.sleep(.05)
-                if b[0][0] == 0:
-                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(i + 1) // 0x100, (i + 1) % 0x100], "EWRAM")])
-                else:
-                    break
 
             if not ctx.finished_game and cackletta != 0:
                 await ctx.send_msgs([{

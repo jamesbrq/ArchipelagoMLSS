@@ -5,7 +5,7 @@ from worlds.generic.Rules import add_rule, set_rule
 from .Locations import MLSSLocation, mainArea, chucklehuck, castleTown, startingFlag, chuckolatorFlag, piranhaFlag, \
     kidnappedFlag, beanstarFlag, birdoFlag, surfable, hooniversity, gwarharEntrance, gwarharMain, \
     fungitown, fungitownBeanstar, fungitownBirdo, teeheeValley, winkle, sewers, airport, \
-    bowsers, bowsersMini, jokesEntrance, jokesMain, theater, booStatue, oasis, postJokes, baseUltraRocks, event
+    bowsers, bowsersMini, jokesEntrance, jokesMain, theater, booStatue, oasis, postJokes, baseUltraRocks, event, coins
 from . import StateLogic
 from .Names.LocationName import LocationName
 
@@ -95,6 +95,10 @@ def create_regions(world: MultiWorld, player: int, excluded: typing.List[str]):
     event_region = create_region(world, player, "Event", event, excluded)
     world.regions.append(event_region)
 
+    if world.coins[player]:
+        coins_region = create_region(world, player, "Coins", coins, excluded)
+        world.regions.append(coins_region)
+
     if not world.castle_skip[player]:
         bowsers_region = create_region(world, player, "Bowser's Castle", bowsers, excluded)
         world.regions.append(bowsers_region)
@@ -110,6 +114,8 @@ def connect_regions(world: MultiWorld, player: int):
 
     connect(world, player, names, "Menu", "Main Area")
     connect(world, player, names, "Main Area", "Event")
+    if world.coins[player]:
+        connect(world, player, names, "Main Area", "Coins")
     connect(world, player, names, "Main Area", "BaseUltraRocks", lambda state: StateLogic.ultra(state, player))
     connect(world, player, names, "Main Area", "Chucklehuck Woods", lambda state: StateLogic.brooch(state, player))
     connect(world, player, names, "Main Area", "BooStatue", lambda state: StateLogic.canCrash(state, player))
@@ -134,14 +140,18 @@ def connect_regions(world: MultiWorld, player: int):
     connect(world, player, names, "Surfable", "GwarharEntrance")
     connect(world, player, names, "Surfable", "Oasis")
     connect(world, player, names, "Surfable", "JokesEntrance", lambda state: StateLogic.fire(state, player))
-    connect(world, player, names, "JokesEntrance", "JokesMain", lambda state: StateLogic.canCrash(state, player) and StateLogic.canDig(state, player))
     connect(world, player, names, "JokesMain", "PostJokes", lambda state: StateLogic.postJokes(state, player))
     if not world.castle_skip[player]:
         connect(world, player, names, "PostJokes", "Bowser's Castle")
-        connect(world, player, names, "Bowser's Castle", "Bowser's Castle Mini", lambda state: StateLogic.canMini(state, player))
+        connect(world, player, names, "Bowser's Castle", "Bowser's Castle Mini", lambda state: StateLogic.canMini(state, player) and StateLogic.thunder(state, player))
     connect(world, player, names, "Chucklehuck Woods", "Winkle", lambda state: StateLogic.canDash(state, player))
     connect(world, player, names, "Chucklehuck Woods", "Beanbean Castle Town", lambda state: StateLogic.fruits(state, player))
-    connect(world, player, names, "GwarharEntrance", "GwarharMain", lambda state: StateLogic.canDash(state, player) and StateLogic.canCrash(state, player))
+    if world.difficult_logic[player]:
+        connect(world, player, names, "GwarharEntrance", "GwarharMain", lambda state: StateLogic.canDash(state, player))
+        connect(world, player, names, "JokesEntrance", "JokesMain", lambda state: StateLogic.canDig(state, player))
+    else:
+        connect(world, player, names, "GwarharEntrance", "GwarharMain", lambda state: StateLogic.canDash(state, player) and StateLogic.canCrash(state, player))
+        connect(world, player, names, "JokesEntrance", "JokesMain", lambda state: StateLogic.canCrash(state, player) and StateLogic.canDig(state, player))
 
 
 def create_region(world, player, name, locations, excluded):

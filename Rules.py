@@ -15,8 +15,10 @@ def set_rules(world: MultiWorld, player: int, excluded):
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
         if "Beanstone" in location.name:
             add_rule(world.get_location(location.name, player), lambda state: StateLogic.canDig(state, player))
-        if "Shop" in location.name and location not in excluded:
+        if "Shop" in location.name and "Coffee" not in location.name and location.name not in excluded:
             forbid_item(world.get_location(location.name, player), "Hammers", player)
+        if location.itemType != 0 and location.name not in excluded:
+            forbid_item(world.get_location(location.name, player), "5 Coins", player)
 
     if world.chuckle_beans[player] == 2:
         add_rule(world.get_location(LocationName.HoohooVillageSuperHammerCaveDigspot, player),
@@ -218,3 +220,55 @@ def set_rules(world: MultiWorld, player: int, excluded):
              lambda state: StateLogic.brooch(state, player) and StateLogic.canDig(state, player))
     add_rule(world.get_location(LocationName.ChateauRedGoblet, player),
              lambda state: StateLogic.brooch(state, player) and StateLogic.canMini(state, player))
+    if world.difficult_logic[player]:
+        add_rule(world.get_location(LocationName.GwarharLagoonSpangleReward, player),
+                 lambda state: StateLogic.canCrash(state, player))
+        add_rule(world.get_location(LocationName.BeanstarPieceHermie, player),
+                 lambda state: StateLogic.canCrash(state, player))
+        add_rule(world.get_location(LocationName.GwarharLagoonPastHermieDigspot, player),
+                 lambda state: StateLogic.canCrash(state, player))
+
+    if world.coins[player]:
+        add_rule(world.get_location("Hoohoo Mountain Base Boo Statue Cave Coin Block 1", player),
+                 lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
+        add_rule(world.get_location("Hoohoo Mountain Base Boo Statue Cave Coin Block 2", player),
+                 lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
+        add_rule(world.get_location("Hoohoo Mountain Base Boo Statue Cave Coin Block 3", player),
+                 lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
+        add_rule(world.get_location("Beanbean Outskirts NW Coin Block", player),
+                 lambda state: StateLogic.super(state, player))
+        add_rule(world.get_location("Beanbean Outskirts S Room 1 Coin Block", player),
+                 lambda state: StateLogic.ultra(state, player) and StateLogic.thunder(state, player))
+        add_rule(world.get_location("Beanbean Outskirts S Room 2 Coin Block", player),
+                 lambda state: StateLogic.canCrash(state, player))
+        add_rule(world.get_location("Chateau Popple Room Coin Block 1", player),
+                 lambda state: StateLogic.brooch(state, player))
+        add_rule(world.get_location("Chateau Popple Room Coin Block 2", player),
+                 lambda state: StateLogic.brooch(state, player))
+        add_rule(world.get_location("Chucklehuck Woods Cave Room 1 Coin Block", player),
+                 lambda state: StateLogic.brooch(state, player))
+        add_rule(world.get_location("Chucklehuck Woods Cave Room 2 Coin Block", player),
+                 lambda state: StateLogic.brooch(state, player))
+        add_rule(world.get_location("Chucklehuck Woods Cave Room 3 Coin Block", player),
+                 lambda state: StateLogic.brooch(state, player))
+        add_rule(world.get_location("Chucklehuck Woods Pipe 5 Room Coin Block", player),
+                 lambda state: StateLogic.brooch(state, player) and StateLogic.hammers(state, player))
+        add_rule(world.get_location("Chucklehuck Woods Room 7 Coin Block", player),
+                 lambda state: StateLogic.brooch(state, player) and StateLogic.hammers(state, player))
+        add_rule(world.get_location("Chucklehuck Woods After Chuckleroot Coin Block", player),
+                 lambda state: StateLogic.brooch(state, player) and StateLogic.fruits(state, player))
+        add_rule(world.get_location("Chucklehuck Woods Koopa Room Coin Block", player),
+                 lambda state: StateLogic.brooch(state, player))
+        add_rule(world.get_location("Chucklehuck Woods Winkle Area Cave Coin Block", player),
+                 lambda state: StateLogic.brooch(state, player) and StateLogic.canDash(state, player))
+        add_rule(world.get_location("Sewers Prison Room Coin Block", player),
+                 lambda state: StateLogic.rose(state, player))
+        add_rule(world.get_location("Teehee Valley Past Ultra Hammer Rocks Coin Block", player),
+                 lambda state: StateLogic.ultra(state, player))
+        add_rule(world.get_location("S.S Chuckola Storage Room Coin Block 1", player),
+                 lambda state: StateLogic.ultra(state, player))
+        add_rule(world.get_location("S.S Chuckola Storage Room Coin Block 2", player),
+                 lambda state: StateLogic.ultra(state, player))
+        add_rule(world.get_location("Jokes End Second Floor West Room Coin Block", player),
+                 lambda state: StateLogic.ultra(state, player) and StateLogic.fire(state, player) and (StateLogic.membership(state, player) or (StateLogic.canDig(state, player) and StateLogic.canMini(state, player))))
+

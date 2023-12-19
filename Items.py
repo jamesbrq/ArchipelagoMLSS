@@ -15,6 +15,7 @@ class MLSSItem(Item):
 
 
 itemList: typing.List[ItemData] = [
+    ItemData(77771000, "5 Coins", ItemClassification.filler, 0x4),
     ItemData(77771001, "Mushroom", ItemClassification.filler, 0xA),
     ItemData(77771002, "Super Mushroom", ItemClassification.filler, 0xB),
     ItemData(77771003, "Ultra Mushroom", ItemClassification.filler, 0xC),
@@ -169,6 +170,7 @@ itemList: typing.List[ItemData] = [
 ]
 
 item_frequencies: typing.Dict[str, int] = {
+    "5 Coins": 40,
     "Mushroom": 55,
     "Super Mushroom": 15,
     "Ultra Mushroom": 12,

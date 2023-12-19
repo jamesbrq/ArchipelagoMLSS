@@ -203,11 +203,34 @@ class HiddenVisible(Toggle):
     display_name = "Hidden Blocks Visible"
 
 
+class BlocksInvisible(Toggle):
+    """
+    Turns any item blocks in the game into hidden blocks.
+    """
+    display_name = "Item Blocks Invisible"
+
+
+class Coins(Toggle):
+    """
+    Add all coin blocks in the game to the location pool.
+    """
+    display_name = "Coin Blocks"
+
+
 class HarhallsPants(Toggle):
     """
     This will remove the Harhall's Pants check from the pool.
     """
     display_name = "Remove Harhall's Pants"
+
+
+class DifficultLogic(Toggle):
+    """
+    This adjusts the logic to be more difficult in a few areas,
+    allowing for the logic to account for players getting to certain area's in unintended ways.
+    Enable at your own risk, this is not an option made for beginners.
+    """
+    display_name = "Difficult Logic Toggle"
 
 
 class ChuckleBeans(Choice):
@@ -226,6 +249,8 @@ class ChuckleBeans(Choice):
 
 mlss_options: typing.Dict[str, type(Option)] = {
     "start_inventory_from_pool": StartInventoryPool,
+    "coins": Coins,
+    "difficult_logic": DifficultLogic,
     "skip_intro": IntroSkip,
     "castle_skip": BowsersCastleSkip,
     "castle_start": CastleStart,
@@ -233,6 +258,7 @@ mlss_options: typing.Dict[str, type(Option)] = {
     "disable_surf": DisableSurf,
     "harhalls_pants": HarhallsPants,
     "hidden_visible": HiddenVisible,
+    "blocks_invisible": BlocksInvisible,
     "chuckle_beans": ChuckleBeans,
     "randomize_music": RandomMusic,
     "disable_music": DisableMusic,

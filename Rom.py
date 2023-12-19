@@ -150,12 +150,14 @@ class Rom:
         if item_type == 0:
             self.stream.seek(location, 0)
             self.stream.write(bytes([code]))
-            if self.world.hidden_visible[self.player]:
+            self.stream.seek(location - 6, 0)
+            b = self.stream.read(1)
+            if b[0] == 0x10 and self.world.hidden_visible[self.player]:
                 self.stream.seek(location - 6, 0)
-                b = self.stream.read(1)
-                if b[0] == 0x10:
-                    self.stream.seek(location - 6, 0)
-                    self.stream.write(bytes([0x0]))
+                self.stream.write(bytes([0x0]))
+            if b[0] == 0x0 and self.world.blocks_invisible[self.player]:
+                self.stream.seek(location - 6, 0)
+                self.stream.write(bytes([0x10]))
         elif item_type == 1:
             if code == 0x1D or code == 0x1E:
                 code += 0xE
@@ -249,17 +251,15 @@ class Rom:
         self.stream.seek(0x25FD4E, 0)
         self.stream.write(bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF]))
         self.stream.seek(0x25FD83, 0)
-        self.stream.write(bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF]))
+        self.stream.write(bytes([0x48, 0x30, 0x80, 0x60, 0xC0, 0x2, 0xF]))
         self.stream.seek(0x25FDB8, 0)
-        self.stream.write(bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF]))
+        self.stream.write(bytes([0x48, 0x30, 0x05, 0x80, 0xE4, 0x0, 0xF]))
         self.stream.seek(0x25FDED, 0)
-        self.stream.write(bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF]))
+        self.stream.write(bytes([0x48, 0x30, 0x06, 0x80, 0xE4, 0x0, 0xF]))
         self.stream.seek(0x25FE22, 0)
-        self.stream.write(bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF]))
+        self.stream.write(bytes([0x48, 0x30, 0x07, 0x80, 0xE4, 0x0, 0xF]))
         self.stream.seek(0x25FE57, 0)
-        self.stream.write(bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF]))
-        self.stream.seek(0x25FD4E, 0)
-        self.stream.write(bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF]))
+        self.stream.write(bytes([0x48, 0x30, 0x08, 0x80, 0xE4, 0x0, 0xF]))
 
         self.swap_colors(colors[self.world.mario_color[self.player]], 0)
         self.swap_colors(colors[self.world.luigi_color[self.player]], 1)

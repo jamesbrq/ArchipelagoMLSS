@@ -3,7 +3,7 @@ import settings
 from typing import Dict, Any
 from BaseClasses import Tutorial, ItemClassification
 from ..AutoWorld import WebWorld, World
-from .Locations import all_locations, location_table, bowsers, bowsersMini, event, hidden
+from .Locations import all_locations, location_table, bowsers, bowsersMini, event, hidden, coins
 from .Options import mlss_options
 from .Regions import create_regions, connect_regions
 from .Rules import set_rules
@@ -58,6 +58,8 @@ class MLSSWorld(World):
         self.excluded_locations = []
         if self.multiworld.chuckle_beans[self.player] == 0:
             self.excluded_locations += [location.name for location in all_locations if "Digspot" in location.name]
+        if self.multiworld.castle_skip[self.player]:
+            self.excluded_locations += [location.name for location in all_locations if "Bowser" in location.name]
         if self.multiworld.chuckle_beans[self.player] == 1:
             self.excluded_locations = [location.name for location in all_locations if location.id in hidden]
         if self.multiworld.skip_minecart[self.player]:
@@ -66,6 +68,8 @@ class MLSSWorld(World):
             self.excluded_locations += [LocationName.SurfMinigame]
         if self.multiworld.harhalls_pants[self.player]:
             self.excluded_locations += [LocationName.HarhallsPants]
+        if not self.multiworld.harhalls_pants[self.player]:
+            self.excluded_locations += [location.name for location in all_locations if location in coins]
 
     def create_regions(self) -> None:
         create_regions(self.multiworld, self.player, self.excluded_locations)
@@ -77,7 +81,9 @@ class MLSSWorld(World):
             "SkipMinecart": self.multiworld.skip_minecart[self.player].value,
             "DisableSurf": self.multiworld.disable_surf[self.player].value,
             "HarhallsPants": self.multiworld.harhalls_pants[self.player].value,
-            "ChuckleBeans": self.multiworld.chuckle_beans[self.player].value
+            "ChuckleBeans": self.multiworld.chuckle_beans[self.player].value,
+            "DifficultLogic": self.multiworld.difficult_logic[self.player].value,
+            "Coins": self.multiworld.coins[self.player].value
         }
 
     def generate_basic(self) -> None:
@@ -126,6 +132,8 @@ class MLSSWorld(World):
         filler_items = []
         for item in itemList:
             if item.progression == ItemClassification.filler:
+                if item.itemName == "5 Coins" and not self.multiworld.coins[self.player]:
+                    continue
                 freq = item_frequencies.get(item.itemName)
                 if self.multiworld.chuckle_beans[self.player] == 0:
                     if item.itemName == "Chuckle Bean":
@@ -150,6 +158,8 @@ class MLSSWorld(World):
             remaining -= 186
         if self.multiworld.chuckle_beans[self.player] == 1:
             remaining -= 58
+        if not self.multiworld.coins[self.player]:
+            remaining -= len(coins)
         for i in range(remaining):
             filler_item_name = self.multiworld.random.choice(filler_items)
             item = self.create_item(filler_item_name)
@@ -172,6 +182,8 @@ class MLSSWorld(World):
             if (self.multiworld.skip_minecart[self.player] and "Minecart" in location_name and "After" not in location_name) or (self.multiworld.castle_skip[self.player] and "Bowser" in location_name) or (self.multiworld.disable_surf[self.player] and "Surf Minigame" in location_name) or (self.multiworld.harhalls_pants[self.player] and "Harhall's" in location_name):
                 continue
             if (self.multiworld.chuckle_beans[self.player] == 0 and "Digspot" in location_name) or (self.multiworld.chuckle_beans[self.player] == 1 and location_table[location_name] in hidden):
+                continue
+            if not self.multiworld.coins[self.player] and "Coin" in location_name:
                 continue
             location = self.multiworld.get_location(location_name, self.player)
             if location in self.multiworld.get_region("Event", self.player).locations:

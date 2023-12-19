@@ -85,7 +85,7 @@ def surfable(state, player):
 
 
 def postJokes(state, player):
-    return surfable(state, player) and canDig(state, player) and canDash(state, player) and canCrash(state, player) and dressBeanstar(state, player) and pieces(state, player) and fruits(state, player) and brooch(state, player) and rose(state, player)
+    return surfable(state, player) and canDig(state, player) and dressBeanstar(state, player) and pieces(state, player) and fruits(state, player) and brooch(state, player) and rose(state, player)
 
 
 def teehee(state, player):
