@@ -18,12 +18,11 @@ class BowsersCastleSkip(Toggle):
     display_name = "Bowser's Castle Skip"
 
 
-class CastleStart(Toggle):
+class ExtraPipes(Toggle):
     """
-    Skip the intro sequence, but start in pipe 3 instead of pipe 1.
-    This does not affect any items.
+    Gives the player access to pipes 1, 3, 4, and 6 from the start.
     """
-    display_name = "Start in Castle Town"
+    display_name = "Start With Extra Pipes"
 
 
 class SkipMinecart(Toggle):
@@ -253,7 +252,7 @@ mlss_options: typing.Dict[str, type(Option)] = {
     "difficult_logic": DifficultLogic,
     "skip_intro": IntroSkip,
     "castle_skip": BowsersCastleSkip,
-    "castle_start": CastleStart,
+    "extra_pipes": ExtraPipes,
     "skip_minecart": SkipMinecart,
     "disable_surf": DisableSurf,
     "harhalls_pants": HarhallsPants,

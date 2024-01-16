@@ -14,12 +14,12 @@ from .Client import MLSSClient
 
 
 class MLSSWebWorld(WebWorld):
-    settings_page = "games/MLSS/info/en"
     theme = 'partyTime'
+    bug_report_page = "https://github.com/jamesbrq/ArchipelagoMLSS/issues"
     tutorials = [
         Tutorial(
             tutorial_name='Setup Guide',
-            description='A guide to playing Mario & Luigi Superstar Saga',
+            description='A guide to setting up Mario & Luigi: Superstar Saga for archipelago.',
             language='English',
             file_name='setup_en.md',
             link='setup/en',
@@ -41,7 +41,8 @@ class MLSSSettings(settings.Group):
 
 class MLSSWorld(World):
     """
-    MLSS funny haha
+    Adventure with Mario and Luigi together in the Beanbean Kingdom
+    to stop the evil cackletta and retrieve the Beanstar.
     """
     game = "Mario & Luigi Superstar Saga"
     web = MLSSWebWorld()
@@ -68,7 +69,7 @@ class MLSSWorld(World):
             self.excluded_locations += [LocationName.SurfMinigame]
         if self.multiworld.harhalls_pants[self.player]:
             self.excluded_locations += [LocationName.HarhallsPants]
-        if not self.multiworld.harhalls_pants[self.player]:
+        if not self.multiworld.coins[self.player]:
             self.excluded_locations += [location.name for location in all_locations if location in coins]
 
     def create_regions(self) -> None:
@@ -99,8 +100,8 @@ class MLSSWorld(World):
         self.multiworld.get_location("Queen Bean", self.player).place_locked_item(item)
         item = self.create_item("Chuckolator Defeated")
         self.multiworld.get_location("Chuckolator", self.player).place_locked_item(item)
-        item = self.create_item("Popple 2 Defeated")
-        self.multiworld.get_location("Popple 2", self.player).place_locked_item(item)
+        item = self.create_item("Oasis Access")
+        self.multiworld.get_location("Oasis", self.player).place_locked_item(item)
         item = self.create_item("Mom Piranha Defeated")
         self.multiworld.get_location("Mom Piranha", self.player).place_locked_item(item)
         item = self.create_item("Entered Fungitown")

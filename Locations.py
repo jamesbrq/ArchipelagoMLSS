@@ -271,10 +271,12 @@ coins: typing.List[LocationData] = [
     LocationData("Chucklehuck Woods Koopa Room Coin Block", 0x39df53, 0),
     LocationData("Chucklehuck Woods Winkle Area Cave Coin Block", 0x39df80, 0),
     LocationData("Sewers Prison Room Coin Block", 0x39e01e, 0),
+    LocationData("Gwarhar Lagoon First Underwater Area Room 2 Coin Block", 0x39e455, 0),
     LocationData("Teehee Valley Past Ultra Hammer Rocks Coin Block", 0x39e588, 0),
     LocationData("S.S Chuckola Storage Room Coin Block 1", 0x39e618, 0),
     LocationData("S.S Chuckola Storage Room Coin Block 2", 0x39e620, 0),
     LocationData("Jokes End Second Floor West Room Coin Block", 0x39e771, 0),
+    LocationData("Jokes End North of Bridge Room Coin Block", 0x39e836, 0),
     LocationData("Outside Woohoo Hooniversity Coin Block 1", 0x39e9ad, 0),
     LocationData("Outside Woohoo Hooniversity Coin Block 2", 0x39e9bd, 0),
     LocationData("Outside Woohoo Hooniversity Coin Block 3", 0x39e9c5, 0),
@@ -776,7 +778,7 @@ event: typing.List[LocationData] = [
     LocationData("Dragohoho", 0xDA0000, 0),
     LocationData("Queen Bean", 0xDA0001, 0),
     LocationData("Chuckolator", 0xDA0002, 0),
-    LocationData("Popple 2", 0xDA0003, 0),
+    LocationData("Oasis", 0xDA0003, 0),
     LocationData("Mom Piranha", 0xDA0004, 0),
     LocationData("Fungitown", 0xDA0005, 0),
     LocationData("Beanstar", 0xDA0006, 2),
@@ -851,7 +853,7 @@ nonBlock: list[(int, int, int)] = [
     (0x434C, 0x8, 0x241afa),  # Green Neon Egg
     (0x434C, 0x10, 0x241d7e),  # Azure Neon Egg
     (0x434C, 0x20, 0x241c3c),  # Yellow Neon Egg
-    (0x434D, 0x40, 0x1e9442),  # Yellow Neon Egg
+    (0x4406, 0x8, 0x1e9442),  # Theater Beanstar Piece
     (0x4345, 0x8, 0x1e9408),  # Firebrand
     (0x4345, 0x4, 0x1e9409),  # Thunder Hand
     (0x42FF, 0x80, 0x251071),  # Beanstone Reward

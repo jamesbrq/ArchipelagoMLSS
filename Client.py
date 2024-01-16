@@ -244,7 +244,7 @@ class MLSSClient(BizHawkClient):
 
             await ctx.send_msgs([{
                 "cmd": "Set",
-                "key": "room",
+                "key": f"mlss_room_{ctx.team}_{ctx.slot}",
                 "default": 0,
                 "want_reply": False,
                 "operations": [{"operation": "replace", "value": room}]

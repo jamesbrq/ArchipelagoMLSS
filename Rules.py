@@ -229,7 +229,7 @@ def set_rules(world: MultiWorld, player: int, excluded):
                  lambda state: StateLogic.canCrash(state, player))
 
     if world.coins[player]:
-        add_rule(world.get_location("Hoohoo Mountain Base Boo Statue Cave Coin Block 1", player),
+        add_rule(world.get_location(LocationName.HoohooMountainBaseBooStatueCaveCoinBlock1, player),
                  lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))
         add_rule(world.get_location("Hoohoo Mountain Base Boo Statue Cave Coin Block 2", player),
                  lambda state: StateLogic.canCrash(state, player) or StateLogic.super(state, player))

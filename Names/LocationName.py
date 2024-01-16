@@ -529,3 +529,4 @@ class LocationName():
     BadgeShopMomPiranhaFlag2 = "Badge Shop Mom Piranha Flag 2"
     BadgeShopMomPiranhaFlag3 = "Badge Shop Mom Piranha Flag 3"
     HarhallsPants = "Harhall's Pants"
+    HoohooMountainBaseBooStatueCaveCoinBlock1 = "Hoohoo Mountain Base Boo Statue Cave Coin Block 1"

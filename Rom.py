@@ -202,10 +202,10 @@ class Rom:
             self.stream.seek(0x244D08, 0)
             self.stream.write(bytes([0x88, 0x0, 0x19, 0x91, 0x1, 0x20, 0x58, 0x1, 0xF, 0xA0, 0x3, 0x15, 0x27, 0x8]))
 
-        if self.world.castle_start[self.player]:
-            # Spawn in castle town in ROM
-            self.stream.seek(0x244D08, 0)
-            self.stream.write(bytes([0x88, 0x0, 0xD, 0x51, 0x3, 0xA0, 0x68, 0x0, 0xF, 0xA0, 0x41, 0x15, 0x27, 0x8]))
+        if self.world.extra_pipes[self.player]:
+            # Spawn in extra pipes in ROM
+            self.stream.seek(0xD00001, 0)
+            self.stream.write(bytes([0x1]))
 
         if self.world.castle_skip[self.player]:
             # Enable Bowser's castle skip in ROM

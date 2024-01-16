@@ -96,6 +96,7 @@ def create_regions(world: MultiWorld, player: int, excluded: typing.List[str]):
     world.regions.append(event_region)
 
     if world.coins[player]:
+        print("CREATING REGION")
         coins_region = create_region(world, player, "Coins", coins, excluded)
         world.regions.append(coins_region)
 

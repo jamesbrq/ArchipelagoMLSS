@@ -161,7 +161,7 @@ itemList: typing.List[ItemData] = [
     ItemData(77771143, "Dragohoho Defeated", ItemClassification.skip_balancing, 0x0),
     ItemData(77771144, "Queen Bean Defeated", ItemClassification.skip_balancing, 0x0),
     ItemData(77771145, "Chuckolator Defeated", ItemClassification.skip_balancing, 0x0),
-    ItemData(77771146, "Popple 2 Defeated", ItemClassification.skip_balancing, 0x0),
+    ItemData(77771146, "Oasis Access", ItemClassification.skip_balancing, 0x0),
     ItemData(77771147, "Mom Piranha Defeated", ItemClassification.skip_balancing, 0x0),
     ItemData(77771148, "Entered Fungitown", ItemClassification.skip_balancing, 0x0),
     ItemData(77771149, "Beanstar Complete", ItemClassification.skip_balancing, 0x0),
