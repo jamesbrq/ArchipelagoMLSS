@@ -1,19 +1,19 @@
 import io
 import os
-import sys
-import hashlib
-import bsdiff4
 import pkgutil
-import Utils
-import settings
+import typing
+import bsdiff4
 
-
-from worlds.Files import APDeltaPatch
+from BaseClasses import Item, Location
+from worlds.AutoWorld import World
 from settings import get_settings
-from BaseClasses import MultiWorld, Item, Location
-from .Items import item_table
+from worlds.Files import APDeltaPatch
 from .Enemies import enemies, bosses, EnemyRandomize, Enemy, EnemyGroup
+from .Items import item_table
 from .Locations import shop, badge, pants
+
+if typing.TYPE_CHECKING:
+    from . import MLSSWorld
 
 
 class Color:
@@ -57,23 +57,13 @@ cpants = [
 
 
 def get_base_rom_as_bytes() -> bytes:
-    with open(get_base_rom_path("Mario & Luigi - Superstar Saga (U).gba"), "rb") as infile:
+    with open(get_settings().mlss_options.rom_file, "rb") as infile:
         base_rom_bytes = bytes(infile.read())
-
     return base_rom_bytes
 
 
-def get_base_rom_path(file_name: str = "") -> str:
-    options: settings.Settings = settings.get_settings()
-    if not file_name:
-        file_name = options["mlss_options"]["rom_file"]
-    if not os.path.exists(file_name):
-        file_name = Utils.user_path(file_name)
-    return file_name
-
-
 class MLSSDeltaPatch(APDeltaPatch):
-    game = "Mario & Luigi: Superstar Saga"
+    game = "Mario & Luigi Superstar Saga"
     hash = "4b1a5897d89d9e74ec7f630eefdfd435"
     patch_file_ending = ".apmlss"
     result_file_ending = ".gba"
@@ -86,14 +76,13 @@ class MLSSDeltaPatch(APDeltaPatch):
 class Rom:
     hash = "4b1a5897d89d9e74ec7f630eefdfd435"
 
-    def __init__(self, world: MultiWorld, player: int):
-        with open("Mario & Luigi - Superstar Saga (U).gba", 'rb') as file:
-            content = file.read()
+    def __init__(self, world: "MLSSWorld"):
+        content = get_base_rom_as_bytes()
         patched = self.apply_delta(content)
-        self.random = world.per_slot_randoms[player]
+        self.random = world.multiworld.per_slot_randoms[world.player]
         self.stream = io.BytesIO(patched)
         self.world = world
-        self.player = player
+        self.player = world.player
 
     def swap_colors(self, color, bro):
         temp = pkgutil.get_data(__name__, "colors/" + color + ".txt")
@@ -116,8 +105,8 @@ class Rom:
             self.stream.write(bytes([c.byte1, c.byte2]))
 
     def swap_pants(self, color, bro):
-        mario_color = self.world.mario_color[self.player]
-        luigi_color = self.world.luigi_color[self.player]
+        mario_color = self.world.options.mario_color
+        luigi_color = self.world.options.luigi_color
         if bro == 0 and (colors[mario_color] == "TrueChaos" or colors[mario_color] == "Silhouette"):
             return
         if bro == 1 and (colors[luigi_color] == "TrueChaos" or colors[luigi_color] == "Silhouette"):
@@ -152,10 +141,10 @@ class Rom:
             self.stream.write(bytes([code]))
             self.stream.seek(location - 6, 0)
             b = self.stream.read(1)
-            if b[0] == 0x10 and self.world.hidden_visible[self.player]:
+            if b[0] == 0x10 and self.world.options.hidden_visible:
                 self.stream.seek(location - 6, 0)
                 self.stream.write(bytes([0x0]))
-            if b[0] == 0x0 and self.world.blocks_invisible[self.player]:
+            if b[0] == 0x0 and self.world.options.blocks_invisible:
                 self.stream.seek(location - 6, 0)
                 self.stream.write(bytes([0x10]))
         elif item_type == 1:
@@ -191,60 +180,60 @@ class Rom:
             self.stream.write(bytes([0x18]))
 
     def patch_options(self):
-        name = self.world.player_name[self.player].encode("UTF-8")
-        self.stream.seek(0xB0, 0)
+        name = self.world.multiworld.player_name[self.player].encode("UTF-8")
+        self.stream.seek(0xDF0000, 0)
         self.stream.write(name)
-        self.stream.seek(0xAF, 0)
-        self.stream.write(self.player.to_bytes(1, 'little'))
+        self.stream.seek(0xDF00A0, 0)
+        self.stream.write(self.world.multiworld.seed_name.encode("UTF-8"))
 
-        if self.world.skip_intro[self.player]:
+        if self.world.options.skip_intro:
             # Enable Skip Intro in ROM
             self.stream.seek(0x244D08, 0)
             self.stream.write(bytes([0x88, 0x0, 0x19, 0x91, 0x1, 0x20, 0x58, 0x1, 0xF, 0xA0, 0x3, 0x15, 0x27, 0x8]))
 
-        if self.world.extra_pipes[self.player]:
+        if self.world.options.extra_pipes:
             # Spawn in extra pipes in ROM
             self.stream.seek(0xD00001, 0)
             self.stream.write(bytes([0x1]))
 
-        if self.world.castle_skip[self.player]:
+        if self.world.options.castle_skip:
             # Enable Bowser's castle skip in ROM
             self.stream.seek(0x3AEAB0, 0)
             self.stream.write(bytes([0xC1, 0x67, 0x0, 0x6, 0x1C, 0x08, 0x3]))
             self.stream.seek(0x3AEC18, 0)
             self.stream.write(bytes([0x89, 0x65, 0x0, 0xE, 0xA, 0x08, 0x1]))
 
-        if self.world.skip_minecart[self.player]:
+        if self.world.options.skip_minecart:
             # Enable minecart skip in ROM
             self.stream.seek(0x3AC728, 0)
             self.stream.write(bytes([0x89, 0x13, 0x0, 0x10, 0xF, 0x08, 0x1]))
             self.stream.seek(0x3AC56C, 0)
             self.stream.write(bytes([0x49, 0x16, 0x0, 0x8, 0x8, 0x08, 0x1]))
 
-        if self.world.randomize_sounds[self.player]:
+        if self.world.options.randomize_sounds:
             self.randomize_sounds()
 
-        if self.world.disable_music[self.player]:
-            self.disable_music()
-
-        if self.world.randomize_music[self.player]:
+        if self.world.options.music_options == 1:
             self.randomize_music()
 
-        if self.world.randomize_backgrounds[self.player]:
+        if self.world.options.music_options == 2:
+            self.disable_music()
+
+        if self.world.options.randomize_backgrounds:
             self.randomize_backgrounds()
 
-        if self.world.randomize_enemies[self.player] or self.world.randomize_bosses[self.player]:
+        if self.world.options.randomize_enemies or self.world.options.randomize_bosses:
             self.enemy_randomize()
 
-        if self.world.scale_stats[self.player]:
+        if self.world.options.scale_stats:
             self.stream.seek(0x1E9418, 0)
             self.stream.write(bytes([0x1]))
 
-        if self.world.scale_pow[self.player]:
+        if self.world.options.scale_pow:
             self.stream.seek(0x1E9419, 0)
             self.stream.write(bytes([0x1]))
 
-        if self.world.tattle_hp[self.player]:
+        if self.world.options.tattle_hp:
             self.stream.seek(0xD00000, 0)
             self.stream.write(bytes([0x1]))
 
@@ -261,18 +250,18 @@ class Rom:
         self.stream.seek(0x25FE57, 0)
         self.stream.write(bytes([0x48, 0x30, 0x08, 0x80, 0xE4, 0x0, 0xF]))
 
-        self.swap_colors(colors[self.world.mario_color[self.player]], 0)
-        self.swap_colors(colors[self.world.luigi_color[self.player]], 1)
-        self.swap_pants(cpants[self.world.mario_pants[self.player]], 0)
-        self.swap_pants(cpants[self.world.luigi_pants[self.player]], 1)
+        self.swap_colors(colors[self.world.options.mario_color], 0)
+        self.swap_colors(colors[self.world.options.luigi_color], 1)
+        self.swap_pants(cpants[self.world.options.mario_pants], 0)
+        self.swap_pants(cpants[self.world.options.luigi_pants], 1)
 
     def enemy_randomize(self):
         enemy_data = EnemyRandomize()
-        if self.world.randomize_enemies[self.player]:
+        if self.world.options.randomize_enemies:
             enemy_data = self.populate_enemy_array(enemy_data)
             enemy_data = self.generate_groups(enemy_data)
 
-        if self.world.randomize_bosses[self.player]:
+        if self.world.options.randomize_bosses:
             enemy_data = self.generate_boss_groups(enemy_data)
 
         self.insert_groups(enemy_data)
@@ -284,47 +273,26 @@ class Rom:
             self.stream.write(bytes([self.random.randint(0x0, 0x26)]))
 
     def randomize_sounds(self):
-        pointers = []
-        sounds = []
-        self.stream.seek(0x21CC44)
-        for i in range(353):
-            p_arr = bytearray(self.stream.read(4))
-            pointers.append(p_arr[0] | p_arr[1] << 8 | p_arr[2] << 16)
-            pointers.sort(reverse=True)
+        temp = pkgutil.get_data(__name__, "data/sounds.txt")
+        temp_io = io.BytesIO(temp)
+        fresh_pointers = []
 
-        for i in range(len(pointers) - 1, -1, -1):
-            if i == 0:
-                continue
-            j = 1
-            while True:
-                self.stream.seek(pointers[i - 1] - j)
-                read_byte = self.stream.read(1)
-                if read_byte != b'\xFF':
-                    j += 1
-                    continue
-                else:
-                    break
-            self.stream.seek(pointers[i - 1] - (j + 1))
-            if self.stream.read(1) >= b'\xFE' and i != 0:
-                pointers.pop(i)
-            else:
-                temp = bytearray([
-                    pointers[i] & 0xFF,
-                    (pointers[i] >> 8) & 0xFF,
-                    (pointers[i] >> 16) & 0xFF,
-                    0x8
-                ])
-                sounds.append(temp)
+        for line in temp_io.readlines():
+            fresh_pointers += [int(line.decode('utf-8').strip(), 16)]
+        pointers = list(fresh_pointers)
 
-        self.random.shuffle(sounds)
-        self.stream.seek(0x21CC44)
-        for i in range(len(pointers)):
-            current_pos = self.stream.tell()
-            p_arr = bytearray(self.stream.read(4))
-            if (p_arr[0] | p_arr[1] << 8 | p_arr[2] << 16) not in pointers:
-                continue
-            self.stream.seek(current_pos)
-            self.stream.write(self.random.choice(sounds))
+        self.world.random.shuffle(pointers)
+        self.stream.seek(0x21cc44, 0)
+        for i in range(354):
+            current_position = self.stream.tell()
+            print(format(current_position, 'x'))
+            value = int.from_bytes(self.stream.read(3), 'little')
+            if value in fresh_pointers:
+                print(format(value, 'x'))
+                self.stream.seek(current_position)
+                self.stream.write(pointers.pop().to_bytes(3, 'little'))
+            self.stream.seek(1, 1)
+
 
     def disable_music(self):
         self.stream.seek(0x19B118)
@@ -357,7 +325,7 @@ class Rom:
             i = 0
             count = 0
             while True:
-                if 0x50402C < e < 0x50434C and self.world.castle_skip[self.player]:
+                if 0x50402C < e < 0x50434C and self.world.options.castle_skip:
                     break
                 stream_seek_position = e + 10 + (i * 4)
                 self.stream.seek(stream_seek_position, os.SEEK_SET)
@@ -477,7 +445,7 @@ class Rom:
         enemy_data = enemy_data_
         for boss_val in bosses:
 
-            if 0x50402C < boss_val < 0x50434C and self.world.castle_skip[self.player]:
+            if 0x50402C < boss_val < 0x50434C and self.world.options.castle_skip:
                 continue
             stream_seek_position = boss_val + 2
             self.stream.seek(stream_seek_position, os.SEEK_SET)
@@ -507,7 +475,7 @@ class Rom:
         return enemy_data
 
     def insert_groups(self, enemy_data):
-        do_boss = self.world.randomize_bosses[self.player]
+        do_boss = self.world.options.randomize_bosses
 
         if do_boss != 1:
             enemy_data.groups.extend(enemy_data.bossGroups)
@@ -523,7 +491,7 @@ class Rom:
 
         for location in locations:
             if len(enemy_data.groups) > 0:
-                if self.world.castle_skip[self.player] and 0x50402C < location < 0x50434C:
+                if self.world.options.castle_skip and 0x50402C < location < 0x50434C:
                     continue
                 count += 1
                 temp_group = enemy_data.groups[0]
@@ -550,7 +518,7 @@ class Rom:
 
         if do_boss == 1:
             for location in bosses:
-                if self.world.castle_skip[self.player] and 0x50402C < location < 0x50434C:
+                if self.world.options.castle_skip and 0x50402C < location < 0x50434C:
                     continue
                 self.random.shuffle(enemy_data.bossGroups)
                 count += 1
@@ -580,43 +548,40 @@ class Rom:
         index = -1
         for key, value in shop.items():
             if location.address in value:
-                match key:
-                    case 0x3C05f0:
-                        index = value.index(location.address)
-                    case _:
-                        index = value.index(location.address) + 14
+                if key == 0x3C05f0:
+                    index = value.index(location.address)
+                else:
+                    index = value.index(location.address) + 14
 
         for key, value in badge.items():
             if index != -1:
                 break
             if location.address in value:
-                match key:
-                    case 0x3C0618:
-                        index = value.index(location.address) + 24
-                    case _:
-                        index = value.index(location.address) + 41
+                if key == 0x3C0618:
+                    index = value.index(location.address) + 24
+                else:
+                    index = value.index(location.address) + 41
 
         for key, value in pants.items():
             if index != -1:
                 break
             if location.address in value:
-                match key:
-                    case 0x3C0618:
-                        index = value.index(location.address) + 48
-                    case _:
-                        index = value.index(location.address) + 66
+                if key ==0x3C0618:
+                    index = value.index(location.address) + 48
+                else:
+                    index = value.index(location.address) + 66
 
-        dstring = f"{self.world.player_name[item.player]}: {item.name}"
+        dstring = f"{self.world.multiworld.player_name[item.player]}: {item.name}"
         self.stream.seek(0xD11000 + (index * 0x40), 0)
         self.stream.write(dstring.encode("UTF8"))
 
 
     def close(self, path):
-        output_path = os.path.join(path, f"AP_{self.world.seed_name}_P{self.player}_{self.world.player_name[self.player]}.gba")
+        output_path = os.path.join(path, f"AP_{self.world.multiworld.seed_name}_P{self.player}_{self.world.multiworld.player_name[self.player]}.gba")
         with open(output_path, 'wb') as outfile:
             outfile.write(self.stream.getvalue())
         patch = MLSSDeltaPatch(os.path.splitext(output_path)[0] + ".apmlss", player=self.player,
-                               player_name=self.world.player_name[self.player], patched_path=output_path)
+                               player_name=self.world.multiworld.player_name[self.player], patched_path=output_path)
         patch.write()
         os.unlink(output_path)
         self.stream.close()

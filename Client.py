@@ -1,59 +1,27 @@
-import time
-from typing import TYPE_CHECKING, Optional, Dict, Set, List
+from typing import TYPE_CHECKING, Optional, Set
 import struct
-from BaseClasses import MultiWorld
+
 from NetUtils import ClientStatus
 from .Locations import roomCount, nonBlock, beanstones, roomException, shop, badge, pants, eReward
-from .Items import items_by_id, ItemData
-from collections import defaultdict
-import sys
-import logging
-import math
+from .Items import items_by_id
+
 import asyncio
-
-# This imports the bizhawk apworld if it's not already imported. This code block should be removed for a PR.
-if "worlds._bizhawk" not in sys.modules:
-    import importlib
-    import os
-    import zipimport
-
-    bh_apworld_path = os.path.join(os.path.dirname(sys.modules["worlds"].__file__), "_bizhawk.apworld")
-    if os.path.isfile(bh_apworld_path):
-        importer = zipimport.zipimporter(bh_apworld_path)
-        spec = importer.find_spec(os.path.basename(bh_apworld_path).rsplit(".", 1)[0])
-        mod = importlib.util.module_from_spec(spec)
-        mod.__package__ = f"worlds.{mod.__package__}"
-        mod.__name__ = f"worlds.{mod.__name__}"
-        sys.modules[mod.__name__] = mod
-        importer.exec_module(mod)
-    elif not os.path.isdir(os.path.splitext(bh_apworld_path)[0]):
-        raise Exception("Did not find _bizhawk.apworld required to play Mario & Luigi Superstar Saga.")
 
 import worlds._bizhawk as bizhawk
 from worlds._bizhawk.client import BizHawkClient
 
 if TYPE_CHECKING:
     from worlds._bizhawk.context import BizHawkClientContext
-else:
-    BizHawkClientContext = object
 
 ROOM_ARRAY_POINTER = 0x51fa00
-
-# Add .apmlss suffix to bizhawk client
-from worlds.LauncherComponents import SuffixIdentifier, components
-for component in components:
-    if component.script_name == "BizHawkClient":
-        component.file_identifier = SuffixIdentifier(*(*component.file_identifier.suffixes, ".apmlss"))
-        break
-
 
 class MLSSClient(BizHawkClient):
     game = "Mario & Luigi Superstar Saga"
     system = "GBA"
+    patch_suffix = ".apmlss"
     local_checked_locations: Set[int]
     goal_flag: int
     rom_slot_name: Optional[str]
-    player: int
     eCount: int
     eUsed: [int]
     player_name: Optional[str]
@@ -65,17 +33,16 @@ class MLSSClient(BizHawkClient):
         self.local_set_events = {}
         self.local_found_key_items = {}
         self.rom_slot_name = None
-        self.lock = asyncio.Lock
+        self.seed_verify = False
         self.eCount = 0
         self.eUsed = []
 
-    async def validate_rom(self, ctx: BizHawkClientContext) -> bool:
+    async def validate_rom(self, ctx: "BizHawkClientContext") -> bool:
         from CommonClient import logger
-
         try:
             # Check ROM name/patch version
-            rom_name_bytes = ((await bizhawk.read(ctx.bizhawk_ctx, [(0xA0, 14, "ROM")]))[0])
-            rom_name = bytes([byte for byte in rom_name_bytes if byte != 0]).decode("UTF-8")
+            rom_name_bytes = (await bizhawk.read(ctx.bizhawk_ctx, [(0xA0, 14, "ROM")]))
+            rom_name = bytes([byte for byte in rom_name_bytes[0] if byte != 0]).decode("UTF-8")
             if not rom_name.startswith("MARIO&LUIGIU"):
                 return False
             if rom_name == "MARIO&LUIGIUA8":
@@ -97,28 +64,44 @@ class MLSSClient(BizHawkClient):
         ctx.want_slot_data = True
         ctx.watcher_timeout = 0.125
         self.rom_slot_name = rom_name
-        name_bytes = ((await bizhawk.read(ctx.bizhawk_ctx, [(0xB0, 16, "ROM")]))[0])
-        player = ((await bizhawk.read(ctx.bizhawk_ctx, [(0xAF, 1, "ROM")]))[0][0])
-        self.player = player + 1
+        self.seed_verify = False
+        name_bytes = ((await bizhawk.read(ctx.bizhawk_ctx, [(0xDF0000, 16, "ROM")]))[0])
         name = bytes([byte for byte in name_bytes if byte != 0]).decode("UTF-8")
         self.player_name = name
-        logger.info(name)
 
         for i in range(59):
-            self.checked_flags[i] = [9, 10]
+            self.checked_flags[i] = []
 
         return True
 
-    async def set_auth(self, ctx: BizHawkClientContext) -> None:
+    async def set_auth(self, ctx: "BizHawkClientContext") -> None:
         ctx.auth = self.player_name
 
-    async def game_watcher(self, ctx: BizHawkClientContext) -> None:
+    def on_package(self, ctx, cmd, args) -> None:
+        if cmd == 'RoomInfo':
+            ctx.seed_name = args['seed_name']
+
+    async def game_watcher(self, ctx: "BizHawkClientContext") -> None:
         from CommonClient import logger
         try:
+            if ctx.seed_name is None:
+                return
+            if not self.seed_verify:
+                seed = await bizhawk.read(ctx.bizhawk_ctx, [(0xDF00A0, len(ctx.seed_name), "ROM")])
+                seed = seed[0].decode("UTF-8")
+                if seed != ctx.seed_name:
+                    logger.info("ERROR: The ROM you loaded is for a different game of AP. "
+                                "Please make sure the host has sent you the correct patch file,"
+                                "and that you have opened the correct ROM.")
+                    raise bizhawk.ConnectorError("Loaded ROM is for Incorrect lobby.")
+                self.seed_verify = True
+
             read_state = await bizhawk.read(ctx.bizhawk_ctx, [(0x4564, 59, "EWRAM"),
-                                                              (0x2330, 2, "IWRAM"), (0x3FE0, 1, "IWRAM"), (0x304A, 1, "EWRAM"), (0x304B, 1, "EWRAM"), (0x304C, 4, "EWRAM"), (0x4800, 6, "EWRAM"), (0x4808, 2, "EWRAM"), (0x4407, 1, "EWRAM"), (0x2339, 1, "IWRAM")])
+                                                              (0x2330, 2, "IWRAM"), (0x3FE0, 1, "IWRAM"), (0x304A, 1, "EWRAM"),
+                                                              (0x304B, 1, "EWRAM"), (0x304C, 4, "EWRAM"), (0x3060, 6, "EWRAM"),
+                                                              (0x4808, 2, "EWRAM"), (0x4407, 1, "EWRAM"), (0x2339, 1, "IWRAM")])
             flags = read_state[0]
-            room = (read_state[1][1] << 8) + read_state[1][0]
+            current_room = int.from_bytes(read_state[1], 'little')
             shop_init = read_state[2][0]
             shop_scroll = read_state[3][0] & 0x1F
             is_buy = (read_state[4][0] != 0)
@@ -132,7 +115,6 @@ class MLSSClient(BizHawkClient):
                 return
 
             locs_to_send = set()
-            location = 0
 
             # Checking shop purchases
             if is_buy:
@@ -147,27 +129,19 @@ class MLSSClient(BizHawkClient):
                 if location in ctx.server_locations:
                     locs_to_send.add(location)
 
+            # Loop for recieving items. Item is written as an ID into 0x3057.
+            # ASM read the ID in a loop and give the player the item before resetting the RAM address to 0x0.
+            # If RAM address isn't 0x0 yet break out and try again later to give the rest of the items
             for i in range(len(ctx.items_received) - received_index):
                 item_data = items_by_id[ctx.items_received[received_index + i].item]
-                b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
-                await asyncio.sleep(.05)
-                if b[0][0] == 0:
-                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(received_index + i + 1) // 0x100, (received_index + i + 1) % 0x100], "EWRAM")])
-                else:
+                b = await bizhawk.guarded_read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")], [(0x3057, [0x0], "EWRAM")])
+                if b is None:
                     break
-
-            '''for i, item in enumerate(ctx.items_received):
-                if i < received_index:
-                    i += 1
-                    continue
-                item_data = items_by_id[item.item]
-                b = await bizhawk.read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")])
+                await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(received_index + i + 1) // 0x100, (received_index + i + 1) % 0x100], "EWRAM")])
                 await asyncio.sleep(.05)
-                if b[0][0] == 0:
-                    await bizhawk.write(ctx.bizhawk_ctx, [(0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"), (0x4808, [(i + 1) // 0x100, (i + 1) % 0x100], "EWRAM")])
-                else:
-                    break '''
 
+            # Early return and location send if you are currently in a shop,
+            # since other flags aren't going to change
             if shopping & 0x3 == 0x3:
                 if locs_to_send != self.local_checked_locations:
                     self.local_checked_locations = locs_to_send
@@ -184,18 +158,15 @@ class MLSSClient(BizHawkClient):
                 address, mask, location = item
                 if location in self.local_checked_locations:
                     continue
-                flag_bytes = await bizhawk.read(ctx.bizhawk_ctx, [(address, 1, "EWRAM"), (0x4800, 6, "EWRAM")])
+                flag_bytes = await bizhawk.read(ctx.bizhawk_ctx, [(address, 1, "EWRAM"), (0x3060, 6, "EWRAM")])
                 flag_byte = flag_bytes[0][0]
                 backup_logo = bytes([byte for byte in flag_bytes[1] if byte < 0x70]).decode("UTF-8")
                 if backup_logo != "MLSSAP":
                     return
                 if flag_byte & mask != 0:
                     if location in roomException:
-                        if roomException[location] != room:
-                            if (location == 0xDA0001 or location == 0x2578e7) and room == 0x79:
-                                exception = False
-                            else:
-                                exception = True
+                        if current_room not in roomException[location]:
+                            exception = True
                         else:
                             exception = False
                     else:
@@ -247,7 +218,7 @@ class MLSSClient(BizHawkClient):
                 "key": f"mlss_room_{ctx.team}_{ctx.slot}",
                 "default": 0,
                 "want_reply": False,
-                "operations": [{"operation": "replace", "value": room}]
+                "operations": [{"operation": "replace", "value": current_room}]
             }])
 
             # Send locations if there are any to send.
@@ -263,10 +234,11 @@ class MLSSClient(BizHawkClient):
         except bizhawk.RequestFailedError:
             # Exit handler and return to main loop to reconnect.
             pass
+        except bizhawk.ConnectorError:
+            pass
 
 
 def find_key(dictionary, target):
-    from CommonClient import logger
     leftover = target
 
     for key, value in dictionary.items():
@@ -278,7 +250,7 @@ def find_key(dictionary, target):
 
 def id_to_RAM(id_: int):
     code = id_
-    if code == 0x1D or code == 0x1E:
+    if 0x1C <= code <= 0x1F:
         code += 0xE
     if 0x20 <= code <= 0x26:
         code -= 0x4

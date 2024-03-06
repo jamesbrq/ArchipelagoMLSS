@@ -1,5 +1,5 @@
-import typing
-from Options import Choice, Option, Toggle, StartInventoryPool
+from Options import Choice, Toggle, StartInventoryPool, PerGameCommonOptions
+from dataclasses import dataclass
 
 
 class IntroSkip(Toggle):
@@ -40,19 +40,18 @@ class DisableSurf(Toggle):
     display_name = "Disable Surf Minigame"
 
 
-class RandomMusic(Toggle):
+class MusicOptions(Choice):
     """
-    Randomize all music in the game, including overworld, battle, and all minigame and menu music.
-    Includes unused beta music tracks as well.
+    Choose if you want to randomize or disable music.
+    default: Music will be untouched.
+    randomize: Music will be randomized.
+    disable: All music will be disabled. No music will play throughout the entire game.
     """
-    display_name = "Randomize Music"
-
-
-class DisableMusic(Toggle):
-    """
-    Disable all music in the game. You will still hear all normal sounds but there will be no music.
-    """
-    display_name = "Disable Music"
+    display_name = "Music Options"
+    option_default = 0
+    option_randomize = 1
+    option_disable = 2
+    default = 0
 
 
 class RandomSounds(Toggle):
@@ -246,30 +245,29 @@ class ChuckleBeans(Choice):
     default = 2
 
 
-mlss_options: typing.Dict[str, type(Option)] = {
-    "start_inventory_from_pool": StartInventoryPool,
-    "coins": Coins,
-    "difficult_logic": DifficultLogic,
-    "skip_intro": IntroSkip,
-    "castle_skip": BowsersCastleSkip,
-    "extra_pipes": ExtraPipes,
-    "skip_minecart": SkipMinecart,
-    "disable_surf": DisableSurf,
-    "harhalls_pants": HarhallsPants,
-    "hidden_visible": HiddenVisible,
-    "blocks_invisible": BlocksInvisible,
-    "chuckle_beans": ChuckleBeans,
-    "randomize_music": RandomMusic,
-    "disable_music": DisableMusic,
-    "randomize_sounds": RandomSounds,
-    "randomize_enemies": RandomizeEnemies,
-    "randomize_bosses": RandomizeBosses,
-    "randomize_backgrounds": RandomizeBackgrounds,
-    "scale_stats": ScaleStats,
-    "scale_pow": ScalePow,
-    "tattle_hp": TattleHp,
-    "mario_color": MarioColor,
-    "luigi_color": LuigiColor,
-    "mario_pants": MarioPants,
-    "luigi_pants": LuigiPants
-}
+@dataclass
+class MLSSOptions(PerGameCommonOptions):
+    start_inventory_from_pool: StartInventoryPool
+    coins: Coins
+    difficult_logic: DifficultLogic
+    skip_intro: IntroSkip
+    castle_skip: BowsersCastleSkip
+    extra_pipes: ExtraPipes
+    skip_minecart: SkipMinecart
+    disable_surf: DisableSurf
+    harhalls_pants: HarhallsPants
+    hidden_visible: HiddenVisible
+    blocks_invisible: BlocksInvisible
+    chuckle_beans: ChuckleBeans
+    music_options: MusicOptions
+    randomize_sounds: RandomSounds
+    randomize_enemies: RandomizeEnemies
+    randomize_bosses: RandomizeBosses
+    randomize_backgrounds: RandomizeBackgrounds
+    scale_stats: ScaleStats
+    scale_pow: ScalePow
+    tattle_hp: TattleHp
+    mario_color: MarioColor
+    luigi_color: LuigiColor
+    mario_pants: MarioPants
+    luigi_pants: LuigiPants

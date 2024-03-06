@@ -16,7 +16,7 @@ As we are using Bizhawk, this guide is only applicable to Windows and Linux syst
 ## Optional Software
 
 - [Poptracker](https://github.com/black-sliver/PopTracker/releases)
-  -[MLSS Autotracker](https://github.com/seto10987/MLSS-PopTracker/releases)
+  - [MLSS Autotracker](https://github.com/seto10987/MLSS-PopTracker/releases)
 
 ## Configuring your YAML file
 
@@ -28,8 +28,8 @@ an experience customized for their taste, and different players in the same mult
 
 ### Where do I get a YAML file?
 
-You can customize your settings by visiting the 
-[Mario & Luigi Superstar Saga Settings Page](/games/Mario%20&%20Luigi%20Superstar%20Saga/player-settings)
+You can customize your options by visiting the 
+[Mario & Luigi Superstar Saga Options Page](/games/Mario%20&%20Luigi%20Superstar%20Saga/player-options)
 
 ## Joining a MultiWorld Game
 
