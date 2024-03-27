@@ -57,7 +57,7 @@ def brooch(state, player):
 
 
 def thunder(state, player):
-    return state.has("Thunder Hand", player)
+    return state.has("Thunderhand", player)
 
 
 def fire(state, player):
