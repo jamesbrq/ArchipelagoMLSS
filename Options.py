@@ -141,13 +141,13 @@ class RandomizeEnemies(Choice):
     If Bowser's castle skip is enabled then enemies from Bowser's Castle will not be included.
     disabled: Enemies will not be randomized
     vanilla_groups: Vanilla enemy groups will be shuffled with each other. Custom enemy groups will not be made.
-    random: Custom enemy groups will be made and shuffled. Some enemy groups will only be semi-random.
+    custom_groups: Custom enemy groups will be made and shuffled. Some enemy groups will only be semi-random.
     (Groups including flying enemies or pestnuts)
     """
     display_name = "Randomize Enemies"
     option_disabled = 0
     option_vanilla_groups = 1
-    option_random = 2
+    option_custom_groups = 2
     default = 0
 
 

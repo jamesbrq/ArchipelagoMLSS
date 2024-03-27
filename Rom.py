@@ -300,30 +300,40 @@ class Rom:
                 enemy = int.from_bytes(self.stream.read(1))
                 if enemy > 0:
                     self.stream.seek(1, 1)
-                    flag = self.stream.read(1)
-                    if flag in [0x0, 0x4]:
+                    flag = int.from_bytes(self.stream.read(1))
+                    if flag == 0x7:
+                        break
+                    if flag in [0x0, 0x2, 0x4]:
                         if enemy not in Enemies.pestnut and enemy not in Enemies.flying:
+                            print(f"adding: 0x{format(enemy, 'x')}")
                             enemies_raw += [enemy]
                     self.stream.seek(1, 1)
                 else:
-                    break
+                    self.stream.seek(3, 1)
 
         self.random.shuffle(enemies_raw)
         chomp = False
         for pos in enemies:
             self.stream.seek(pos + 8)
-            for _ in range(4):
+
+            for _ in range(6):
                 enemy = int.from_bytes(self.stream.read(1))
                 if enemy > 0 and enemy not in Enemies.flying and enemy not in Enemies.pestnut:
                     if enemy == 0x52:
                         chomp = True
-                    self.stream.seek(-1, 1)
-                    self.stream.write(enemies_raw.pop())
                     self.stream.seek(1, 1)
-                    self.stream.write([0x4])
+                    flag = int.from_bytes(self.stream.read(1))
+                    if flag not in [0x0, 0x2, 0x4]:
+                        self.stream.seek(1, 1)
+                        continue
+                    self.stream.seek(-3, 1)
+                    self.stream.write(bytes([enemies_raw.pop()]))
+                    self.stream.seek(1, 1)
+                    self.stream.write(bytes([0x4]))
                     self.stream.seek(1, 1)
                 else:
-                    break
+                    self.stream.seek(3, 1)
+
             self.stream.seek(pos + 1)
             raw = self.stream.read(0x1F)
             if chomp:

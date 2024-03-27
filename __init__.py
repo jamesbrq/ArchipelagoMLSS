@@ -1,4 +1,3 @@
-import logging
 import typing
 import settings
 from BaseClasses import Tutorial, ItemClassification
