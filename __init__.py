@@ -1,14 +1,16 @@
+import os
+import pkgutil
 import typing
 import settings
 from BaseClasses import Tutorial, ItemClassification
 from worlds.AutoWorld import WebWorld, World
-from .Locations import all_locations, location_table, bowsers, bowsersMini, event, hidden, coins
+from .Locations import all_locations, location_table, bowsers, bowsersMini, hidden, coins
 from .Options import MLSSOptions
 from .Items import MLSSItem, itemList, item_frequencies, item_table
 from .Names.LocationName import LocationName
 from .Client import MLSSClient
 from .Regions import create_regions, connect_regions
-from .Rom import MLSSDeltaPatch, Rom
+from .Rom import MLSSProcedurePatch, write_tokens
 from .Rules import set_rules
 
 
@@ -51,7 +53,7 @@ class MLSSWorld(World):
     settings: typing.ClassVar[MLSSSettings]
     item_name_to_id = {name: data.code for name, data in item_table.items()}
     location_name_to_id = {loc_data.name: loc_data.id for loc_data in all_locations}
-    required_client_version = (0, 4, 4)
+    required_client_version = (0, 4, 5)
 
     excluded_locations = []
 
@@ -98,24 +100,6 @@ class MLSSWorld(World):
         self.multiworld.get_location(LocationName.PantsShopStartingFlag1, self.player).place_locked_item(item)
         item = self.create_item("Chuckle Bean")
         self.multiworld.get_location(LocationName.PantsShopStartingFlag2, self.player).place_locked_item(item)
-        item = self.create_item("Dragohoho Defeated")
-        self.multiworld.get_location("Dragohoho", self.player).place_locked_item(item)
-        item = self.create_item("Queen Bean Defeated")
-        self.multiworld.get_location("Queen Bean", self.player).place_locked_item(item)
-        item = self.create_item("Chuckolator Defeated")
-        self.multiworld.get_location("Chuckolator", self.player).place_locked_item(item)
-        item = self.create_item("Oasis Access")
-        self.multiworld.get_location("Oasis", self.player).place_locked_item(item)
-        item = self.create_item("Mom Piranha Defeated")
-        self.multiworld.get_location("Mom Piranha", self.player).place_locked_item(item)
-        item = self.create_item("Entered Fungitown")
-        self.multiworld.get_location("Fungitown", self.player).place_locked_item(item)
-        item = self.create_item("Beanstar Complete")
-        self.multiworld.get_location("Beanstar", self.player).place_locked_item(item)
-        item = self.create_item("Jojora Defeated")
-        self.multiworld.get_location("Jojora", self.player).place_locked_item(item)
-        item = self.create_item("Birdo Defeated")
-        self.multiworld.get_location("Birdo", self.player).place_locked_item(item)
 
     def create_items(self) -> None:
         # First add in all progression and useful items
@@ -150,7 +134,7 @@ class MLSSWorld(World):
                     freq = 1
                 filler_items += [item.itemName for _ in range(freq)]
 
-        remaining = len(all_locations) - len(required_items) - len(event) - 5
+        remaining = len(all_locations) - len(required_items) - 5
         if self.options.castle_skip:
             remaining -= (len(bowsers) + len(bowsersMini) - (5 if self.options.chuckle_beans == 0 else 0))
         if self.options.skip_minecart and self.options.chuckle_beans == 2:
@@ -181,23 +165,9 @@ class MLSSWorld(World):
         return MLSSItem(item.itemName, item.progression, item.code, self.player)
 
     def generate_output(self, output_directory: str) -> None:
-        rom = Rom(self)
-
-        for location_name in location_table.keys():
-            if (self.options.skip_minecart and "Minecart" in location_name and "After" not in location_name) or (self.options.castle_skip and "Bowser" in location_name) or (self.options.disable_surf and "Surf Minigame" in location_name) or (self.options.harhalls_pants and "Harhall's" in location_name):
-                continue
-            if (self.options.chuckle_beans == 0 and "Digspot" in location_name) or (self.options.chuckle_beans == 1 and location_table[location_name] in hidden):
-                continue
-            if not self.options.coins and "Coin" in location_name:
-                continue
-            location = self.multiworld.get_location(location_name, self.player)
-            if location in self.multiworld.get_region("Event", self.player).locations:
-                continue
-            item = location.item
-            address = [address for address in all_locations if address.name == location.name]
-            rom.item_inject(location.address, address[0].itemType, item)
-            if "Shop" in location_name and "Coffee" not in location_name and item.player != self.player:
-                rom.desc_inject(location, item)
-        rom.patch_options()
-
-        rom.close(output_directory)
+        patch = MLSSProcedurePatch()
+        patch.write_file("base_patch.bsdiff4", pkgutil.get_data(__name__, "data/basepatch.bsdiff"))
+        write_tokens(self, patch)
+        rom_path = os.path.join(output_directory, f"{self.multiworld.get_out_file_name_base(self.player)}"
+                                                  f"{patch.patch_file_ending}")
+        patch.write(rom_path)
