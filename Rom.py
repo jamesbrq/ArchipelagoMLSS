@@ -74,22 +74,20 @@ class MLSSPatchExtension(APPatchExtension):
 
         songs = []
         stream.seek(0x21CB74)
-        while True:
+        for _ in range(50):
             if stream.tell() == 0x21CBD8:
                 stream.seek(4, 1)
                 continue
-            if stream.tell() == 0x21CC3C:
-                break
             temp = stream.read(4)
             songs.append(temp)
 
         random.shuffle(songs)
         stream.seek(0x21CB74)
-        for i in range(len(songs) - 1, -1, -1):
+        for _ in range(50):
             if stream.tell() == 0x21CBD8:
                 stream.seek(4, 1)
                 continue
-            stream.write(songs[i])
+            stream.write(songs.pop())
 
         return stream.getvalue()
 
@@ -143,6 +141,9 @@ class MLSSPatchExtension(APPatchExtension):
     @staticmethod
     def enemy_randomize(caller: APProcedurePatch, rom: bytes):
         options = json.loads(caller.get_file("options.json").decode("UTF-8"))
+        if options["randomize_bosses"] == 0 and options["randomize_enemies"] == 0:
+            return rom
+
         enemies = [pos for pos in Enemies.enemies if
                    pos not in Enemies.bowsers] if options["castle_skip"] else Enemies.enemies
         bosses = [pos for pos in Enemies.bosses if
@@ -150,7 +151,7 @@ class MLSSPatchExtension(APPatchExtension):
         stream = io.BytesIO(rom)
         random.seed(options["seed"] + options["player"])
 
-        if options["randomize_bosses"] == 1 or (options["randomize_bosses"] == 2 and options["randomize_enemies"] == 0):
+        if options["randomize_bosses"] == 1 or (options["randomize_bosses"] == 2) and options["randomize_enemies"] == 0:
             raw = []
             for pos in bosses:
                 stream.seek(pos + 1)
@@ -177,13 +178,13 @@ class MLSSPatchExtension(APPatchExtension):
                 for pos in bosses:
                     stream.seek(pos + 1)
                     stream.write(raw.pop())
-            return
+            return stream.getvalue()
 
         enemies_raw = []
         groups = []
 
         if options["randomize_enemies"] == 0:
-            return
+            return stream.getvalue()
 
         if options["randomize_bosses"] == 2:
             for pos in bosses:
@@ -201,7 +202,6 @@ class MLSSPatchExtension(APPatchExtension):
                         break
                     if flag in [0x0, 0x2, 0x4]:
                         if enemy not in Enemies.pestnut and enemy not in Enemies.flying:
-                            print(f"adding: 0x{format(enemy, 'x')}")
                             enemies_raw += [enemy]
                     stream.seek(1, 1)
                 else:
@@ -408,7 +408,7 @@ def write_tokens(world: "MLSSWorld", patch: MLSSProcedurePatch) -> None:
             patch.write_token(
                 APTokenTypes.WRITE,
                 address + 3,
-                world.multiworld.per_slot_randoms[world.player].randint(0x0, 0x26)
+                bytes([world.multiworld.per_slot_randoms[world.player].randint(0x0, 0x26)])
             )
 
     for location_name in location_table.keys():
@@ -431,8 +431,8 @@ def write_tokens(world: "MLSSWorld", patch: MLSSProcedurePatch) -> None:
 
     swap_colors(world, patch, colors[world.options.mario_color], 0)
     swap_colors(world, patch, colors[world.options.luigi_color], 1)
-    swap_pants(world, patch, colors[world.options.mario_pants], 0)
-    swap_pants(world, patch, colors[world.options.luigi_pants], 1)
+    swap_pants(world, patch, cpants[world.options.mario_pants], 0)
+    swap_pants(world, patch, cpants[world.options.luigi_pants], 1)
 
     patch.write_file("token_data.bin", patch.get_token_binary())
 
@@ -468,7 +468,7 @@ def swap_pants(world: "MLSSWorld", patch: MLSSProcedurePatch, color: str, bro: i
         return
     if bro == 1 and (colors[luigi_color] == "TrueChaos" or colors[luigi_color] == "Silhouette"):
         return
-    if color == "Vanilla" or color == "Silhouette":
+    if color == "Vanilla":
         return
     temp = pkgutil.get_data(__name__, "colors/pants/" + color + ".txt")
     temp_io = io.BytesIO(temp)
@@ -476,7 +476,7 @@ def swap_pants(world: "MLSSWorld", patch: MLSSProcedurePatch, color: str, bro: i
 
     for lines in temp_io.readlines():
         arr = lines.decode('utf-8').strip().split(',')
-        if color != "Chaos" and color != "TrueChaos":
+        if color != "Chaos":
             color_arr.append(Color(int(arr[0], 16), int(arr[1], 16), int(arr[2], 16), int(arr[3], 16)))
         else:
             color_arr.append(
