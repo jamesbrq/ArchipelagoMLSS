@@ -1,3 +1,4 @@
+import typing
 from typing import TYPE_CHECKING, Optional, Set
 import struct
 
@@ -23,9 +24,9 @@ class MLSSClient(BizHawkClient):
     goal_flag: int
     rom_slot_name: Optional[str]
     eCount: int
-    eUsed: [int]
+    eUsed: []
     player_name: Optional[str]
-    checked_flags: dict[int, list] = {}
+    checked_flags: typing.Dict[int, list] = {}
 
     def __init__(self) -> None:
         super().__init__()
@@ -167,10 +168,10 @@ class MLSSClient(BizHawkClient):
                     if location >= 0xDA0000:
                         await ctx.send_msgs([{
                             "cmd": "Set",
-                            "key": f"mlss_flag{location - 0xD9FFFF}_{ctx.team}_{ctx.slot}",
+                            "key": f"mlss_flag_{ctx.team}_{ctx.slot}",
                             "default": 0,
                             "want_reply": False,
-                            "operations": [{"operation": "replace", "value": 1}]
+                            "operations": [{"operation": "or", "value": 1 << (location - 0xDA0000)}]
                         }])
                         continue
                     if location in roomException:

@@ -1,4 +1,4 @@
-from Options import Choice, Toggle, StartInventoryPool, PerGameCommonOptions
+from Options import Choice, Toggle, StartInventoryPool, PerGameCommonOptions, Range
 from dataclasses import dataclass
 
 
@@ -168,16 +168,21 @@ class RandomizeBosses(Choice):
 
 class ScaleStats(Toggle):
     """
-    This scales enemy HP and XP according to the area of the game you are in.
+    This scales enemy HP, POW, DEF, and XP to vanilla values.
+    This setting is intended for use with the Enemy Randomizer and is Recommended to turn on.
+    If you are not using the Enemy Randomizer the effects will be minimal.
     """
     display_name = "Scale Enemy Stats"
 
+class XPMultiplier(Range):
+    """
+    This will multiply any XP you receive in battle by the chosen multiplier.
 
-class ScalePow(Toggle):
     """
-    This scales enemy POW according to the area of the game you are in.
-    """
-    display_name = "Scale Enemy POW"
+    display_name = "XP Multiplier"
+    range_start = 1
+    range_end = 4
+    default = 1
 
 
 class TattleHp(Toggle):
@@ -194,18 +199,15 @@ class RandomizeBackgrounds(Toggle):
     display_name = "Randomize Battle Backgrounds"
 
 
-class HiddenVisible(Toggle):
+class HiddenVisible(Choice):
     """
     This makes any hidden blocks in the game into regular item blocks.
     """
-    display_name = "Hidden Blocks Visible"
-
-
-class BlocksInvisible(Toggle):
-    """
-    Turns any item blocks in the game into hidden blocks.
-    """
-    display_name = "Item Blocks Invisible"
+    display_name = "Item Block Visibility"
+    option_disabled = 0
+    option_hidden_visible = 1
+    option_blocks_invisible = 2
+    default = 0
 
 
 class Coins(Toggle):
@@ -255,8 +257,7 @@ class MLSSOptions(PerGameCommonOptions):
     skip_minecart: SkipMinecart
     disable_surf: DisableSurf
     harhalls_pants: HarhallsPants
-    hidden_visible: HiddenVisible
-    blocks_invisible: BlocksInvisible
+    block_visibility: HiddenVisible
     chuckle_beans: ChuckleBeans
     music_options: MusicOptions
     randomize_sounds: RandomSounds
@@ -264,7 +265,7 @@ class MLSSOptions(PerGameCommonOptions):
     randomize_bosses: RandomizeBosses
     randomize_backgrounds: RandomizeBackgrounds
     scale_stats: ScaleStats
-    scale_pow: ScalePow
+    xp_multiplier: XPMultiplier
     tattle_hp: TattleHp
     mario_color: MarioColor
     luigi_color: LuigiColor
