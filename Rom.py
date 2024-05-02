@@ -1,57 +1,47 @@
 import io
 import json
-import pkgutil
 import random
-import typing
 
-from . import Enemies
+from . import Data
+from typing import TYPE_CHECKING, Optional
 from BaseClasses import Item, Location
 from settings import get_settings
 from worlds.Files import APProcedurePatch, APTokenMixin, APTokenTypes, APPatchExtension
 from .Items import item_table
 from .Locations import shop, badge, pants, location_table, hidden, all_locations
 
-if typing.TYPE_CHECKING:
+if TYPE_CHECKING:
     from . import MLSSWorld
 
-
-class Color:
-    def __init__(self, location, byte1, byte2, bro):
-        self.location = location
-        self.byte1 = byte1
-        self.byte2 = byte2
-        self.bro = bro
-
-
 colors = [
-    "Red",
-    "Green",
-    "Blue",
-    "Cyan",
-    "Yellow",
-    "Orange",
-    "Purple",
-    "Pink",
-    "Black",
-    "White",
-    "Silhouette",
-    "Chaos",
-    "TrueChaos"
+    Data.redHat,
+    Data.greenHat,
+    Data.blueHat,
+    Data.azureHat,
+    Data.yellowHat,
+    Data.orangeHat,
+    Data.purpleHat,
+    Data.pinkHat,
+    Data.blackHat,
+    Data.whiteHat,
+    Data.silhouetteHat,
+    Data.chaosHat,
+    Data.truechaosHat
 ]
 
-cpants = [
-    "Vanilla",
-    "Red",
-    "Green",
-    "Blue",
-    "Cyan",
-    "Yellow",
-    "Orange",
-    "Purple",
-    "Pink",
-    "Black",
-    "White",
-    "Chaos"
+pants = [
+    Data.vanilla,
+    Data.redPants,
+    Data.greenPants,
+    Data.bluePants,
+    Data.azurePants,
+    Data.yellowPants,
+    Data.orangePants,
+    Data.purplePants,
+    Data.pinkPants,
+    Data.blackPants,
+    Data.whitePants,
+    Data.chaosPants
 ]
 
 
@@ -117,23 +107,17 @@ class MLSSPatchExtension(APPatchExtension):
             return rom
         stream = io.BytesIO(rom)
         random.seed(options["seed"] + options["player"])
-
-        temp = pkgutil.get_data(__name__, "data/sounds.txt")
-        temp_io = io.BytesIO(temp)
-        fresh_pointers = []
-
-        for line in temp_io.readlines():
-            fresh_pointers += [int(line.decode('utf-8').strip(), 16)]
-        pointers = list(fresh_pointers)
+        fresh_pointers = Data.sounds
+        pointers = Data.sounds
 
         random.shuffle(pointers)
-        stream.seek(0x21cc44, 0)
+        stream.seek(0x21CC44, 0)
         for i in range(354):
             current_position = stream.tell()
-            value = int.from_bytes(stream.read(3), 'little')
+            value = int.from_bytes(stream.read(3), "little")
             if value in fresh_pointers:
                 stream.seek(current_position)
-                stream.write(pointers.pop().to_bytes(3, 'little'))
+                stream.write(pointers.pop().to_bytes(3, "little"))
             stream.seek(1, 1)
 
         return stream.getvalue()
@@ -144,10 +128,8 @@ class MLSSPatchExtension(APPatchExtension):
         if options["randomize_bosses"] == 0 and options["randomize_enemies"] == 0:
             return rom
 
-        enemies = [pos for pos in Enemies.enemies if
-                   pos not in Enemies.bowsers] if options["castle_skip"] else Enemies.enemies
-        bosses = [pos for pos in Enemies.bosses if
-                  pos not in Enemies.bowsers] if options["castle_skip"] else Enemies.bosses
+        enemies = [pos for pos in Data.enemies if pos not in Data.bowsers] if options["castle_skip"] else Data.enemies
+        bosses = [pos for pos in Data.bosses if pos not in Data.bowsers] if options["castle_skip"] else Data.bosses
         stream = io.BytesIO(rom)
         random.seed(options["seed"] + options["player"])
 
@@ -201,7 +183,7 @@ class MLSSPatchExtension(APPatchExtension):
                     if flag == 0x7:
                         break
                     if flag in [0x0, 0x2, 0x4]:
-                        if enemy not in Enemies.pestnut and enemy not in Enemies.flying:
+                        if enemy not in Data.pestnut and enemy not in Data.flying:
                             enemies_raw += [enemy]
                     stream.seek(1, 1)
                 else:
@@ -214,7 +196,7 @@ class MLSSPatchExtension(APPatchExtension):
 
             for _ in range(6):
                 enemy = int.from_bytes(stream.read(1))
-                if enemy > 0 and enemy not in Enemies.flying and enemy not in Enemies.pestnut:
+                if enemy > 0 and enemy not in Data.flying and enemy not in Data.pestnut:
                     if enemy == 0x52:
                         chomp = True
                     stream.seek(1, 1)
@@ -280,144 +262,78 @@ def write_tokens(world: "MLSSWorld", patch: MLSSProcedurePatch) -> None:
         "music_options": world.options.music_options.value,
         "block_visibility": world.options.block_visibility.value,
         "seed": world.multiworld.seed,
-        "player": world.player
+        "player": world.player,
     }
     patch.write_file("options.json", json.dumps(options_dict).encode("UTF-8"))
 
     # Bake player name into ROM
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0xDF0000,
-        world.multiworld.player_name[world.player].encode("UTF-8")
-    )
+    patch.write_token(APTokenTypes.WRITE, 0xDF0000, world.multiworld.player_name[world.player].encode("UTF-8"))
 
     # Bake seed name into ROM
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0xDF00A0,
-        world.multiworld.seed_name.encode("UTF-8")
-    )
+    patch.write_token(APTokenTypes.WRITE, 0xDF00A0, world.multiworld.seed_name.encode("UTF-8"))
+
+    # Bake patch into header
+    patch.write_token(APTokenTypes.WRITE, 0xAD, "P".encode("UTF-8"))
 
     # Intro Skip
     patch.write_token(
         APTokenTypes.WRITE,
         0x244D08,
-        bytes([0x88, 0x0, 0x19, 0x91, 0x1, 0x20, 0x58, 0x1, 0xF, 0xA0, 0x3, 0x15, 0x27, 0x8])
+        bytes([0x88, 0x0, 0x19, 0x91, 0x1, 0x20, 0x58, 0x1, 0xF, 0xA0, 0x3, 0x15, 0x27, 0x8]),
     )
 
     # Patch S.S Chuckola Loading Zones
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0x25FD4E,
-        bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF])
-    )
+    patch.write_token(APTokenTypes.WRITE, 0x25FD4E, bytes([0x48, 0x30, 0x80, 0x60, 0x50, 0x2, 0xF]))
 
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0x25FD83,
-        bytes([0x48, 0x30, 0x80, 0x60, 0xC0, 0x2, 0xF])
-    )
+    patch.write_token(APTokenTypes.WRITE, 0x25FD83, bytes([0x48, 0x30, 0x80, 0x60, 0xC0, 0x2, 0xF]))
 
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0x25FDB8,
-        bytes([0x48, 0x30, 0x05, 0x80, 0xE4, 0x0, 0xF])
-    )
+    patch.write_token(APTokenTypes.WRITE, 0x25FDB8, bytes([0x48, 0x30, 0x05, 0x80, 0xE4, 0x0, 0xF]))
 
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0x25FDED,
-        bytes([0x48, 0x30, 0x06, 0x80, 0xE4, 0x0, 0xF])
-    )
+    patch.write_token(APTokenTypes.WRITE, 0x25FDED, bytes([0x48, 0x30, 0x06, 0x80, 0xE4, 0x0, 0xF]))
 
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0x25FE22,
-        bytes([0x48, 0x30, 0x07, 0x80, 0xE4, 0x0, 0xF])
-    )
+    patch.write_token(APTokenTypes.WRITE, 0x25FE22, bytes([0x48, 0x30, 0x07, 0x80, 0xE4, 0x0, 0xF]))
 
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0x25FE57,
-        bytes([0x48, 0x30, 0x08, 0x80, 0xE4, 0x0, 0xF])
-    )
+    patch.write_token(APTokenTypes.WRITE, 0x25FE57, bytes([0x48, 0x30, 0x08, 0x80, 0xE4, 0x0, 0xF]))
 
     if world.options.extra_pipes:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0xD00001,
-            bytes([0x1])
-        )
+        patch.write_token(APTokenTypes.WRITE, 0xD00001, bytes([0x1]))
 
     if world.options.castle_skip:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0x3AEAB0,
-            bytes([0xC1, 0x67, 0x0, 0x6, 0x1C, 0x08, 0x3])
-        )
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0x3AEC18,
-            bytes([0x89, 0x65, 0x0, 0xE, 0xA, 0x08, 0x1])
-        )
+        patch.write_token(APTokenTypes.WRITE, 0x3AEAB0, bytes([0xC1, 0x67, 0x0, 0x6, 0x1C, 0x08, 0x3]))
+        patch.write_token(APTokenTypes.WRITE, 0x3AEC18, bytes([0x89, 0x65, 0x0, 0xE, 0xA, 0x08, 0x1]))
 
     if world.options.skip_minecart:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0x3AC728,
-            bytes([0x89, 0x13, 0x0, 0x10, 0xF, 0x08, 0x1])
-        )
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0x3AC56C,
-            bytes([0x49, 0x16, 0x0, 0x8, 0x8, 0x08, 0x1])
-        )
+        patch.write_token(APTokenTypes.WRITE, 0x3AC728, bytes([0x89, 0x13, 0x0, 0x10, 0xF, 0x08, 0x1]))
+        patch.write_token(APTokenTypes.WRITE, 0x3AC56C, bytes([0x49, 0x16, 0x0, 0x8, 0x8, 0x08, 0x1]))
 
     if world.options.scale_stats:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0xD00002,
-            bytes([0x1])
-        )
+        patch.write_token(APTokenTypes.WRITE, 0xD00002, bytes([0x1]))
 
     if world.options.xp_multiplier:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0xD00003,
-            bytes([world.options.xp_multiplier.value])
-        )
+        patch.write_token(APTokenTypes.WRITE, 0xD00003, bytes([world.options.xp_multiplier.value]))
 
     if world.options.tattle_hp:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0xD00000,
-            bytes([0x1])
-        )
+        patch.write_token(APTokenTypes.WRITE, 0xD00000, bytes([0x1]))
 
     if world.options.music_options == 2:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            0x19B118,
-            bytes([0x0, 0x25])
-        )
+        patch.write_token(APTokenTypes.WRITE, 0x19B118, bytes([0x0, 0x25]))
 
     if world.options.randomize_backgrounds:
-        all_enemies = Enemies.enemies + Enemies.bosses
+        all_enemies = Data.enemies + Data.bosses
         for address in all_enemies:
-            patch.write_token(
-                APTokenTypes.WRITE,
-                address + 3,
-                bytes([world.multiworld.per_slot_randoms[world.player].randint(0x0, 0x26)])
-            )
+            patch.write_token(APTokenTypes.WRITE, address + 3, bytes([world.random.randint(0x0, 0x26)]))
 
     for location_name in location_table.keys():
-        if (world.options.skip_minecart and "Minecart" in location_name and "After" not in location_name) or (
-                world.options.castle_skip and "Bowser" in location_name) or (
-                world.options.disable_surf and "Surf Minigame" in location_name) or (
-                world.options.harhalls_pants and "Harhall's" in location_name):
+        if (
+            (world.options.skip_minecart and "Minecart" in location_name and "After" not in location_name)
+            or (world.options.castle_skip and "Bowser" in location_name)
+            or (world.options.disable_surf and "Surf Minigame" in location_name)
+            or (world.options.harhalls_pants and "Harhall's" in location_name)
+        ):
             continue
         if (world.options.chuckle_beans == 0 and "Digspot" in location_name) or (
-                world.options.chuckle_beans == 1 and location_table[location_name] in hidden):
+            world.options.chuckle_beans == 1 and location_table[location_name] in hidden
+        ):
             continue
         if not world.options.coins and "Coin" in location_name:
             continue
@@ -428,67 +344,31 @@ def write_tokens(world: "MLSSWorld", patch: MLSSProcedurePatch) -> None:
         if "Shop" in location_name and "Coffee" not in location_name and item.player != world.player:
             desc_inject(world, patch, location, item)
 
-    swap_colors(world, patch, colors[world.options.mario_color], 0)
-    swap_colors(world, patch, colors[world.options.luigi_color], 1)
-    swap_pants(world, patch, cpants[world.options.mario_pants], 0)
-    swap_pants(world, patch, cpants[world.options.luigi_pants], 1)
+    swap_colors(world, patch, world.options.mario_pants.value, 0, True)
+    swap_colors(world, patch, world.options.luigi_pants.value, 1, True)
+    swap_colors(world, patch, world.options.mario_color.value, 0)
+    swap_colors(world, patch, world.options.luigi_color.value, 1)
 
     patch.write_file("token_data.bin", patch.get_token_binary())
 
 
-def swap_colors(world: "MLSSWorld", patch: MLSSProcedurePatch, color: str, bro: int):
-    temp = pkgutil.get_data(__name__, "colors/" + color + ".txt")
-    temp_io = io.BytesIO(temp)
-    color_arr = []
-    random = world.multiworld.per_slot_randoms[world.player]
-
-    for lines in temp_io.readlines():
-        arr = lines.decode('utf-8').strip().split(',')
-        if color != "Chaos" and color != "TrueChaos":
-            color_arr.append(Color(int(arr[0], 16), int(arr[1], 16), int(arr[2], 16), int(arr[3], 16)))
+def swap_colors(world: "MLSSWorld", patch: MLSSProcedurePatch, color: int, bro: int,
+                pants_option: Optional[bool] = False):
+    if not pants_option and color == bro:
+        return
+    chaos = False
+    if not pants_option and color == 11 or color == 12:
+        chaos = True
+    if pants_option and color == 11:
+        chaos = True
+    for c in [c for c in (pants[color] if pants_option else colors[color])
+              if (c[3] == bro if not chaos else c[1] == bro)]:
+        if chaos:
+            patch.write_token(APTokenTypes.WRITE, c[0],
+                              bytes([world.random.randint(0, 255), world.random.randint(0, 127)]))
         else:
-            color_arr.append(
-                Color(int(arr[0], 16), random.randint(0, 255), random.randint(0, 127), int(arr[1], 16)))
+            patch.write_token(APTokenTypes.WRITE, c[0], bytes([c[1], c[2]]))
 
-    colors_ = [c for c in color_arr if c.bro == bro]
-
-    for c in colors_:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            c.location,
-            bytes([c.byte1, c.byte2])
-        )
-
-def swap_pants(world: "MLSSWorld", patch: MLSSProcedurePatch, color: str, bro: int):
-    mario_color = world.options.mario_color
-    luigi_color = world.options.luigi_color
-    random = world.multiworld.per_slot_randoms[world.player]
-    if bro == 0 and (colors[mario_color] == "TrueChaos" or colors[mario_color] == "Silhouette"):
-        return
-    if bro == 1 and (colors[luigi_color] == "TrueChaos" or colors[luigi_color] == "Silhouette"):
-        return
-    if color == "Vanilla":
-        return
-    temp = pkgutil.get_data(__name__, "colors/pants/" + color + ".txt")
-    temp_io = io.BytesIO(temp)
-    color_arr = []
-
-    for lines in temp_io.readlines():
-        arr = lines.decode('utf-8').strip().split(',')
-        if color != "Chaos":
-            color_arr.append(Color(int(arr[0], 16), int(arr[1], 16), int(arr[2], 16), int(arr[3], 16)))
-        else:
-            color_arr.append(
-                Color(int(arr[0], 16), random.randint(0, 255), random.randint(0, 127), int(arr[1], 16)))
-
-    colors_ = [c for c in color_arr if c.bro == bro]
-
-    for c in colors_:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            c.location,
-            bytes([c.byte1, c.byte2])
-        )
 
 def item_inject(world: "MLSSWorld", patch: MLSSProcedurePatch, location: int, item_type: int, item: Item):
     if item.player == world.player:
@@ -496,11 +376,7 @@ def item_inject(world: "MLSSWorld", patch: MLSSProcedurePatch, location: int, it
     else:
         code = 0x3F
     if item_type == 0:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            location,
-            bytes([code])
-        )
+        patch.write_token(APTokenTypes.WRITE, location, bytes([code]))
     elif item_type == 1:
         if code == 0x1D or code == 0x1E:
             code += 0xE
@@ -511,21 +387,13 @@ def item_inject(world: "MLSSWorld", patch: MLSSProcedurePatch, location: int, it
         insert2 *= 0x10
         insert //= 0x10
         insert += 0x20
-        patch.write_token(
-            APTokenTypes.WRITE,
-            location,
-            bytes([insert, insert2])
-        )
+        patch.write_token(APTokenTypes.WRITE, location, bytes([insert, insert2]))
     elif item_type == 2:
         if code == 0x1D or code == 0x1E:
             code += 0xE
         if 0x20 <= code <= 0x26:
             code -= 0x4
-        patch.write_token(
-            APTokenTypes.WRITE,
-            location,
-            bytes([code])
-        )
+        patch.write_token(APTokenTypes.WRITE, location, bytes([code]))
     elif item_type == 3:
         if code == 0x1D or code == 0x1E:
             code += 0xE
@@ -533,23 +401,16 @@ def item_inject(world: "MLSSWorld", patch: MLSSProcedurePatch, location: int, it
             code -= 0xA
         if 0x20 <= code <= 0x26:
             code -= 0xE
-        patch.write_token(
-            APTokenTypes.WRITE,
-            location,
-            bytes([code])
-        )
+        patch.write_token(APTokenTypes.WRITE, location, bytes([code]))
     else:
-        patch.write_token(
-            APTokenTypes.WRITE,
-            location,
-            bytes([0x18])
-        )
+        patch.write_token(APTokenTypes.WRITE, location, bytes([0x18]))
+
 
 def desc_inject(world: "MLSSWorld", patch: MLSSProcedurePatch, location: Location, item: Item):
     index = -1
     for key, value in shop.items():
         if location.address in value:
-            if key == 0x3C05f0:
+            if key == 0x3C05F0:
                 index = value.index(location.address)
             else:
                 index = value.index(location.address) + 14
@@ -573,8 +434,4 @@ def desc_inject(world: "MLSSWorld", patch: MLSSProcedurePatch, location: Locatio
                 index = value.index(location.address) + 66
 
     dstring = f"{world.multiworld.player_name[item.player]}: {item.name}"
-    patch.write_token(
-        APTokenTypes.WRITE,
-        0xD11000 + (index * 0x40),
-        dstring.encode("UTF8")
-    )
+    patch.write_token(APTokenTypes.WRITE, 0xD11000 + (index * 0x40), dstring.encode("UTF8"))
