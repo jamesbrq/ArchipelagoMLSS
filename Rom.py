@@ -88,7 +88,7 @@ class MLSSPatchExtension(APPatchExtension):
             return rom
         stream = io.BytesIO(rom)
 
-        for location in all_locations:
+        for location in [location for location in all_locations if location.itemType == 0]:
             stream.seek(location.id - 6)
             b = stream.read(1)
             if b[0] == 0x10 and options["block_visibility"] == 1:
@@ -272,9 +272,6 @@ def write_tokens(world: "MLSSWorld", patch: MLSSProcedurePatch) -> None:
     # Bake seed name into ROM
     patch.write_token(APTokenTypes.WRITE, 0xDF00A0, world.multiworld.seed_name.encode("UTF-8"))
 
-    # Bake patch into header
-    patch.write_token(APTokenTypes.WRITE, 0xAD, "P".encode("UTF-8"))
-
     # Intro Skip
     patch.write_token(
         APTokenTypes.WRITE,
@@ -309,8 +306,7 @@ def write_tokens(world: "MLSSWorld", patch: MLSSProcedurePatch) -> None:
     if world.options.scale_stats:
         patch.write_token(APTokenTypes.WRITE, 0xD00002, bytes([0x1]))
 
-    if world.options.xp_multiplier:
-        patch.write_token(APTokenTypes.WRITE, 0xD00003, bytes([world.options.xp_multiplier.value]))
+    patch.write_token(APTokenTypes.WRITE, 0xD00003, bytes([world.options.xp_multiplier.value]))
 
     if world.options.tattle_hp:
         patch.write_token(APTokenTypes.WRITE, 0xD00000, bytes([0x1]))
@@ -324,20 +320,9 @@ def write_tokens(world: "MLSSWorld", patch: MLSSProcedurePatch) -> None:
             patch.write_token(APTokenTypes.WRITE, address + 3, bytes([world.random.randint(0x0, 0x26)]))
 
     for location_name in location_table.keys():
-        if (
-            (world.options.skip_minecart and "Minecart" in location_name and "After" not in location_name)
-            or (world.options.castle_skip and "Bowser" in location_name)
-            or (world.options.disable_surf and "Surf Minigame" in location_name)
-            or (world.options.harhalls_pants and "Harhall's" in location_name)
-        ):
+        if location_name in world.disabled_locations:
             continue
-        if (world.options.chuckle_beans == 0 and "Digspot" in location_name) or (
-            world.options.chuckle_beans == 1 and location_table[location_name] in hidden
-        ):
-            continue
-        if not world.options.coins and "Coin" in location_name:
-            continue
-        location = world.multiworld.get_location(location_name, world.player)
+        location = world.get_location(location_name)
         item = location.item
         address = [address for address in all_locations if address.name == location.name]
         item_inject(world, patch, location.address, address[0].itemType, item)

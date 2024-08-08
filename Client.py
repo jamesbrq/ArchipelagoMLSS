@@ -47,20 +47,7 @@ class MLSSClient(BizHawkClient):
             # Check ROM name/patch version
             rom_name_bytes = await bizhawk.read(ctx.bizhawk_ctx, [(0xA0, 14, "ROM")])
             rom_name = bytes([byte for byte in rom_name_bytes[0] if byte != 0]).decode("UTF-8")
-            if not rom_name.startswith("MARIO&LUIGIU"):
-                return False
-            if rom_name == "MARIO&LUIGIUA8":
-                logger.info(
-                    "ERROR: You appear to be running an unpatched version of Mario & Luigi Superstar Saga. "
-                    "You need to generate a patch file and use it to create a patched ROM."
-                )
-                return False
-            if rom_name != "MARIO&LUIGIUAP":
-                logger.info(
-                    "ERROR: The patch file used to create this ROM is not compatible with "
-                    "this client. Double check your client version against the version being "
-                    "used by the generator."
-                )
+            if not rom_name.startswith("MARIO&LUIGIUA8"):
                 return False
         except UnicodeDecodeError:
             return False
@@ -156,17 +143,26 @@ class MLSSClient(BizHawkClient):
             # If RAM address isn't 0x0 yet break out and try again later to give the rest of the items
             for i in range(len(ctx.items_received) - received_index):
                 item_data = items_by_id[ctx.items_received[received_index + i].item]
-                b = await bizhawk.guarded_read(ctx.bizhawk_ctx, [(0x3057, 1, "EWRAM")], [(0x3057, [0x0], "EWRAM")])
-                if b is None:
+                result = False
+                total = 0
+                while not result:
+                    await asyncio.sleep(0.05)
+                    total += 0.05
+                    result = await bizhawk.guarded_write(
+                        ctx.bizhawk_ctx,
+                        [
+                            (0x3057, [id_to_RAM(item_data.itemID)], "EWRAM")
+                        ],
+                        [(0x3057, [0x0], "EWRAM")]
+                    )
+                if not result:
                     break
                 await bizhawk.write(
                     ctx.bizhawk_ctx,
                     [
-                        (0x3057, [id_to_RAM(item_data.itemID)], "EWRAM"),
                         (0x4808, [(received_index + i + 1) // 0x100, (received_index + i + 1) % 0x100], "EWRAM"),
-                    ],
+                    ]
                 )
-                await asyncio.sleep(0.1)
 
             # Early return and location send if you are currently in a shop,
             # since other flags aren't going to change
