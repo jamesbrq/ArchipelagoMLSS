@@ -85,7 +85,7 @@ class MLSSClient(BizHawkClient):
             if not self.seed_verify:
                 seed = await bizhawk.read(ctx.bizhawk_ctx, [(0xDF00A0, len(ctx.seed_name), "ROM")])
                 seed = seed[0].decode("UTF-8")
-                if seed != ctx.seed_name:
+                if seed not in ctx.seed_name:
                     logger.info(
                         "ERROR: The ROM you loaded is for a different game of AP. "
                         "Please make sure the host has sent you the correct patch file,"
@@ -155,6 +155,10 @@ class MLSSClient(BizHawkClient):
                         ],
                         [(0x3057, [0x0], "EWRAM")]
                     )
+                    if result:
+                        total = 0
+                    if total >= 1:
+                        break
                 if not result:
                     break
                 await bizhawk.write(
